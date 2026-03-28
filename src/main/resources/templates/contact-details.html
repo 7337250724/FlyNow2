@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Fly Now - Contact Details</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            background: #ffffff;
+            color: #333333;
+            min-height: 100vh;
+        }
+
+        .booking-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+        }
+
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: #ffffff;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #333333;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .header-title i {
+            color: #FF6600;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: 0;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: #888;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .step.active .step-circle {
+            background: #FF7A00;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(255, 122, 0, 0.3);
+        }
+
+        .step.completed .step-circle {
+            background: #FF7A00;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(255, 122, 0, 0.3);
+        }
+
+        .step-label {
+            font-size: 13px;
+            color: #666666;
+            font-weight: 600;
+        }
+
+        .step.active .step-label {
+            color: #FF7A00;
+            font-weight: 700;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+        }
+
+        .form-header h2 {
+            color: #FF7A00;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 28px;
+            letter-spacing: -0.5px;
+        }
+
+        .package-info-card {
+            background: #fff8f3;
+            color: #333;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            border: 2px solid #FF7A00;
+            box-shadow: 0 4px 16px rgba(255, 122, 0, 0.1);
+        }
+
+        .package-info-card h4 {
+            color: #FF7A00;
+            margin-bottom: 15px;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .package-info-card p {
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .selection-card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            border: 2px solid #f0f0f0;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .selection-card h5 {
+            color: #FF7A00;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .selection-card h5 i {
+            margin-right: 12px;
+            color: #FF7A00;
+            font-size: 22px;
+        }
+
+        .btn-primary {
+            background: #FF7A00;
+            border-color: #FF7A00;
+            padding: 14px 35px;
+            font-weight: 700;
+            color: #ffffff;
+            border-radius: 12px;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(255, 122, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #FFA500;
+            border-color: #FFA500;
+            color: #ffffff;
+            box-shadow: 0 6px 16px rgba(255, 122, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .traveler-section {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        .traveler-section h5 {
+            color: #FF7A00;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .form-control {
+            background: #ffffff;
+            border: 2px solid #e8e8e8;
+            color: #333;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: #ffffff;
+            border-color: #FF7A00;
+            color: #333;
+            box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1);
+            outline: none;
+        }
+
+        label {
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        h3, h4 {
+            color: #FF6600;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="booking-container">
+        <!-- Header Bar -->
+        <div class="header-bar">
+            <div class="header-title">
+                <i class="fa fa-plane"></i>
+                <span>Welcome to Fly Now Airlines</span>
+            </div>
+        </div>
+
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+            <div class="step active">
+                <div class="step-circle">1</div>
+                <div class="step-label">Contact Details</div>
+            </div>
+            <div class="step">
+                <div class="step-circle">2</div>
+                <div class="step-label">Select Options</div>
+            </div>
+        </div>
+
+        <div class="form-header">
+            <h2><i class="fa fa-calendar-check-o mr-2"></i>Contact Details</h2>
+            <div class="package-info-card">
+                <h4 th:text="${package.name}">Package Name</h4>
+                <p class="mb-2"><i class="fa fa-map-marker mr-2"></i><span th:text="${package.location}">Location</span></p>
+                <p class="mb-2"><i class="fa fa-clock-o mr-2"></i><span th:text="${package.durationDays} + ' Days'">Duration</span></p>
+            </div>
+        </div>
+
+        <form method="post" th:action="@{'/book/' + ${package.id} + '/select-options'}" id="contactForm">
+            <input type="hidden" name="packageId" th:value="${package.id}">
+            <input type="hidden" name="packageType" value="STANDARD">
+
+            <h3 class="mb-4"><i class="fa fa-user mr-2"></i>Contact & Traveler Details</h3>
+
+            <h4 class="mb-3"><i class="fa fa-address-card mr-2"></i>Contact Information</h4>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Full Name *</label>
+                    <input type="text" class="form-control" name="customerName" id="customerName" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Email *</label>
+                    <input type="email" class="form-control" name="email" id="email" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Phone Number *</label>
+                    <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Number of Travelers *</label>
+                    <input type="number" class="form-control" name="numberOfMembers" id="numMembers" min="1"
+                        max="20" value="1" required onchange="generateTravelerFields()">
+                    <small class="form-text text-muted">Enter the total number of people traveling</small>
+                </div>
+            </div>
+
+            <!-- Traveler Details Card -->
+            <div class="selection-card mt-4">
+                <h5><i class="fa fa-users"></i>Traveler Details</h5>
+                <p class="text-muted mb-3">Please provide details for all travelers</p>
+                <div id="travelersContainer">
+                    <!-- Dynamic fields will be added here -->
+                </div>
+            </div>
+
+            <!-- Hidden field to store JSON string of traveler details -->
+            <input type="hidden" name="travelerDetails" id="travelerDetailsJson">
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-lg" style="min-width: 200px;">
+                    Continue to Select Options <i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script th:inline="javascript">
+        // Store traveler data to preserve when regenerating fields
+        let savedTravelerData = {};
+        
+        function saveTravelerData() {
+            savedTravelerData = {};
+            const sections = document.querySelectorAll('.traveler-section');
+            sections.forEach((section, index) => {
+                const travelerNum = index + 1;
+                const nameInput = section.querySelector('.traveler-name') || document.getElementById(`traveler_${travelerNum}_name`);
+                const ageInput = section.querySelector('.traveler-age') || document.getElementById(`traveler_${travelerNum}_age`);
+                const genderSelect = section.querySelector('.traveler-gender') || document.getElementById(`traveler_${travelerNum}_gender`);
+                
+                if (nameInput || ageInput || genderSelect) {
+                    savedTravelerData[travelerNum] = {
+                        name: nameInput ? nameInput.value : '',
+                        age: ageInput ? ageInput.value : '',
+                        gender: genderSelect ? genderSelect.value : ''
+                    };
+                }
+            });
+        }
+        
+        function restoreTravelerData() {
+            Object.keys(savedTravelerData).forEach(travelerNum => {
+                const data = savedTravelerData[travelerNum];
+                const nameInput = document.getElementById(`traveler_${travelerNum}_name`);
+                const ageInput = document.getElementById(`traveler_${travelerNum}_age`);
+                const genderSelect = document.getElementById(`traveler_${travelerNum}_gender`);
+                
+                if (nameInput && data.name) nameInput.value = data.name;
+                if (ageInput && data.age) ageInput.value = data.age;
+                if (genderSelect && data.gender) genderSelect.value = data.gender;
+            });
+        }
+        
+        function generateTravelerFields() {
+            const container = document.getElementById('travelersContainer');
+            if (!container) return;
+            
+            const countInput = document.getElementById('numMembers');
+            if (!countInput) return;
+            
+            const count = parseInt(countInput.value) || 1;
+            if (count < 1) {
+                alert('Number of travelers must be at least 1');
+                return;
+            }
+            
+            // Save existing data before clearing
+            const existingSections = container.querySelectorAll('.traveler-section');
+            if (existingSections.length > 0) {
+                saveTravelerData();
+            }
+            
+            // Clear and regenerate
+            container.innerHTML = '';
+
+            for (let i = 1; i <= count; i++) {
+                const html = `
+                <div class="traveler-section" data-traveler-index="${i}">
+                    <h5 style="color: #FF6600; margin-bottom: 15px; font-size: 16px;">Traveler ${i}</h5>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Name *</label>
+                            <input type="text" class="form-control traveler-name" name="traveler_${i}_name" id="traveler_${i}_name" required placeholder="Enter full name">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Age *</label>
+                            <input type="number" class="form-control traveler-age" name="traveler_${i}_age" id="traveler_${i}_age" min="1" max="120" required placeholder="Age">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Gender *</label>
+                            <select class="form-control traveler-gender" name="traveler_${i}_gender" id="traveler_${i}_gender" required>
+                                <option value="">-- Select Gender --</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            `;
+                container.insertAdjacentHTML('beforeend', html);
+            }
+            
+            // Restore saved data
+            setTimeout(() => {
+                restoreTravelerData();
+            }, 50);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            generateTravelerFields();
+        });
+
+        // Validate form before submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            const customerName = document.getElementById('customerName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phoneNumber = document.getElementById('phoneNumber').value.trim();
+            const numMembers = document.getElementById('numMembers').value;
+            
+            if (!customerName) {
+                alert('Please enter your full name');
+                e.preventDefault();
+                return false;
+            }
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address');
+                e.preventDefault();
+                return false;
+            }
+            if (!phoneNumber) {
+                alert('Please enter your phone number');
+                e.preventDefault();
+                return false;
+            }
+            if (!numMembers || parseInt(numMembers) < 1) {
+                alert('Please enter number of travelers (minimum 1)');
+                e.preventDefault();
+                return false;
+            }
+            
+            // Validate traveler details
+            const numMembersInt = parseInt(numMembers);
+            for (let i = 1; i <= numMembersInt; i++) {
+                const name = document.getElementById(`traveler_${i}_name`).value.trim();
+                const age = document.getElementById(`traveler_${i}_age`).value.trim();
+                const gender = document.getElementById(`traveler_${i}_gender`).value;
+                
+                if (!name || !age || !gender) {
+                    alert(`Please fill in all details for Traveler ${i}`);
+                    e.preventDefault();
+                    return false;
+                }
+            }
+            
+            // Save traveler details as JSON
+            const travelers = [];
+            for (let i = 1; i <= numMembersInt; i++) {
+                travelers.push({
+                    name: document.getElementById(`traveler_${i}_name`).value.trim(),
+                    age: document.getElementById(`traveler_${i}_age`).value.trim(),
+                    gender: document.getElementById(`traveler_${i}_gender`).value
+                });
+            }
+            document.getElementById('travelerDetailsJson').value = JSON.stringify(travelers);
+        });
+    </script>
+
+</body>
+
+</html>
+

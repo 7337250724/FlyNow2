@@ -1,0 +1,2490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Fly Now - Admin Dashboard</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Arizonia&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="css/jquery.timepicker.css">
+    <link rel="stylesheet" href="css/flaticon.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        .table-responsive {
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            cursor: pointer;
+            color: red;
+        }
+
+        .feature-item,
+        .itinerary-day-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .itinerary-day-item h5 {
+            color: #f15d30;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        /* Travel Type Multi-Select Dropdown Styling */
+        #travel-type-select {
+            min-height: 200px;
+            border-radius: 5px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            background-color: #fff;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #travel-type-select:focus {
+            border-color: #f15d30;
+            box-shadow: 0 0 0 0.2rem rgba(241, 93, 48, 0.25);
+            outline: none;
+        }
+
+        #travel-type-select option {
+            padding: 8px 12px;
+            margin: 2px 0;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        #travel-type-select option:hover {
+            background-color: #f8f9fa;
+        }
+
+        #travel-type-select option:checked {
+            background-color: #f15d30;
+            color: white;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Fly Now<span>Admin Panel</span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="oi oi-menu"></span> Menu
+            </button>
+
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active"><a href="#" onclick="showSection('dashboard')"
+                            class="nav-link">Dashboard</a></li>
+                    <li class="nav-item"><a href="#" onclick="showSection('users')"
+                            class="nav-link">Users</a></li>
+                    <li class="nav-item"><a href="#" onclick="showSection('posts')"
+                            class="nav-link">Posts</a></li>
+                    <li class="nav-item"><a href="#" onclick="showSection('countries')"
+                            class="nav-link">Countries</a></li>
+                    <li class="nav-item"><a href="#" onclick="showSection('packages')"
+                            class="nav-link">Packages</a></li>
+                    <li class="nav-item"><a href="#" onclick="showSection('hotels')"
+                            class="nav-link">Hotels</a></li>
+                    <li class="nav-item"><a href="#" onclick="showSection('flights')"
+                            class="nav-link">Flights</a></li>
+                    <li class="nav-item"><a href="#" onclick="showSection('trains')"
+                            class="nav-link">Trains</a></li>
+                    <li class="nav-item"><a href="#" onclick="showSection('buses')"
+                            class="nav-link">Buses</a></li>
+                    <li class="nav-item"><a href="#" onclick="showSection('bookings')"
+                            class="nav-link">Bookings</a></li>
+                    <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- END nav -->
+
+    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('images/bg_1.jpg');">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-center">
+                <div class="col-md-9 ftco-animate pb-5 text-center">
+                    <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i
+                                    class="fa fa-chevron-right"></i></a></span> <span>Admin <i
+                                class="fa fa-chevron-right"></i></span></p>
+                    <h1 class="mb-0 bread">Admin Dashboard</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ftco-section">
+        <div class="container">
+
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="admin-section active">
+                <div class="row d-flex">
+                    <div class="col-md-12 heading-section ftco-animate">
+                        <h2 class="mb-4">Welcome, Admin</h2>
+                        <p>Manage your application settings, users, and content here.</p>
+
+                        <div class="row mt-5">
+                            <div class="col-md-4">
+                                <div class="services services-1 color-1 d-block img"
+                                    style="background-image: url(images/services-1.jpg);">
+                                    <div class="icon d-flex align-items-center justify-content-center"><span
+                                            class="flaticon-paragliding"></span></div>
+                                    <div class="media-body">
+                                        <h3 class="heading mb-3">Manage Users</h3>
+                                        <p>View and manage registered users.</p>
+                                        <button onclick="showSection('users')"
+                                            class="btn btn-white px-4 py-2 mt-3">View
+                                            Users</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="services services-1 color-2 d-block img"
+                                    style="background-image: url(images/services-2.jpg);">
+                                    <div class="icon d-flex align-items-center justify-content-center"><span
+                                            class="flaticon-route"></span></div>
+                                    <div class="media-body">
+                                        <h3 class="heading mb-3">Manage Posts</h3>
+                                        <p>Review and moderate user posts.</p>
+                                        <button onclick="showSection('posts')"
+                                            class="btn btn-white px-4 py-2 mt-3">View
+                                            Posts</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="services services-1 color-3 d-block img"
+                                    style="background-image: url(images/services-3.jpg);">
+                                    <div class="icon d-flex align-items-center justify-content-center"><span
+                                            class="flaticon-tour-guide"></span></div>
+                                    <div class="media-body">
+                                        <h3 class="heading mb-3">Manage Countries</h3>
+                                        <p>Add or edit travel destinations.</p>
+                                        <button onclick="showSection('countries')"
+                                            class="btn btn-white px-4 py-2 mt-3">View Countries</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="services services-1 color-4 d-block img"
+                                    style="background-image: url(images/services-4.jpg);">
+                                    <div class="icon d-flex align-items-center justify-content-center"><span
+                                            class="flaticon-list"></span></div>
+                                    <div class="media-body">
+                                        <h3 class="heading mb-3">Manage Packages</h3>
+                                        <p>Create and edit travel packages.</p>
+                                        <button onclick="showSection('packages')"
+                                            class="btn btn-white px-4 py-2 mt-3">View Packages</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="services services-1 color-5 d-block img"
+                                    style="background-image: url(images/services-5.jpg);">
+                                    <div class="icon d-flex align-items-center justify-content-center"><span
+                                            class="flaticon-hotel"></span></div>
+                                    <div class="media-body">
+                                        <h3 class="heading mb-3">Manage Hotels</h3>
+                                        <p>Create and edit hotels.</p>
+                                        <button onclick="showSection('hotels')"
+                                            class="btn btn-white px-4 py-2 mt-3">View Hotels</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="services services-1 color-2 d-block img"
+                                    style="background-image: url(images/services-2.jpg);">
+                                    <div class="icon d-flex align-items-center justify-content-center"><span
+                                            class="flaticon-airplane"></span></div>
+                                    <div class="media-body">
+                                        <h3 class="heading mb-3">Manage Flights</h3>
+                                        <p>Add and manage flight schedules.</p>
+                                        <button onclick="showSection('flights')"
+                                            class="btn btn-white px-4 py-2 mt-3">View Flights</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="services services-1 color-3 d-block img"
+                                    style="background-image: url(images/services-3.jpg);">
+                                    <div class="icon d-flex align-items-center justify-content-center"><span
+                                            class="flaticon-train"></span></div>
+                                    <div class="media-body">
+                                        <h3 class="heading mb-3">Manage Trains</h3>
+                                        <p>Add and manage train schedules.</p>
+                                        <button onclick="showSection('trains')"
+                                            class="btn btn-white px-4 py-2 mt-3">View Trains</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="services services-1 color-4 d-block img"
+                                    style="background-image: url(images/services-4.jpg);">
+                                    <div class="icon d-flex align-items-center justify-content-center"><span
+                                            class="flaticon-bus"></span></div>
+                                    <div class="media-body">
+                                        <h3 class="heading mb-3">Manage Buses</h3>
+                                        <p>Add and manage bus schedules.</p>
+                                        <button onclick="showSection('buses')"
+                                            class="btn btn-white px-4 py-2 mt-3">View Buses</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="services services-1 color-1 d-block img"
+                                    style="background-image: url(images/services-1.jpg);">
+                                    <div class="icon d-flex align-items-center justify-content-center"><span
+                                            class="flaticon-paragliding"></span></div>
+                                    <div class="media-body">
+                                        <h3 class="heading mb-3">Manage Bookings</h3>
+                                        <p>View and manage customer bookings.</p>
+                                        <button onclick="showSection('bookings')"
+                                            class="btn btn-white px-4 py-2 mt-3">View Bookings</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Section -->
+            <div id="users" class="admin-section">
+                <h2 class="mb-4">Manage Users</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            <!-- Users will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Posts Section -->
+            <div id="posts" class="admin-section">
+                <h2 class="mb-4">Manage Posts</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>User</th>
+                                <th>Caption</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="posts-table-body">
+                            <!-- Posts will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Countries Section -->
+            <div id="countries" class="admin-section">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Manage Countries</h2>
+                    <button onclick="showAddCountryForm()" class="btn btn-primary">Add New Country</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Region</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="countries-table-body">
+                            <!-- Countries will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Add/Edit Country Form -->
+            <div id="add-country" class="admin-section">
+                <h2 class="mb-4" id="country-form-title">Add New Country</h2>
+                <form id="country-form" onsubmit="saveCountry(event)">
+                    <input type="hidden" id="country-edit-id">
+                    <div class="form-group">
+                        <label>Country Name *</label>
+                        <input type="text" class="form-control" id="country-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Region *</label>
+                        <select class="form-control" id="country-region" required>
+                            <option value="">Select Region</option>
+                            <option value="Asia">Asia</option>
+                            <option value="Europe">Europe</option>
+                            <option value="North America">North America</option>
+                            <option value="South America">South America</option>
+                            <option value="Africa">Africa</option>
+                            <option value="Oceania">Oceania</option>
+                            <option value="Middle East">Middle East</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Seasons (Select all applicable seasons)</label>
+                        <select class="form-control" id="country-seasons" multiple style="min-height: 120px;">
+                            <option value="WINTER">Winter</option>
+                            <option value="SUMMER">Summer</option>
+                            <option value="RAINY">Rainy</option>
+                            <option value="SPRING">Spring</option>
+                            <option value="MONSOON">Monsoon</option>
+                        </select>
+                        <small class="form-text text-muted">Hold Ctrl (Windows) or Cmd (Mac) to select multiple seasons. Optional field.</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control" id="country-description" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Hero Image URL</label>
+                        <input type="url" class="form-control" id="country-hero-image">
+                    </div>
+                    <div class="form-group">
+                        <label>Gallery Image URLs (one per line)</label>
+                        <textarea class="form-control" id="country-images" rows="5"></textarea>
+                    </div>
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">Save Country</button>
+                        <button type="button" class="btn btn-secondary" onclick="showSection('countries')">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Packages Section -->
+            <div id="packages" class="admin-section">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Manage Packages</h2>
+                    <button onclick="showAddPackageForm()" class="btn btn-primary">Add New Package</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Location</th>
+                                <th>Type</th>
+                                <th>Days</th>
+                                <th>Price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="packages-table-body">
+                            <!-- Packages will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Hotels Section -->
+            <div id="hotels" class="admin-section">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Manage Hotels</h2>
+                    <button onclick="showAddHotelForm()" class="btn btn-primary">Add New Hotel</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Location</th>
+                                <th>Type</th>
+                                <th>Price/Night</th>
+                                <th>Rating</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hotels-table-body">
+                            <tr><td colspan="7" class="text-center">Loading hotels...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Add/Edit Hotel Form -->
+            <div id="add-hotel" class="admin-section">
+                <h2 class="mb-4" id="hotel-form-title">Add New Hotel</h2>
+                <form id="hotel-form" onsubmit="saveHotel(event)">
+                    <input type="hidden" id="hotel-edit-id">
+                    <div class="form-group">
+                        <label>Hotel Name *</label>
+                        <input type="text" class="form-control" id="hotel-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Location *</label>
+                        <input type="text" class="form-control" id="hotel-location" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Hotel Type *</label>
+                        <select class="form-control" id="hotel-type" required onchange="toggleHotelTypeFields()">
+                            <option value="DOMESTIC">National (Domestic)</option>
+                            <option value="INTERNATIONAL">International</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="hotel-country-group" style="display: none;">
+                        <label>Country</label>
+                        <input type="text" class="form-control" id="hotel-country">
+                    </div>
+                    <div class="form-group">
+                        <label>City</label>
+                        <input type="text" class="form-control" id="hotel-city">
+                    </div>
+                    <div class="form-group">
+                        <label>Price Per Night *</label>
+                        <input type="number" class="form-control" id="hotel-price" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Currency *</label>
+                        <select class="form-control" id="hotel-currency" required>
+                            <option value="₹">₹ (INR)</option>
+                            <option value="$">$ (USD)</option>
+                            <option value="€">€ (EUR)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Rating (1-5)</label>
+                        <input type="number" class="form-control" id="hotel-rating" min="1" max="5" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control" id="hotel-description" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Amenities (comma-separated)</label>
+                        <input type="text" class="form-control" id="hotel-amenities" placeholder="WiFi, Pool, Gym, Spa">
+                    </div>
+                    <div class="form-group">
+                        <label>Check-in Time</label>
+                        <input type="text" class="form-control" id="hotel-checkin" placeholder="14:00">
+                    </div>
+                    <div class="form-group">
+                        <label>Check-out Time</label>
+                        <input type="text" class="form-control" id="hotel-checkout" placeholder="11:00">
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Phone</label>
+                        <input type="tel" class="form-control" id="hotel-phone">
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Email</label>
+                        <input type="email" class="form-control" id="hotel-email">
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <textarea class="form-control" id="hotel-address" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Hero Image URL</label>
+                        <input type="url" class="form-control" id="hotel-hero-image">
+                    </div>
+                    <div class="form-group">
+                        <label>Gallery Image URLs (one per line)</label>
+                        <textarea class="form-control" id="hotel-gallery-images" rows="5"></textarea>
+                    </div>
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">Save Hotel</button>
+                        <button type="button" class="btn btn-secondary" onclick="showSection('hotels', event)">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Add/Edit Package Form -->
+            <div id="add-package" class="admin-section">
+                <h2 class="mb-4" id="package-form-title">Add New Package</h2>
+                <form id="package-form" onsubmit="savePackage(event)">
+                    <input type="hidden" id="package-edit-id">
+                    <div class="form-group">
+                        <label>Package Name *</label>
+                        <input type="text" class="form-control" id="package-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Location *</label>
+                        <input type="text" class="form-control" id="package-location" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Package Type *</label>
+                        <select class="form-control" id="package-type" required onchange="toggleVisaField()">
+                            <option value="">Select Type</option>
+                            <option value="DOMESTIC">Domestic</option>
+                            <option value="INTERNATIONAL">International</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Duration (Days) *</label>
+                        <input type="number" class="form-control" id="package-duration" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Price *</label>
+                        <div class="input-group">
+                            <select class="form-control" id="package-currency" style="max-width: 100px;">
+                                <option value="₹">₹</option>
+                                <option value="$">$</option>
+                            </select>
+                            <input type="number" class="form-control" id="package-price" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Short Description</label>
+                        <textarea class="form-control" id="package-short-desc" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>About Description</label>
+                        <textarea class="form-control" id="package-about-desc" rows="4"></textarea>
+                    </div>
+                    <div class="form-group" id="visa-requirement-group" style="display: none;">
+                        <label>Visa Requirement *</label>
+                        <select class="form-control" id="package-visa">
+                            <option value="">Select Visa Type</option>
+                            <option value="VISA_REQUIRED">Visa Required</option>
+                            <option value="VISA_FREE">Visa Free</option>
+                            <option value="VISA_ON_ARRIVAL">Visa on Arrival</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Travel Type Filters *</label>
+                        <select class="form-control" id="travel-type-select" multiple required size="7" 
+                                style="height: auto; min-height: 200px; border-radius: 5px; padding: 10px; border: 2px solid #ddd; background-color: #fff;">
+                            <option value="SOLO">Solo</option>
+                            <option value="FEMALE">Female</option>
+                            <option value="FAMILY">Family</option>
+                            <option value="COUPLE">Couple</option>
+                            <option value="CORPORATE">Corporate</option>
+                            <option value="BUDGET">Budget</option>
+                            <option value="LUXURY">Luxury</option>
+                        </select>
+                        <small class="form-text text-muted">
+                            <strong>Hold Ctrl (Windows) or Cmd (Mac)</strong> to select multiple travel types. 
+                            This package will appear in <strong>All categories</strong> and also when users filter by any of the selected types.
+                        </small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Seasons * (Select all applicable seasons)</label>
+                        <select class="form-control" id="package-seasons" multiple required size="5" 
+                                style="height: auto; min-height: 150px; border-radius: 5px; padding: 10px; border: 2px solid #ddd; background-color: #fff;">
+                            <option value="WINTER">Winter</option>
+                            <option value="SUMMER">Summer</option>
+                            <option value="RAINY">Rainy</option>
+                            <option value="SPRING">Spring</option>
+                            <option value="MONSOON">Monsoon</option>
+                        </select>
+                        <small class="form-text text-muted">
+                            <strong>Hold Ctrl (Windows) or Cmd (Mac)</strong> to select multiple seasons. 
+                            This package will appear when users filter by any of the selected seasons.
+                        </small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Hero Image URL</label>
+                        <input type="url" class="form-control" id="package-hero-image">
+                    </div>
+                    <div class="form-group">
+                        <label>Gallery Image URLs (one per line)</label>
+                        <textarea class="form-control" id="package-gallery-images" rows="5"></textarea>
+                    </div>
+
+                    <h4 class="mt-4 mb-3">Features/Tags</h4>
+                    <div id="package-features-container">
+                        <div class="feature-item mb-2">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" placeholder="Icon (e.g., plane, hotel)"
+                                        name="feature-icon">
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" placeholder="Text (e.g., Flights, Hotels)"
+                                        name="feature-text">
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-danger btn-sm"
+                                        onclick="removeFeature(this)">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary mb-3" onclick="addFeatureField()">Add Feature</button>
+
+                    <h4 class="mt-4 mb-3">Day-wise Itinerary</h4>
+                    <div id="package-itinerary-container">
+                        <!-- Itinerary days will be added here dynamically -->
+                    </div>
+                    <button type="button" class="btn btn-secondary mb-3" onclick="addItineraryDay()">Add Day</button>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">Save Package</button>
+                        <button type="button" class="btn btn-secondary" onclick="showSection('packages')">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Flights Section -->
+            <div id="flights" class="admin-section">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Manage Flights</h2>
+                    <button onclick="showAddFlightForm()" class="btn btn-primary">Add New Flight</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Flight Number</th>
+                                <th>Airline</th>
+                                <th>Route</th>
+                                <th>Departure</th>
+                                <th>Arrival</th>
+                                <th>Economy Price</th>
+                                <th>Business Price</th>
+                                <th>First Class Price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="flights-table-body">
+                            <tr><td colspan="10" class="text-center">Loading flights...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Add/Edit Flight Form -->
+            <div id="add-flight" class="admin-section">
+                <h2 class="mb-4" id="flight-form-title">Add New Flight</h2>
+                <form id="flight-form" onsubmit="saveFlight(event)">
+                    <input type="hidden" id="flight-edit-id">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Flight Number *</label>
+                            <input type="text" class="form-control" id="flight-number" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Airline *</label>
+                            <input type="text" class="form-control" id="flight-airline" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Origin *</label>
+                            <input type="text" class="form-control" id="flight-origin" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Destination *</label>
+                            <input type="text" class="form-control" id="flight-destination" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Departure Time *</label>
+                            <input type="text" class="form-control" id="flight-departure-time" placeholder="10:30 AM" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Arrival Time *</label>
+                            <input type="text" class="form-control" id="flight-arrival-time" placeholder="2:45 PM" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label>Economy Price *</label>
+                            <input type="number" class="form-control" id="flight-price" step="0.01" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Business Price</label>
+                            <input type="number" class="form-control" id="flight-business-price" step="0.01">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>First Class Price</label>
+                            <input type="number" class="form-control" id="flight-first-class-price" step="0.01">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label>Economy Seats</label>
+                            <input type="number" class="form-control" id="flight-economy-seats">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Business Seats</label>
+                            <input type="number" class="form-control" id="flight-business-seats">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>First Class Seats</label>
+                            <input type="number" class="form-control" id="flight-first-class-seats">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label>Available Economy Seats (comma-separated)</label>
+                            <input type="text" class="form-control" id="flight-available-seats" placeholder="A1,A2,A3,B1,B2">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Available Business Seats</label>
+                            <input type="text" class="form-control" id="flight-business-available-seats" placeholder="C1,C2,C3">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Available First Class Seats</label>
+                            <input type="text" class="form-control" id="flight-first-class-available-seats" placeholder="D1,D2">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Class Type</label>
+                            <select class="form-control" id="flight-class-type">
+                                <option value="Economy">Economy</option>
+                                <option value="Business">Business</option>
+                                <option value="First">First Class</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Currency *</label>
+                            <select class="form-control" id="flight-currency" required>
+                                <option value="₹">₹ (INR)</option>
+                                <option value="$">$ (USD)</option>
+                                <option value="€">€ (EUR)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Total Seats</label>
+                        <input type="number" class="form-control" id="flight-total-seats">
+                    </div>
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">Save Flight</button>
+                        <button type="button" class="btn btn-secondary" onclick="showSection('flights')">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Trains Section -->
+            <div id="trains" class="admin-section">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Manage Trains</h2>
+                    <button onclick="showAddTrainForm()" class="btn btn-primary">Add New Train</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Train Number</th>
+                                <th>Train Name</th>
+                                <th>Route</th>
+                                <th>Departure</th>
+                                <th>Arrival</th>
+                                <th>Sleeper Price</th>
+                                <th>AC Price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="trains-table-body">
+                            <tr><td colspan="9" class="text-center">Loading trains...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Add/Edit Train Form -->
+            <div id="add-train" class="admin-section">
+                <h2 class="mb-4" id="train-form-title">Add New Train</h2>
+                <form id="train-form" onsubmit="saveTrain(event)">
+                    <input type="hidden" id="train-edit-id">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Train Name *</label>
+                            <input type="text" class="form-control" id="train-name" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Train Number *</label>
+                            <input type="text" class="form-control" id="train-number" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Source *</label>
+                            <input type="text" class="form-control" id="train-source" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Destination *</label>
+                            <input type="text" class="form-control" id="train-destination" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Departure Time *</label>
+                            <input type="text" class="form-control" id="train-departure-time" placeholder="10:30 AM" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Arrival Time *</label>
+                            <input type="text" class="form-control" id="train-arrival-time" placeholder="2:45 PM" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label>Sleeper Seats</label>
+                            <input type="number" class="form-control" id="train-sleeper-seats">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>AC Seats</label>
+                            <input type="number" class="form-control" id="train-ac-seats">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Currency *</label>
+                            <select class="form-control" id="train-currency" required>
+                                <option value="₹">₹ (INR)</option>
+                                <option value="$">$ (USD)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Sleeper Price *</label>
+                            <input type="number" class="form-control" id="train-sleeper-price" step="0.01" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>AC Price *</label>
+                            <input type="number" class="form-control" id="train-ac-price" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">Save Train</button>
+                        <button type="button" class="btn btn-secondary" onclick="showSection('trains')">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Buses Section -->
+            <div id="buses" class="admin-section">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Manage Buses</h2>
+                    <button onclick="showAddBusForm()" class="btn btn-primary">Add New Bus</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Bus Name</th>
+                                <th>Bus Type</th>
+                                <th>Route</th>
+                                <th>Departure</th>
+                                <th>Arrival</th>
+                                <th>Total Seats</th>
+                                <th>Available Seats</th>
+                                <th>Ticket Price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="buses-table-body">
+                            <tr><td colspan="10" class="text-center">Loading buses...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Add/Edit Bus Form -->
+            <div id="add-bus" class="admin-section">
+                <h2 class="mb-4" id="bus-form-title">Add New Bus</h2>
+                <form id="bus-form" onsubmit="saveBus(event)">
+                    <input type="hidden" id="bus-edit-id">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Bus Name *</label>
+                            <input type="text" class="form-control" id="bus-name" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Bus Type *</label>
+                            <select class="form-control" id="bus-type" required>
+                                <option value="">Select Type</option>
+                                <option value="AC">AC</option>
+                                <option value="NON_AC">Non-AC</option>
+                                <option value="SLEEPER">Sleeper</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Source *</label>
+                            <input type="text" class="form-control" id="bus-source" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Destination *</label>
+                            <input type="text" class="form-control" id="bus-destination" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Departure Time *</label>
+                            <input type="text" class="form-control" id="bus-departure-time" placeholder="10:30 AM" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Arrival Time *</label>
+                            <input type="text" class="form-control" id="bus-arrival-time" placeholder="2:45 PM" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label>Total Seats *</label>
+                            <input type="number" class="form-control" id="bus-total-seats" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Available Seats</label>
+                            <input type="number" class="form-control" id="bus-available-seats">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Currency *</label>
+                            <select class="form-control" id="bus-currency" required>
+                                <option value="₹">₹ (INR)</option>
+                                <option value="$">$ (USD)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Ticket Price *</label>
+                        <input type="number" class="form-control" id="bus-ticket-price" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Seat Layout (JSON or comma-separated)</label>
+                        <textarea class="form-control" id="bus-seat-layout" rows="3" placeholder='{"rows": 10, "seatsPerRow": 4} or A1,A2,A3,B1,B2'></textarea>
+                    </div>
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">Save Bus</button>
+                        <button type="button" class="btn btn-secondary" onclick="showSection('buses')">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Bookings Section -->
+            <div id="bookings" class="admin-section">
+                <h2 class="mb-4">Manage Bookings</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Package</th>
+                                <th>Package Type</th>
+                                <th>Customer</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Members</th>
+                                <th>Flight</th>
+                                <th>Seat</th>
+                                <th>Hotel</th>
+                                <th>Total Price</th>
+                                <th>Status</th>
+                                <th>Booking Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookings-table-body">
+                            <!-- Bookings will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.easing.1.3.js"></script>
+    <script src="js/jquery.waypoints.min.js"></script>
+    <script src="js/jquery.stellar.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/jquery.animateNumber.min.js"></script>
+    <script src="js/bootstrap-datepicker.js"></script>
+    <script src="js/jquery.timepicker.min.js"></script>
+    <script src="js/scrollax.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2Y&sensor=false"></script>
+    <script src="js/google-map.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        // Check authentication on page load
+        function checkAuth() {
+            return fetch('/api/check-admin', {
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (!response.ok || response.status === 401) {
+                        // Not authenticated, redirect to login
+                        window.location.href = '/login';
+                        return false;
+                    }
+                    return true;
+                })
+                .catch(err => {
+                    console.error('Auth check failed:', err);
+                    window.location.href = '/login';
+                    return false;
+                });
+        }
+
+        // Handle 401 errors in fetch calls
+        function handleAuthError(response) {
+            if (response.status === 401) {
+                alert('Your session has expired. Please log in again.');
+                window.location.href = '/login';
+                return true;
+            }
+            return false;
+        }
+
+        // Section Management
+        function showSection(sectionId) {
+            document.querySelectorAll('.admin-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            event?.target?.classList.add('active');
+
+            // Load data when section is shown
+            if (sectionId === 'packages') {
+                loadPackages();
+            } else if (sectionId === 'users') {
+                loadUsers();
+            } else if (sectionId === 'posts') {
+                loadPosts();
+            } else if (sectionId === 'bookings') {
+                loadBookings();
+            } else if (sectionId === 'countries') {
+                loadCountries();
+            } else if (sectionId === 'hotels') {
+                loadHotels();
+            } else if (sectionId === 'flights') {
+                loadFlights();
+            } else if (sectionId === 'trains') {
+                loadTrains();
+            } else if (sectionId === 'buses') {
+                loadBuses();
+            }
+        }
+
+        // Load Users
+        function loadUsers() {
+            fetch('/api/admin/users', {
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (handleAuthError(response)) {
+                        return;
+                    }
+                    if (!response.ok) {
+                        throw new Error('Failed to load users');
+                    }
+                    return response.json();
+                })
+                .then(users => {
+                    const tbody = document.getElementById('users-table-body');
+                    tbody.innerHTML = '';
+                    users.forEach(user => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${user.id}</td>
+                            <td>${user.username}</td>
+                            <td>${user.email || 'N/A'}</td>
+                            <td>${user.role || 'User'}</td>
+                            <td>-</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(err => console.error('Error loading users:', err));
+        }
+
+        // Load Posts
+        function loadPosts() {
+            fetch('/api/admin/posts', {
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (handleAuthError(response)) {
+                        return;
+                    }
+                    if (!response.ok) {
+                        throw new Error('Failed to load posts');
+                    }
+                    return response.json();
+                })
+                .then(posts => {
+                    const tbody = document.getElementById('posts-table-body');
+                    tbody.innerHTML = '';
+                    posts.forEach(post => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${post.id}</td>
+                            <td>${post.user?.username || 'Unknown'}</td>
+                            <td>${post.caption ? post.caption.substring(0, 50) + '...' : 'N/A'}</td>
+                            <td>${post.createdAt ? new Date(post.createdAt).toLocaleDateString() : 'N/A'}</td>
+                            <td>-</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(err => console.error('Error loading posts:', err));
+        }
+
+        // Load Bookings
+        function loadBookings() {
+            fetch('/api/admin/bookings', {
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (handleAuthError(response)) {
+                        return;
+                    }
+                    if (!response.ok) {
+                        throw new Error('Failed to load bookings');
+                    }
+                    return response.json();
+                })
+                .then(bookings => {
+                    const tbody = document.getElementById('bookings-table-body');
+                    if (!tbody) {
+                        console.error('Bookings table body not found');
+                        return;
+                    }
+                    tbody.innerHTML = '';
+                    if (!bookings || bookings.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="14" class="text-center">No bookings found</td></tr>';
+                    } else {
+                        bookings.forEach(booking => {
+                            const row = document.createElement('tr');
+                            const flightInfo = booking.selectedFlight ? 
+                                `${booking.selectedFlight.airline || ''} ${booking.selectedFlight.flightNumber || ''}` : 
+                                'N/A';
+                            const seatInfo = booking.selectedSeat || 'N/A';
+                            const hotelInfo = booking.selectedHotel ? 
+                                `${booking.selectedHotel.name || ''} ${booking.selectedHotel.starRating ? '(' + booking.selectedHotel.starRating + '★)' : ''}` : 
+                                'N/A';
+                            
+                            row.innerHTML = `
+                                <td>${booking.id || 'N/A'}</td>
+                                <td>${booking.travelPackage ? booking.travelPackage.name : 'N/A'}</td>
+                                <td><span class="badge ${booking.packageTypeSelected === 'STANDARD' ? 'badge-info' : 'badge-warning'}">${booking.packageTypeSelected || 'N/A'}</span></td>
+                                <td>${booking.customerName || 'N/A'}</td>
+                                <td>${booking.email || 'N/A'}</td>
+                                <td>${booking.phoneNumber || 'N/A'}</td>
+                                <td>${booking.numberOfMembers || 'N/A'}</td>
+                                <td>${flightInfo}</td>
+                                <td>${seatInfo}</td>
+                                <td>${hotelInfo}</td>
+                                <td>${booking.priceCurrency || '₹'}${booking.totalPrice ? booking.totalPrice.toFixed(2) : '0.00'}</td>
+                                <td><span class="badge badge-success">${booking.paymentStatus || 'N/A'}</span></td>
+                                <td>${new Date(booking.bookingDate).toLocaleString() || 'N/A'}</td>
+                                <td>
+                                    <a href="/api/bookings/${booking.id}/pdf" class="btn btn-sm btn-info" target="_blank">PDF</a>
+                                </td>
+                            `;
+                            tbody.appendChild(row);
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.error('Error loading bookings:', err);
+                    const tbody = document.getElementById('bookings-table-body');
+                    if (tbody) {
+                        tbody.innerHTML = `<tr><td colspan="14" class="text-center text-danger">Error loading bookings: ${err.message}</td></tr>`;
+                    }
+                });
+        }
+
+        // Package Management Functions
+        function loadPackages() {
+            const tbody = document.getElementById('packages-table-body');
+            if (!tbody) {
+                console.error('Packages table body not found');
+                return;
+            }
+            
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center">Loading packages...</td></tr>';
+            
+            fetch('/api/admin/packages', {
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (handleAuthError(response)) {
+                        return;
+                    }
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            throw new Error(`HTTP ${response.status}: ${text}`);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(packages => {
+                    tbody.innerHTML = '';
+                    
+                    if (!packages || packages.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="7" class="text-center">No packages found. Click "Add New Package" to create one.</td></tr>';
+                        return;
+                    }
+                    
+                    packages.forEach(pkg => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${pkg.id}</td>
+                            <td>${pkg.name || 'N/A'}</td>
+                            <td>${pkg.location || 'N/A'}</td>
+                            <td><span class="badge ${pkg.packageType === 'DOMESTIC' ? 'badge-primary' : 'badge-success'}">${pkg.packageType || 'N/A'}</span></td>
+                            <td>${pkg.durationDays || 'N/A'}</td>
+                            <td>${pkg.priceCurrency || '₹'}${pkg.price || '0'}</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary" onclick="editPackage(${pkg.id})">Edit</button>
+                                <button class="btn btn-sm btn-danger" onclick="deletePackage(${pkg.id})">Delete</button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(err => {
+                    console.error('Error loading packages:', err);
+                    tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Error loading packages: ${err.message}. Please check console for details.</td></tr>`;
+                });
+        }
+
+        function showAddPackageForm() {
+            document.getElementById('package-form-title').textContent = 'Add New Package';
+            document.getElementById('package-form').reset();
+            document.getElementById('package-edit-id').value = '';
+            document.getElementById('package-itinerary-container').innerHTML = '';
+            document.getElementById('package-features-container').innerHTML = '<div class="feature-item mb-2"><div class="row"><div class="col-md-5"><input type="text" class="form-control" placeholder="Icon" name="feature-icon"></div><div class="col-md-5"><input type="text" class="form-control" placeholder="Text" name="feature-text"></div><div class="col-md-2"><button type="button" class="btn btn-danger btn-sm" onclick="removeFeature(this)">Remove</button></div></div></div>';
+            resetTravelTypeSelect();
+            toggleVisaField();
+            showSection('add-package');
+        }
+
+        function toggleVisaField() {
+            const packageType = document.getElementById('package-type').value;
+            const visaGroup = document.getElementById('visa-requirement-group');
+            const visaSelect = document.getElementById('package-visa');
+            if (packageType === 'INTERNATIONAL') {
+                visaGroup.style.display = 'block';
+                visaSelect.required = true;
+            } else {
+                visaGroup.style.display = 'none';
+                visaSelect.required = false;
+                visaSelect.value = '';
+            }
+        }
+
+        function addFeatureField() {
+            const container = document.getElementById('package-features-container');
+            const div = document.createElement('div');
+            div.className = 'feature-item mb-2';
+            div.innerHTML = `
+                <div class="row">
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" placeholder="Icon (e.g., plane, hotel)" name="feature-icon">
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" placeholder="Text (e.g., Flights, Hotels)" name="feature-text">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removeFeature(this)">Remove</button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+        }
+
+        function removeFeature(btn) {
+            btn.closest('.feature-item').remove();
+        }
+
+        function addItineraryDay() {
+            const container = document.getElementById('package-itinerary-container');
+            const dayNumber = container.children.length + 1;
+            const div = document.createElement('div');
+            div.className = 'itinerary-day-item mb-3 p-3 border rounded';
+            div.innerHTML = `
+                <h5>Day ${dayNumber}</h5>
+                <div class="form-group">
+                    <label>Title *</label>
+                    <input type="text" class="form-control" name="itinerary-title" required>
+                </div>
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea class="form-control" name="itinerary-description" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Image URL</label>
+                    <input type="url" class="form-control" name="itinerary-image">
+                </div>
+                <button type="button" class="btn btn-danger" onclick="removeItineraryDay(this)">Remove Day</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function removeItineraryDay(btn) {
+            btn.closest('.itinerary-day-item').remove();
+            const container = document.getElementById('package-itinerary-container');
+            Array.from(container.children).forEach((item, index) => {
+                item.querySelector('h5').textContent = `Day ${index + 1}`;
+            });
+        }
+
+        function savePackage(event) {
+            event.preventDefault();
+
+            const editId = document.getElementById('package-edit-id').value;
+            const isEdit = editId !== '';
+
+            const features = [];
+            document.querySelectorAll('#package-features-container .feature-item').forEach(item => {
+                const icon = item.querySelector('[name="feature-icon"]').value;
+                const text = item.querySelector('[name="feature-text"]').value;
+                if (icon && text) {
+                    features.push({ icon, text });
+                }
+            });
+
+            const itineraryDays = [];
+            document.querySelectorAll('#package-itinerary-container .itinerary-day-item').forEach((item, index) => {
+                const title = item.querySelector('[name="itinerary-title"]').value;
+                const description = item.querySelector('[name="itinerary-description"]').value;
+                const imageUrl = item.querySelector('[name="itinerary-image"]').value;
+                if (title && description) {
+                    itineraryDays.push({
+                        dayNumber: index + 1,
+                        title,
+                        description,
+                        imageUrl: imageUrl || null
+                    });
+                }
+            });
+
+            const galleryImages = document.getElementById('package-gallery-images').value
+                .split('\n')
+                .map(url => url.trim())
+                .filter(url => url.length > 0);
+
+            // Get selected travel types from multi-select dropdown
+            const travelTypeSelect = document.getElementById('travel-type-select');
+            const selectedTravelTypes = Array.from(travelTypeSelect.selectedOptions).map(option => option.value);
+            const travelTypes = selectedTravelTypes.length > 0 ? selectedTravelTypes.join(',') : null;
+
+            // Get selected seasons from multi-select dropdown
+            const seasonsSelect = document.getElementById('package-seasons');
+            const selectedSeasons = Array.from(seasonsSelect.selectedOptions).map(option => option.value);
+            const seasons = selectedSeasons.length > 0 ? selectedSeasons.join(',') : null;
+
+            // Set boolean flags based on selected travel types
+            // These are used for filtering FAMILY, COUPLE, CORPORATE
+            const isFamilyFriendly = selectedTravelTypes.includes('FAMILY');
+            const isCoupleFriendly = selectedTravelTypes.includes('COUPLE');
+            const isCorporate = selectedTravelTypes.includes('CORPORATE');
+            const isAdventure = false; // Not in the current filter list, but keeping for future
+            const isSpiritual = false; // Not in the current filter list, but keeping for future
+
+            const data = {
+                name: document.getElementById('package-name').value,
+                location: document.getElementById('package-location').value,
+                packageType: document.getElementById('package-type').value,
+                durationDays: parseInt(document.getElementById('package-duration').value),
+                price: parseFloat(document.getElementById('package-price').value),
+                priceCurrency: document.getElementById('package-currency').value,
+                shortDescription: document.getElementById('package-short-desc').value,
+                aboutDescription: document.getElementById('package-about-desc').value,
+                heroImageUrl: document.getElementById('package-hero-image').value,
+                visaRequirement: document.getElementById('package-visa').value || null,
+                travelTypes: travelTypes || null,
+                seasons: seasons || null,
+                isFamilyFriendly: isFamilyFriendly,
+                isCoupleFriendly: isCoupleFriendly,
+                isCorporate: isCorporate,
+                isAdventure: isAdventure,
+                isSpiritual: isSpiritual,
+                features,
+                itineraryDays,
+                galleryImageUrls: galleryImages
+            };
+
+            const url = isEdit ? `/api/admin/packages/${editId}` : '/api/admin/packages';
+            const method = isEdit ? 'PUT' : 'POST';
+
+            fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert(isEdit ? 'Package updated successfully!' : 'Package created successfully!');
+                        showSection('packages');
+                        loadPackages();
+                    } else {
+                        response.text().then(text => alert('Error: ' + text));
+                    }
+                })
+                .catch(err => {
+                    console.error('Error saving package:', err);
+                    alert('Failed to save package');
+                });
+        }
+
+        function resetTravelTypeSelect() {
+            const select = document.getElementById('travel-type-select');
+            Array.from(select.options).forEach(option => {
+                option.selected = false;
+            });
+        }
+
+        function editPackage(id) {
+            console.log('Loading package for editing, ID:', id);
+            fetch(`/api/admin/packages/${id}`, {
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (handleAuthError(response)) {
+                        return;
+                    }
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            throw new Error(`HTTP ${response.status}: ${text}`);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(pkg => {
+                    if (!pkg) return; // Exit if auth error occurred
+                    console.log('Loaded package for editing:', pkg);
+                    console.log('Features:', pkg.features);
+                    console.log('Itinerary Days:', pkg.itineraryDays);
+                    console.log('Gallery Images:', pkg.galleryImages);
+                    
+                    document.getElementById('package-form-title').textContent = 'Edit Package';
+                    document.getElementById('package-edit-id').value = pkg.id || '';
+                    document.getElementById('package-name').value = pkg.name || '';
+                    document.getElementById('package-location').value = pkg.location || '';
+                    document.getElementById('package-type').value = pkg.packageType || '';
+                    document.getElementById('package-duration').value = pkg.durationDays || '';
+                    document.getElementById('package-price').value = pkg.price || '';
+                    document.getElementById('package-currency').value = pkg.priceCurrency || '₹';
+                    document.getElementById('package-short-desc').value = pkg.shortDescription || '';
+                    document.getElementById('package-about-desc').value = pkg.aboutDescription || '';
+                    document.getElementById('package-hero-image').value = pkg.heroImageUrl || '';
+                    document.getElementById('package-visa').value = pkg.visaRequirement || '';
+
+                    // Load travel type multi-select dropdown
+                    const travelTypeSelect = document.getElementById('travel-type-select');
+                    // Clear all selections first
+                    Array.from(travelTypeSelect.options).forEach(option => {
+                        option.selected = false;
+                    });
+                    
+                    // Build array of selected travel types from boolean flags and travelTypes string
+                    const selectedTypes = [];
+                    if (Boolean(pkg.isFamilyFriendly)) {
+                        selectedTypes.push('FAMILY');
+                    }
+                    if (Boolean(pkg.isCoupleFriendly)) {
+                        selectedTypes.push('COUPLE');
+                    }
+                    if (Boolean(pkg.isCorporate)) {
+                        selectedTypes.push('CORPORATE');
+                    }
+                    if (pkg.travelTypes) {
+                        const travelTypes = pkg.travelTypes.toUpperCase();
+                        if (travelTypes.includes('SOLO') && !selectedTypes.includes('SOLO')) {
+                            selectedTypes.push('SOLO');
+                        }
+                        if ((travelTypes.includes('FEMALE') || travelTypes.includes('FEMALES')) && !selectedTypes.includes('FEMALE')) {
+                            selectedTypes.push('FEMALE');
+                        }
+                        if (travelTypes.includes('BUDGET') && !selectedTypes.includes('BUDGET')) {
+                            selectedTypes.push('BUDGET');
+                        }
+                        if (travelTypes.includes('LUXURY') && !selectedTypes.includes('LUXURY')) {
+                            selectedTypes.push('LUXURY');
+                        }
+                    }
+                    
+                    // Set selected options
+                    Array.from(travelTypeSelect.options).forEach(option => {
+                        if (selectedTypes.includes(option.value)) {
+                            option.selected = true;
+                        }
+                    });
+
+                    // Load seasons
+                    const seasonsSelect = document.getElementById('package-seasons');
+                    Array.from(seasonsSelect.options).forEach(option => {
+                        option.selected = false;
+                    });
+                    if (pkg.seasons) {
+                        const seasonsArray = pkg.seasons.split(',').map(s => s.trim().toUpperCase());
+                        Array.from(seasonsSelect.options).forEach(option => {
+                            if (seasonsArray.includes(option.value.toUpperCase())) {
+                                option.selected = true;
+                            }
+                        });
+                    }
+
+                    // Load gallery images
+                    const galleryUrls = (pkg.galleryImages && pkg.galleryImages.length > 0) 
+                        ? pkg.galleryImages.map(img => img.imageUrl || '').filter(url => url).join('\n')
+                        : '';
+                    document.getElementById('package-gallery-images').value = galleryUrls;
+
+                    // Load features
+                    const featuresContainer = document.getElementById('package-features-container');
+                    featuresContainer.innerHTML = '';
+                    if (pkg.features && pkg.features.length > 0) {
+                        pkg.features.forEach(feature => {
+                            const div = document.createElement('div');
+                            div.className = 'feature-item mb-2';
+                            const iconValue = (feature.icon || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                            const textValue = (feature.text || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                            div.innerHTML = `
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control" name="feature-icon" value="${iconValue}">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control" name="feature-text" value="${textValue}">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="removeFeature(this)">Remove</button>
+                                    </div>
+                                </div>
+                            `;
+                            featuresContainer.appendChild(div);
+                        });
+                    } else {
+                        addFeatureField();
+                    }
+
+                    // Load itinerary days
+                    const itineraryContainer = document.getElementById('package-itinerary-container');
+                    itineraryContainer.innerHTML = '';
+                    if (pkg.itineraryDays && pkg.itineraryDays.length > 0) {
+                        pkg.itineraryDays.sort((a, b) => (a.dayNumber || 0) - (b.dayNumber || 0)).forEach(day => {
+                            const div = document.createElement('div');
+                            div.className = 'itinerary-day-item mb-3 p-3 border rounded';
+                            const titleValue = (day.title || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                            const descValue = (day.description || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/\n/g, '&#10;');
+                            const imageValue = (day.imageUrl || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                            div.innerHTML = `
+                                <h5>Day ${day.dayNumber || ''}</h5>
+                                <div class="form-group">
+                                    <label>Title *</label>
+                                    <input type="text" class="form-control" name="itinerary-title" value="${titleValue}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Description *</label>
+                                    <textarea class="form-control" name="itinerary-description" rows="3" required>${descValue}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Image URL</label>
+                                    <input type="url" class="form-control" name="itinerary-image" value="${imageValue}">
+                                </div>
+                                <button type="button" class="btn btn-danger" onclick="removeItineraryDay(this)">Remove Day</button>
+                            `;
+                            itineraryContainer.appendChild(div);
+                        });
+                    }
+
+                    toggleVisaField();
+                    showSection('add-package');
+                })
+                .catch(err => {
+                    console.error('Error loading package:', err);
+                    alert('Failed to load package: ' + err.message);
+                });
+        }
+
+        function deletePackage(id) {
+            if (confirm('Are you sure you want to delete this package?\n\nWarning: This will also delete all associated reviews, destination guidance, and bookings for this package.')) {
+                fetch(`/api/admin/packages/${id}`, { 
+                    method: 'DELETE',
+                    credentials: 'include'
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            loadPackages();
+                            alert('Package deleted successfully');
+                        } else {
+                            return response.text().then(text => {
+                                alert('Failed to delete package: ' + text);
+                            });
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error deleting package:', err);
+                        alert('Failed to delete package: ' + err.message);
+                    });
+            }
+        }
+
+        // Country Management Functions
+        function loadCountries() {
+            const tbody = document.getElementById('countries-table-body');
+            if (!tbody) {
+                console.error('Countries table body not found');
+                return;
+            }
+            
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center">Loading countries...</td></tr>';
+            
+            fetch('/api/admin/countries', {
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (handleAuthError(response)) {
+                        return;
+                    }
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            throw new Error(`HTTP ${response.status}: ${text}`);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(countries => {
+                    tbody.innerHTML = '';
+                    
+                    if (!countries || countries.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="4" class="text-center">No countries found. Click "Add New Country" to create one.</td></tr>';
+                        return;
+                    }
+                    
+                    countries.forEach(country => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${country.id}</td>
+                            <td>${country.name || 'N/A'}</td>
+                            <td>${country.region || 'N/A'}</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary" onclick="editCountry(${country.id})">Edit</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteCountry(${country.id})">Delete</button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(err => {
+                    console.error('Error loading countries:', err);
+                    tbody.innerHTML = `<tr><td colspan="4" class="text-center text-danger">Error loading countries: ${err.message}. Please check console for details.</td></tr>`;
+                });
+        }
+
+        function showAddCountryForm() {
+            document.getElementById('country-form-title').textContent = 'Add New Country';
+            document.getElementById('country-form').reset();
+            document.getElementById('country-edit-id').value = '';
+            showSection('add-country');
+        }
+
+        function saveCountry(event) {
+            event.preventDefault();
+
+            const editId = document.getElementById('country-edit-id').value;
+            const isEdit = editId !== '';
+
+            const imageUrls = document.getElementById('country-images').value
+                .split('\n')
+                .map(url => url.trim())
+                .filter(url => url.length > 0);
+
+            // Get selected seasons
+            const seasonsSelect = document.getElementById('country-seasons');
+            const selectedSeasons = Array.from(seasonsSelect.selectedOptions).map(option => option.value);
+
+            const data = {
+                name: document.getElementById('country-name').value,
+                region: document.getElementById('country-region').value,
+                description: document.getElementById('country-description').value,
+                heroImage: document.getElementById('country-hero-image').value,
+                seasons: selectedSeasons,
+                imageUrls: imageUrls
+            };
+
+            const url = isEdit ? `/api/admin/countries/${editId}` : '/api/admin/countries';
+            const method = isEdit ? 'PUT' : 'POST';
+
+            fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert(isEdit ? 'Country updated successfully!' : 'Country created successfully!');
+                        showSection('countries');
+                        loadCountries();
+                    } else {
+                        response.text().then(text => alert('Error: ' + text));
+                    }
+                })
+                .catch(err => {
+                    console.error('Error saving country:', err);
+                    alert('Failed to save country');
+                });
+        }
+
+        function editCountry(id) {
+            fetch(`/api/admin/countries/${id}`, {
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (handleAuthError(response)) {
+                        return;
+                    }
+                    if (!response.ok) {
+                        throw new Error('Failed to load country');
+                    }
+                    return response.json();
+                })
+                .then(country => {
+                    if (!country) return; // Exit if auth error occurred
+                    document.getElementById('country-form-title').textContent = 'Edit Country';
+                    document.getElementById('country-edit-id').value = country.id;
+                    document.getElementById('country-name').value = country.name || '';
+                    document.getElementById('country-region').value = country.region || '';
+                    document.getElementById('country-description').value = country.description || '';
+                    document.getElementById('country-hero-image').value = country.heroImage || '';
+
+                    // Load seasons
+                    const seasonsSelect = document.getElementById('country-seasons');
+                    Array.from(seasonsSelect.options).forEach(option => {
+                        option.selected = false;
+                    });
+                    if (country.seasons) {
+                        const seasonsArray = country.seasons.split(',').map(s => s.trim().toUpperCase());
+                        Array.from(seasonsSelect.options).forEach(option => {
+                            if (seasonsArray.includes(option.value.toUpperCase())) {
+                                option.selected = true;
+                            }
+                        });
+                    }
+
+                    const imageUrls = (country.images || []).map(img => img.imageUrl).join('\n');
+                    document.getElementById('country-images').value = imageUrls;
+
+                    showSection('add-country');
+                })
+                .catch(err => {
+                    console.error('Error loading country:', err);
+                    alert('Failed to load country');
+                });
+        }
+
+        function deleteCountry(id) {
+            if (confirm('Are you sure you want to delete this country?')) {
+                fetch(`/api/admin/countries/${id}`, { 
+                    method: 'DELETE',
+                    credentials: 'include'
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            loadCountries();
+                        } else {
+                            alert('Failed to delete country');
+                        }
+                    })
+                    .catch(err => console.error('Error deleting country:', err));
+            }
+        }
+
+        // Hotel Management Functions
+        function loadHotels() {
+            const tbody = document.getElementById('hotels-table-body');
+            if (!tbody) {
+                console.error('Hotels table body not found');
+                return;
+            }
+
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center">Loading hotels...</td></tr>';
+
+            fetch('/api/admin/hotels', {
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (handleAuthError(response)) {
+                        return;
+                    }
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            throw new Error(`HTTP ${response.status}: ${text}`);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(hotels => {
+                    tbody.innerHTML = '';
+                    if (!hotels || hotels.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="7" class="text-center">No hotels found. Click "Add New Hotel" to create one.</td></tr>';
+                        return;
+                    }
+
+                    hotels.forEach(hotel => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${hotel.id}</td>
+                            <td>${hotel.name || 'N/A'}</td>
+                            <td>${hotel.location || 'N/A'}</td>
+                            <td><span class="badge ${hotel.hotelType === 'DOMESTIC' ? 'badge-primary' : 'badge-success'}">${hotel.hotelType || 'N/A'}</span></td>
+                            <td>${hotel.priceCurrency || '₹'}${hotel.pricePerNight || '0'}</td>
+                            <td>${hotel.rating ? hotel.rating + ' ⭐' : 'N/A'}</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary" onclick="editHotel(${hotel.id})">Edit</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteHotel(${hotel.id})">Delete</button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(err => {
+                    console.error('Error loading hotels:', err);
+                    tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Error loading hotels: ${err.message}. Please check console for details.</td></tr>`;
+                });
+        }
+
+        function showAddHotelForm() {
+            document.getElementById('hotel-form-title').textContent = 'Add New Hotel';
+            document.getElementById('hotel-form').reset();
+            document.getElementById('hotel-edit-id').value = '';
+            toggleHotelTypeFields();
+            showSection('add-hotel');
+        }
+
+        function toggleHotelTypeFields() {
+            const hotelType = document.getElementById('hotel-type').value;
+            const countryGroup = document.getElementById('hotel-country-group');
+            if (hotelType === 'INTERNATIONAL') {
+                countryGroup.style.display = 'block';
+            } else {
+                countryGroup.style.display = 'none';
+            }
+        }
+
+        function saveHotel(event) {
+            event.preventDefault();
+
+            const editId = document.getElementById('hotel-edit-id').value;
+            const isEdit = editId !== '';
+
+            const galleryImages = document.getElementById('hotel-gallery-images').value
+                .split('\n')
+                .map(url => url.trim())
+                .filter(url => url.length > 0);
+
+            const data = {
+                name: document.getElementById('hotel-name').value,
+                location: document.getElementById('hotel-location').value,
+                hotelType: document.getElementById('hotel-type').value,
+                country: document.getElementById('hotel-country').value,
+                city: document.getElementById('hotel-city').value,
+                pricePerNight: parseFloat(document.getElementById('hotel-price').value),
+                priceCurrency: document.getElementById('hotel-currency').value,
+                rating: document.getElementById('hotel-rating').value ? parseFloat(document.getElementById('hotel-rating').value) : null,
+                description: document.getElementById('hotel-description').value,
+                amenities: document.getElementById('hotel-amenities').value,
+                checkInTime: document.getElementById('hotel-checkin').value,
+                checkOutTime: document.getElementById('hotel-checkout').value,
+                contactPhone: document.getElementById('hotel-phone').value,
+                contactEmail: document.getElementById('hotel-email').value,
+                address: document.getElementById('hotel-address').value,
+                heroImageUrl: document.getElementById('hotel-hero-image').value,
+                galleryImageUrls: galleryImages
+            };
+
+            const url = isEdit ? `/api/admin/hotels/${editId}` : '/api/admin/hotels';
+            const method = isEdit ? 'PUT' : 'POST';
+
+            fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (handleAuthError(response)) {
+                        return;
+                    }
+                    if (response.ok) {
+                        alert(isEdit ? 'Hotel updated successfully!' : 'Hotel created successfully!');
+                        showSection('hotels');
+                        loadHotels();
+                    } else {
+                        response.text().then(text => alert('Error: ' + text));
+                    }
+                })
+                .catch(err => {
+                    console.error('Error saving hotel:', err);
+                    alert('Failed to save hotel');
+                });
+        }
+
+        function editHotel(id) {
+            fetch(`/api/admin/hotels/${id}`, {
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (handleAuthError(response)) {
+                        return;
+                    }
+                    if (!response.ok) {
+                        throw new Error('Failed to load hotel');
+                    }
+                    return response.json();
+                })
+                .then(hotel => {
+                    if (!hotel) return;
+                    document.getElementById('hotel-form-title').textContent = 'Edit Hotel';
+                    document.getElementById('hotel-edit-id').value = hotel.id;
+                    document.getElementById('hotel-name').value = hotel.name || '';
+                    document.getElementById('hotel-location').value = hotel.location || '';
+                    document.getElementById('hotel-type').value = hotel.hotelType || '';
+                    document.getElementById('hotel-country').value = hotel.country || '';
+                    document.getElementById('hotel-city').value = hotel.city || '';
+                    document.getElementById('hotel-price').value = hotel.pricePerNight || '';
+                    document.getElementById('hotel-currency').value = hotel.priceCurrency || '₹';
+                    document.getElementById('hotel-rating').value = hotel.rating || '';
+                    document.getElementById('hotel-description').value = hotel.description || '';
+                    document.getElementById('hotel-amenities').value = hotel.amenities || '';
+                    document.getElementById('hotel-checkin').value = hotel.checkInTime || '';
+                    document.getElementById('hotel-checkout').value = hotel.checkOutTime || '';
+                    document.getElementById('hotel-phone').value = hotel.contactPhone || '';
+                    document.getElementById('hotel-email').value = hotel.contactEmail || '';
+                    document.getElementById('hotel-address').value = hotel.address || '';
+                    document.getElementById('hotel-hero-image').value = hotel.heroImageUrl || '';
+
+                    const galleryUrls = (hotel.galleryImages && hotel.galleryImages.length > 0)
+                        ? hotel.galleryImages.map(img => img.imageUrl || '').filter(url => url).join('\n')
+                        : '';
+                    document.getElementById('hotel-gallery-images').value = galleryUrls;
+
+                    toggleHotelTypeFields();
+                    showSection('add-hotel');
+                })
+                .catch(err => {
+                    console.error('Error loading hotel:', err);
+                    alert('Failed to load hotel');
+                });
+        }
+
+        function deleteHotel(id) {
+            if (confirm('Are you sure you want to delete this hotel?')) {
+                fetch(`/api/admin/hotels/${id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                })
+                    .then(response => {
+                        if (handleAuthError(response)) {
+                            return;
+                        }
+                        if (response.ok) {
+                            loadHotels();
+                        } else {
+                            alert('Failed to delete hotel');
+                        }
+                    })
+                    .catch(err => console.error('Error deleting hotel:', err));
+            }
+        }
+
+        // Flight Management Functions
+        function loadFlights() {
+            const tbody = document.getElementById('flights-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '<tr><td colspan="10" class="text-center">Loading flights...</td></tr>';
+            fetch('/api/admin/flights', { credentials: 'include' })
+                .then(response => {
+                    if (handleAuthError(response)) return;
+                    if (!response.ok) throw new Error('Failed to load flights');
+                    return response.json();
+                })
+                .then(flights => {
+                    tbody.innerHTML = '';
+                    if (!flights || flights.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="10" class="text-center">No flights found. Click "Add New Flight" to create one.</td></tr>';
+                    } else {
+                        flights.forEach(flight => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${flight.id || 'N/A'}</td>
+                                <td>${flight.flightNumber || 'N/A'}</td>
+                                <td>${flight.airline || 'N/A'}</td>
+                                <td>${flight.origin || ''} → ${flight.destination || ''}</td>
+                                <td>${flight.departureTime || 'N/A'}</td>
+                                <td>${flight.arrivalTime || 'N/A'}</td>
+                                <td>${flight.priceCurrency || '₹'}${flight.price || 0}</td>
+                                <td>${flight.priceCurrency || '₹'}${flight.businessPrice || 0}</td>
+                                <td>${flight.priceCurrency || '₹'}${flight.firstClassPrice || 0}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" onclick="editFlight(${flight.id})">Edit</button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteFlight(${flight.id})">Delete</button>
+                                </td>
+                            `;
+                            tbody.appendChild(row);
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.error('Error loading flights:', err);
+                    tbody.innerHTML = `<tr><td colspan="10" class="text-center text-danger">Error loading flights: ${err.message}</td></tr>`;
+                });
+        }
+
+        function showAddFlightForm() {
+            document.getElementById('flight-form-title').textContent = 'Add New Flight';
+            document.getElementById('flight-form').reset();
+            document.getElementById('flight-edit-id').value = '';
+            showSection('add-flight');
+        }
+
+        function saveFlight(event) {
+            event.preventDefault();
+            const editId = document.getElementById('flight-edit-id').value;
+            const isEdit = editId !== '';
+            const data = {
+                flightNumber: document.getElementById('flight-number').value,
+                airline: document.getElementById('flight-airline').value,
+                origin: document.getElementById('flight-origin').value,
+                destination: document.getElementById('flight-destination').value,
+                departureTime: document.getElementById('flight-departure-time').value,
+                arrivalTime: document.getElementById('flight-arrival-time').value,
+                classType: document.getElementById('flight-class-type').value,
+                price: parseFloat(document.getElementById('flight-price').value),
+                businessPrice: parseFloat(document.getElementById('flight-business-price').value) || null,
+                firstClassPrice: parseFloat(document.getElementById('flight-first-class-price').value) || null,
+                priceCurrency: document.getElementById('flight-currency').value,
+                economySeats: parseInt(document.getElementById('flight-economy-seats').value) || null,
+                businessSeats: parseInt(document.getElementById('flight-business-seats').value) || null,
+                firstClassSeats: parseInt(document.getElementById('flight-first-class-seats').value) || null,
+                availableSeats: document.getElementById('flight-available-seats').value,
+                businessAvailableSeats: document.getElementById('flight-business-available-seats').value,
+                firstClassAvailableSeats: document.getElementById('flight-first-class-available-seats').value,
+                totalSeats: parseInt(document.getElementById('flight-total-seats').value) || null
+            };
+            const url = isEdit ? `/api/admin/flights/${editId}` : '/api/admin/flights';
+            const method = isEdit ? 'PUT' : 'POST';
+            fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (handleAuthError(response)) return;
+                    if (response.ok) {
+                        alert(isEdit ? 'Flight updated successfully!' : 'Flight created successfully!');
+                        showSection('flights');
+                        loadFlights();
+                    } else {
+                        response.text().then(text => alert('Error: ' + text));
+                    }
+                })
+                .catch(err => {
+                    console.error('Error saving flight:', err);
+                    alert('Failed to save flight');
+                });
+        }
+
+        function editFlight(id) {
+            fetch(`/api/admin/flights/${id}`, { credentials: 'include' })
+                .then(response => {
+                    if (handleAuthError(response)) return;
+                    if (!response.ok) throw new Error('Failed to load flight');
+                    return response.json();
+                })
+                .then(flight => {
+                    document.getElementById('flight-form-title').textContent = 'Edit Flight';
+                    document.getElementById('flight-edit-id').value = flight.id || '';
+                    document.getElementById('flight-number').value = flight.flightNumber || '';
+                    document.getElementById('flight-airline').value = flight.airline || '';
+                    document.getElementById('flight-origin').value = flight.origin || '';
+                    document.getElementById('flight-destination').value = flight.destination || '';
+                    document.getElementById('flight-departure-time').value = flight.departureTime || '';
+                    document.getElementById('flight-arrival-time').value = flight.arrivalTime || '';
+                    document.getElementById('flight-class-type').value = flight.classType || 'Economy';
+                    document.getElementById('flight-price').value = flight.price || '';
+                    document.getElementById('flight-business-price').value = flight.businessPrice || '';
+                    document.getElementById('flight-first-class-price').value = flight.firstClassPrice || '';
+                    document.getElementById('flight-currency').value = flight.priceCurrency || '₹';
+                    document.getElementById('flight-economy-seats').value = flight.economySeats || '';
+                    document.getElementById('flight-business-seats').value = flight.businessSeats || '';
+                    document.getElementById('flight-first-class-seats').value = flight.firstClassSeats || '';
+                    document.getElementById('flight-available-seats').value = flight.availableSeats || '';
+                    document.getElementById('flight-business-available-seats').value = flight.businessAvailableSeats || '';
+                    document.getElementById('flight-first-class-available-seats').value = flight.firstClassAvailableSeats || '';
+                    document.getElementById('flight-total-seats').value = flight.totalSeats || '';
+                    showSection('add-flight');
+                })
+                .catch(err => {
+                    console.error('Error loading flight:', err);
+                    alert('Failed to load flight');
+                });
+        }
+
+        function deleteFlight(id) {
+            if (confirm('Are you sure you want to delete this flight?')) {
+                fetch(`/api/admin/flights/${id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                })
+                    .then(response => {
+                        if (handleAuthError(response)) return;
+                        if (response.ok) {
+                            loadFlights();
+                        } else {
+                            alert('Failed to delete flight');
+                        }
+                    })
+                    .catch(err => console.error('Error deleting flight:', err));
+            }
+        }
+
+        // Train Management Functions
+        function loadTrains() {
+            const tbody = document.getElementById('trains-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '<tr><td colspan="9" class="text-center">Loading trains...</td></tr>';
+            fetch('/api/admin/trains', { credentials: 'include' })
+                .then(response => {
+                    if (handleAuthError(response)) return;
+                    if (!response.ok) throw new Error('Failed to load trains');
+                    return response.json();
+                })
+                .then(trains => {
+                    tbody.innerHTML = '';
+                    if (!trains || trains.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="9" class="text-center">No trains found. Click "Add New Train" to create one.</td></tr>';
+                    } else {
+                        trains.forEach(train => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${train.id || 'N/A'}</td>
+                                <td>${train.trainNumber || 'N/A'}</td>
+                                <td>${train.trainName || 'N/A'}</td>
+                                <td>${train.source || ''} → ${train.destination || ''}</td>
+                                <td>${train.departureTime || 'N/A'}</td>
+                                <td>${train.arrivalTime || 'N/A'}</td>
+                                <td>${train.priceCurrency || '₹'}${train.sleeperPrice || 0}</td>
+                                <td>${train.priceCurrency || '₹'}${train.acPrice || 0}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" onclick="editTrain(${train.id})">Edit</button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteTrain(${train.id})">Delete</button>
+                                </td>
+                            `;
+                            tbody.appendChild(row);
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.error('Error loading trains:', err);
+                    tbody.innerHTML = `<tr><td colspan="9" class="text-center text-danger">Error loading trains: ${err.message}</td></tr>`;
+                });
+        }
+
+        function showAddTrainForm() {
+            document.getElementById('train-form-title').textContent = 'Add New Train';
+            document.getElementById('train-form').reset();
+            document.getElementById('train-edit-id').value = '';
+            showSection('add-train');
+        }
+
+        function saveTrain(event) {
+            event.preventDefault();
+            const editId = document.getElementById('train-edit-id').value;
+            const isEdit = editId !== '';
+            const data = {
+                trainName: document.getElementById('train-name').value,
+                trainNumber: document.getElementById('train-number').value,
+                source: document.getElementById('train-source').value,
+                destination: document.getElementById('train-destination').value,
+                departureTime: document.getElementById('train-departure-time').value,
+                arrivalTime: document.getElementById('train-arrival-time').value,
+                sleeperSeats: parseInt(document.getElementById('train-sleeper-seats').value) || null,
+                acSeats: parseInt(document.getElementById('train-ac-seats').value) || null,
+                sleeperPrice: parseFloat(document.getElementById('train-sleeper-price').value),
+                acPrice: parseFloat(document.getElementById('train-ac-price').value),
+                priceCurrency: document.getElementById('train-currency').value
+            };
+            const url = isEdit ? `/api/admin/trains/${editId}` : '/api/admin/trains';
+            const method = isEdit ? 'PUT' : 'POST';
+            fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (handleAuthError(response)) return;
+                    if (response.ok) {
+                        alert(isEdit ? 'Train updated successfully!' : 'Train created successfully!');
+                        showSection('trains');
+                        loadTrains();
+                    } else {
+                        response.text().then(text => alert('Error: ' + text));
+                    }
+                })
+                .catch(err => {
+                    console.error('Error saving train:', err);
+                    alert('Failed to save train');
+                });
+        }
+
+        function editTrain(id) {
+            fetch(`/api/admin/trains/${id}`, { credentials: 'include' })
+                .then(response => {
+                    if (handleAuthError(response)) return;
+                    if (!response.ok) throw new Error('Failed to load train');
+                    return response.json();
+                })
+                .then(train => {
+                    document.getElementById('train-form-title').textContent = 'Edit Train';
+                    document.getElementById('train-edit-id').value = train.id || '';
+                    document.getElementById('train-name').value = train.trainName || '';
+                    document.getElementById('train-number').value = train.trainNumber || '';
+                    document.getElementById('train-source').value = train.source || '';
+                    document.getElementById('train-destination').value = train.destination || '';
+                    document.getElementById('train-departure-time').value = train.departureTime || '';
+                    document.getElementById('train-arrival-time').value = train.arrivalTime || '';
+                    document.getElementById('train-sleeper-seats').value = train.sleeperSeats || '';
+                    document.getElementById('train-ac-seats').value = train.acSeats || '';
+                    document.getElementById('train-sleeper-price').value = train.sleeperPrice || '';
+                    document.getElementById('train-ac-price').value = train.acPrice || '';
+                    document.getElementById('train-currency').value = train.priceCurrency || '₹';
+                    showSection('add-train');
+                })
+                .catch(err => {
+                    console.error('Error loading train:', err);
+                    alert('Failed to load train');
+                });
+        }
+
+        function deleteTrain(id) {
+            if (confirm('Are you sure you want to delete this train?')) {
+                fetch(`/api/admin/trains/${id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                })
+                    .then(response => {
+                        if (handleAuthError(response)) return;
+                        if (response.ok) {
+                            loadTrains();
+                        } else {
+                            alert('Failed to delete train');
+                        }
+                    })
+                    .catch(err => console.error('Error deleting train:', err));
+            }
+        }
+
+        // Bus Management Functions
+        function loadBuses() {
+            const tbody = document.getElementById('buses-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '<tr><td colspan="10" class="text-center">Loading buses...</td></tr>';
+            fetch('/api/admin/buses', { credentials: 'include' })
+                .then(response => {
+                    if (handleAuthError(response)) return;
+                    if (!response.ok) throw new Error('Failed to load buses');
+                    return response.json();
+                })
+                .then(buses => {
+                    tbody.innerHTML = '';
+                    if (!buses || buses.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="10" class="text-center">No buses found. Click "Add New Bus" to create one.</td></tr>';
+                    } else {
+                        buses.forEach(bus => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${bus.id || 'N/A'}</td>
+                                <td>${bus.busName || 'N/A'}</td>
+                                <td>${bus.busType || 'N/A'}</td>
+                                <td>${bus.source || ''} → ${bus.destination || ''}</td>
+                                <td>${bus.departureTime || 'N/A'}</td>
+                                <td>${bus.arrivalTime || 'N/A'}</td>
+                                <td>${bus.totalSeats || 0}</td>
+                                <td>${bus.availableSeats || 0}</td>
+                                <td>${bus.priceCurrency || '₹'}${bus.ticketPrice || 0}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" onclick="editBus(${bus.id})">Edit</button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteBus(${bus.id})">Delete</button>
+                                </td>
+                            `;
+                            tbody.appendChild(row);
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.error('Error loading buses:', err);
+                    tbody.innerHTML = `<tr><td colspan="10" class="text-center text-danger">Error loading buses: ${err.message}</td></tr>`;
+                });
+        }
+
+        function showAddBusForm() {
+            document.getElementById('bus-form-title').textContent = 'Add New Bus';
+            document.getElementById('bus-form').reset();
+            document.getElementById('bus-edit-id').value = '';
+            showSection('add-bus');
+        }
+
+        function saveBus(event) {
+            event.preventDefault();
+            const editId = document.getElementById('bus-edit-id').value;
+            const isEdit = editId !== '';
+            const data = {
+                busName: document.getElementById('bus-name').value,
+                busType: document.getElementById('bus-type').value,
+                source: document.getElementById('bus-source').value,
+                destination: document.getElementById('bus-destination').value,
+                departureTime: document.getElementById('bus-departure-time').value,
+                arrivalTime: document.getElementById('bus-arrival-time').value,
+                totalSeats: parseInt(document.getElementById('bus-total-seats').value) || null,
+                availableSeats: parseInt(document.getElementById('bus-available-seats').value) || null,
+                ticketPrice: parseFloat(document.getElementById('bus-ticket-price').value),
+                priceCurrency: document.getElementById('bus-currency').value,
+                seatLayout: document.getElementById('bus-seat-layout').value
+            };
+            const url = isEdit ? `/api/admin/buses/${editId}` : '/api/admin/buses';
+            const method = isEdit ? 'PUT' : 'POST';
+            fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (handleAuthError(response)) return;
+                    if (response.ok) {
+                        alert(isEdit ? 'Bus updated successfully!' : 'Bus created successfully!');
+                        showSection('buses');
+                        loadBuses();
+                    } else {
+                        response.text().then(text => alert('Error: ' + text));
+                    }
+                })
+                .catch(err => {
+                    console.error('Error saving bus:', err);
+                    alert('Failed to save bus');
+                });
+        }
+
+        function editBus(id) {
+            fetch(`/api/admin/buses/${id}`, { credentials: 'include' })
+                .then(response => {
+                    if (handleAuthError(response)) return;
+                    if (!response.ok) throw new Error('Failed to load bus');
+                    return response.json();
+                })
+                .then(bus => {
+                    document.getElementById('bus-form-title').textContent = 'Edit Bus';
+                    document.getElementById('bus-edit-id').value = bus.id || '';
+                    document.getElementById('bus-name').value = bus.busName || '';
+                    document.getElementById('bus-type').value = bus.busType || '';
+                    document.getElementById('bus-source').value = bus.source || '';
+                    document.getElementById('bus-destination').value = bus.destination || '';
+                    document.getElementById('bus-departure-time').value = bus.departureTime || '';
+                    document.getElementById('bus-arrival-time').value = bus.arrivalTime || '';
+                    document.getElementById('bus-total-seats').value = bus.totalSeats || '';
+                    document.getElementById('bus-available-seats').value = bus.availableSeats || '';
+                    document.getElementById('bus-ticket-price').value = bus.ticketPrice || '';
+                    document.getElementById('bus-currency').value = bus.priceCurrency || '₹';
+                    document.getElementById('bus-seat-layout').value = bus.seatLayout || '';
+                    showSection('add-bus');
+                })
+                .catch(err => {
+                    console.error('Error loading bus:', err);
+                    alert('Failed to load bus');
+                });
+        }
+
+        function deleteBus(id) {
+            if (confirm('Are you sure you want to delete this bus?')) {
+                fetch(`/api/admin/buses/${id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                })
+                    .then(response => {
+                        if (handleAuthError(response)) return;
+                        if (response.ok) {
+                            loadBuses();
+                        } else {
+                            alert('Failed to delete bus');
+                        }
+                    })
+                    .catch(err => console.error('Error deleting bus:', err));
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check authentication first
+            checkAuth().then(isAuthenticated => {
+                if (isAuthenticated) {
+                    // Only load data if authenticated
+                    loadUsers();
+                    loadPosts();
+                    loadBookings();
+                    loadPackages();
+                    loadCountries();
+                    loadHotels();
+                    loadFlights();
+                    loadTrains();
+                    loadBuses();
+                    toggleVisaField();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Fly Now - Book Flight</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8f9fa;
+        }
+
+        .booking-container {
+            max-width: 1400px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f15d30;
+        }
+
+        .form-header h2 {
+            color: #f15d30;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .flight-info-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .flight-info-card h4 {
+            color: #000;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: #f15d30;
+            border-color: #f15d30;
+            padding: 14px 35px;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .btn-primary:hover {
+            background: #d94c25;
+            border-color: #d94c25;
+        }
+
+        .price-summary {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        .price-summary h5 {
+            color: #f15d30;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .price-summary p {
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+        }
+
+        .price-summary p strong {
+            color: #000;
+        }
+
+        .price-summary .total-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: #f15d30;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .seat-selection {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        /* MakeMyTrip Style Seat Map Container */
+        .seat-map-wrapper {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .seat-map-container {
+            flex: 1;
+            background: #fff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .seat-booking-summary {
+            width: 350px;
+            background: #fff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        /* Seat Map Header */
+        .seat-map-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .seat-map-header h5 {
+            margin: 0;
+            color: #333;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        /* Legend - MakeMyTrip Style */
+        .seat-legend {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .legend-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .legend-dot.available {
+            background: #e8f5e9;
+            border-color: #4caf50;
+        }
+
+        .legend-dot.selected {
+            background: #FF7A00;
+            border-color: #FF7A00;
+        }
+
+        .legend-dot.booked {
+            background: #e0e0e0;
+            border-color: #bdbdbd;
+        }
+
+        .legend-dot.window {
+            background: #fff3e0;
+            border-color: #ff9800;
+        }
+
+        .legend-dot.aisle {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+
+        /* Seat Map Grid - MakeMyTrip Style */
+        .seat-map-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .seat-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .row-number {
+            width: 35px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .seat-group {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .aisle-gap {
+            width: 40px;
+            text-align: center;
+            font-size: 11px;
+            color: #999;
+            font-weight: 500;
+        }
+
+        /* Seat Button - MakeMyTrip Style */
+        .seat-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 6px;
+            border: 2px solid #ddd;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+            position: relative;
+        }
+
+        .seat-btn:hover:not(.booked):not(.selected) {
+            border-color: #FF7A00;
+            background: #fff5e6;
+            transform: scale(1.05);
+        }
+
+        .seat-btn.available {
+            background: #e8f5e9;
+            border-color: #4caf50;
+            color: #2e7d32;
+        }
+
+        .seat-btn.selected {
+            background: #FF7A00;
+            border-color: #FF7A00;
+            color: #fff;
+            box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.2);
+        }
+
+        .seat-btn.booked {
+            background: #e0e0e0;
+            border-color: #bdbdbd;
+            color: #9e9e9e;
+            cursor: not-allowed;
+            position: relative;
+        }
+
+        .seat-btn.booked::after {
+            content: "✕";
+            position: absolute;
+            font-size: 16px;
+            color: #f44336;
+            font-weight: bold;
+        }
+
+        .seat-btn.window {
+            background: #fff3e0;
+            border-color: #ff9800;
+        }
+
+        .seat-btn.aisle {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+
+        /* Window/Aisle Labels */
+        .seat-map-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 0 45px;
+            font-size: 11px;
+            color: #999;
+            font-weight: 500;
+        }
+
+        /* Booking Summary */
+        .booking-summary-header {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .summary-value {
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .summary-total {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .summary-total .summary-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .summary-total .summary-value {
+            font-size: 20px;
+            color: #FF7A00;
+        }
+
+        .selected-seats-list {
+            margin-top: 10px;
+        }
+
+        .selected-seat-badge {
+            display: inline-block;
+            background: #FF7A00;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin: 3px;
+            font-weight: 600;
+        }
+
+        /* Traveler Section */
+        .traveler-section {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        .traveler-section h5 {
+            color: #FF7A00;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 992px) {
+            .seat-map-wrapper {
+                flex-direction: column;
+            }
+
+            .seat-booking-summary {
+                width: 100%;
+                position: static;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="booking-container">
+        <div class="form-header">
+            <h2><i class="fa fa-plane mr-2"></i>Book Your Flight</h2>
+            <div class="flight-info-card">
+                <h4 th:text="${flight.airline + ' - ' + flight.flightNumber}">Airline - Flight Number</h4>
+                <p class="mb-2"><i class="fa fa-map-marker mr-2"></i>
+                    <span th:text="${flight.origin}">Origin</span> → <span th:text="${flight.destination}">Destination</span>
+                </p>
+                <p class="mb-2"><i class="fa fa-clock-o mr-2"></i>
+                    Departure: <span th:text="${flight.departureTime}">10:30 AM</span> | 
+                    Arrival: <span th:text="${flight.arrivalTime}">2:45 PM</span>
+                </p>
+            </div>
+        </div>
+
+    <form th:action="@{/flight/book/process}" method="post" id="bookingForm" onsubmit="return validateAndSubmit();">
+            <input type="hidden" name="flightId" th:value="${flight.id}">
+            <input type="hidden" name="priceCurrency" th:value="${flight.priceCurrency != null ? flight.priceCurrency : '₹'}">
+        <input type="hidden" name="returnUrl" th:value="${returnUrl != null ? returnUrl : ''}" id="returnUrl">
+        <input type="hidden" name="selectedSeatsJson" id="selectedSeatsJson">
+        <input type="hidden" name="travelerDetails" id="travelerDetailsJson">
+
+        <!-- Contact Details -->
+        <h4 class="mb-3"><i class="fa fa-user mr-2"></i>Contact Details</h4>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>Full Name *</label>
+                <input type="text" class="form-control" name="customerName" id="customerName" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Email *</label>
+                <input type="email" class="form-control" name="email" id="email" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>Phone Number *</label>
+                <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Number of Travelers *</label>
+                <input type="number" class="form-control" name="numberOfMembers" id="numberOfMembers" 
+                       value="1" min="1" max="10" onchange="handleTravelerCountChange()" required>
+                <small class="form-text text-muted">Select seats for each traveler below</small>
+            </div>
+        </div>
+
+        <!-- Traveler Details -->
+        <div class="selection-card mt-4" style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+            <h4 class="mb-3"><i class="fa fa-users mr-2"></i>Traveler Details</h4>
+            <p class="text-muted mb-3">Please provide details for all travelers</p>
+            <div id="travelersContainer">
+                <!-- Dynamic traveler fields will be added here -->
+            </div>
+        </div>
+
+            <!-- Class Selection -->
+        <div class="seat-selection mt-4">
+            <h4 class="mb-3"><i class="fa fa-ticket mr-2"></i>Select Travel Class</h4>
+                <div class="form-group">
+                <label class="font-weight-bold">Travel Class *</label>
+                <select class="form-control" name="selectedClass" id="selectedClass" onchange="handleClassChange()" required>
+                    <option value="Economy" th:selected="${selectedClass == 'Economy'}">
+                        Economy Class - 
+                            <span th:text="${flight.priceCurrency != null ? flight.priceCurrency : '₹'}"></span>
+                            <span th:text="${#numbers.formatDecimal(flight.price, 0, 'COMMA', 0, 'POINT')}"></span>
+                        </option>
+                    <option value="Business" th:selected="${selectedClass == 'Business'}" th:if="${flight.businessPrice != null}">
+                        Business Class - 
+                            <span th:text="${flight.priceCurrency != null ? flight.priceCurrency : '₹'}"></span>
+                            <span th:text="${#numbers.formatDecimal(flight.businessPrice, 0, 'COMMA', 0, 'POINT')}"></span>
+                        </option>
+                    <option value="First" th:selected="${selectedClass == 'First'}" th:if="${flight.firstClassPrice != null}">
+                        First Class - 
+                            <span th:text="${flight.priceCurrency != null ? flight.priceCurrency : '₹'}"></span>
+                            <span th:text="${#numbers.formatDecimal(flight.firstClassPrice, 0, 'COMMA', 0, 'POINT')}"></span>
+                        </option>
+                    </select>
+                <small class="form-text text-muted">
+                    <i class="fa fa-info-circle mr-1"></i>
+                    <strong>Available Classes:</strong> 
+                    <span th:if="${flight.price != null}">Economy</span>
+                    <span th:if="${flight.businessPrice != null}">, Business</span>
+                    <span th:if="${flight.firstClassPrice != null}">, First Class</span>
+                </small>
+                </div>
+            </div>
+
+        <!-- Seat Selection - MakeMyTrip Style -->
+            <div class="seat-selection">
+            <h4 class="mb-3"><i class="fa fa-chair mr-2"></i>Select Your Seats</h4>
+            <div class="alert alert-info" style="background: rgba(255,122,0,0.1); border: 1px solid rgba(255,122,0,0.3); color: #FF7A00; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px;">
+                <i class="fa fa-info-circle mr-2"></i>
+                <strong>Selected Class: </strong>
+                <span id="selectedClassDisplay">Economy Class</span>
+                <br>
+                <strong>Travelers: </strong>
+                <span id="travelersCountDisplay">1</span> - 
+                <span>Click on seats to select for each traveler</span>
+            </div>
+            
+            <div class="seat-map-wrapper">
+                <!-- Seat Map Container -->
+                <div class="seat-map-container">
+                    <div class="seat-map-header">
+                        <h5>Choose Your Preferred Seats</h5>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="seat-legend">
+                        <div class="legend-item">
+                            <div class="legend-dot available"></div>
+                            <span>Available</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot selected"></div>
+                            <span>Selected</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot booked"></div>
+                            <span>Booked</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot window"></div>
+                            <span>Window</span>
+                    </div>
+                        <div class="legend-item">
+                            <div class="legend-dot aisle"></div>
+                            <span>Aisle</span>
+                        </div>
+                        </div>
+
+                    <!-- Window/Aisle Labels -->
+                    <div class="seat-map-labels">
+                        <span>Window</span>
+                        <span>Aisle</span>
+                        <span>Aisle</span>
+                        <span>Window</span>
+                        </div>
+
+                    <!-- Seat Map Grid -->
+                    <div id="seatArea" class="seat-map-grid"></div>
+                    </div>
+
+                <!-- Booking Summary Panel -->
+                <div class="seat-booking-summary">
+                    <div class="booking-summary-header">Booking Summary</div>
+                    
+                    <div class="summary-item">
+                        <span class="summary-label">Flight</span>
+                        <span class="summary-value" th:text="${flight.airline + ' ' + flight.flightNumber}">Airline FL123</span>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <span class="summary-label">Route</span>
+                        <span class="summary-value" th:text="${flight.origin + ' → ' + flight.destination}">DEL → MAA</span>
+                </div>
+                    
+                    <div class="summary-item">
+                        <span class="summary-label">Class</span>
+                        <span class="summary-value" id="summaryClass">Economy</span>
+            </div>
+
+                    <div class="summary-item">
+                        <span class="summary-label">Travelers</span>
+                        <span class="summary-value" id="summaryTravelers">1</span>
+                </div>
+                    
+                    <div class="summary-item">
+                        <span class="summary-label">Selected Seats</span>
+                        <div class="summary-value">
+                            <div id="selectedSeatsList" class="selected-seats-list">
+                                <span style="color: #999; font-size: 12px;">No seats selected</span>
+                </div>
+            </div>
+                </div>
+                    
+                    <div class="summary-item">
+                        <span class="summary-label">Base Price</span>
+                        <span class="summary-value" id="summaryBasePrice">
+                            <span th:text="${flight.priceCurrency != null ? flight.priceCurrency : '₹'}"></span>
+                            <span th:text="${#numbers.formatDecimal(flight.price, 0, 'COMMA', 0, 'POINT')}"></span>
+                        </span>
+                </div>
+                    
+                    <div class="summary-item" id="windowSeatChargeRow" style="display: none;">
+                        <span class="summary-label">Window Seat Charge</span>
+                        <span class="summary-value" id="windowSeatCharge">₹0</span>
+            </div>
+
+                    <div class="summary-total">
+                        <div class="summary-item">
+                            <span class="summary-label">Total Amount</span>
+                            <span class="summary-value" id="summaryTotalPrice">
+                                <span th:text="${flight.priceCurrency != null ? flight.priceCurrency : '₹'}"></span>
+                                <span th:text="${#numbers.formatDecimal(flight.price, 0, 'COMMA', 0, 'POINT')}"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="selectedSeat" id="selectedSeat" required>
+            <small class="form-text text-muted mt-2" id="windowSeatNotice" style="display: none; color: #FF7A00; font-weight: 600;">
+                <i class="fa fa-info-circle mr-1"></i>Window seat selected: Additional ₹500 will be charged per window seat
+            </small>
+        </div>
+
+        <!-- Payment Details -->
+            <h4 class="mb-3 mt-4"><i class="fa fa-credit-card mr-2"></i>Payment Details</h4>
+            <div class="form-group">
+                <label>UPI ID (e.g., user@upi) *</label>
+            <input type="text" class="form-control" name="upiId" id="upiId" required
+                    placeholder="Enter your UPI ID to pay">
+            </div>
+
+        <!-- Price Summary -->
+            <div class="price-summary">
+                <h5>Price Summary</h5>
+                <p>
+                    <span>Base Price (per person):</span>
+                    <strong id="basePriceDisplay">
+                        <span th:text="${flight.priceCurrency != null ? flight.priceCurrency : '₹'}"></span>
+                        <span th:text="${#numbers.formatDecimal(flight.price, 0, 'COMMA', 0, 'POINT')}"></span>
+                    </strong>
+                </p>
+                <p>
+                    <span>Number of Travelers:</span>
+                    <strong id="travelersDisplay">1</strong>
+                </p>
+            <p id="windowSeatChargeRowMain" style="display: none;">
+                <span>Window Seat Charge:</span>
+                <strong id="windowSeatChargeDisplay">₹0</strong>
+            </p>
+                <p class="total-price">
+                    <span>Total Amount:</span>
+                    <strong id="totalPriceDisplay">
+                        <span th:text="${flight.priceCurrency != null ? flight.priceCurrency : '₹'}"></span>
+                        <span th:text="${#numbers.formatDecimal(flight.price, 0, 'COMMA', 0, 'POINT')}"></span>
+                    </strong>
+                </p>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg btn-block mt-4">
+                <i class="fa fa-check-circle mr-2"></i>Pay & Book Now
+            </button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:inline="javascript">
+        const flightData = {
+        id: /*[[${flight.id}]]*/ null,
+            economyPrice: /*[[${flight.price}]]*/ 0,
+            businessPrice: /*[[${flight.businessPrice != null ? flight.businessPrice : 0}]]*/ 0,
+            firstClassPrice: /*[[${flight.firstClassPrice != null ? flight.firstClassPrice : 0}]]*/ 0,
+            currency: /*[[${flight.priceCurrency != null ? flight.priceCurrency : '₹'}]]*/ '₹',
+            availableSeats: /*[[${flight.availableSeats != null ? flight.availableSeats : ''}]]*/ ''
+        };
+
+    // Seat selection state - Maps traveler index to seat ID
+    let selectedSeatsMap = {};
+    let currentTravelerIndex = 1;
+    const totalSeats = 70; // A1 to A70
+    let savedTravelerData = {};
+
+    // Generate traveler fields dynamically
+    function generateTravelerFields() {
+        const container = document.getElementById('travelersContainer');
+        if (!container) return;
+        
+        const count = parseInt(document.getElementById('numberOfMembers').value) || 1;
+        
+        // Save existing data before clearing
+        saveTravelerData();
+        
+        container.innerHTML = '';
+        for (let i = 1; i <= count; i++) {
+            const html = `
+            <div class="traveler-section" data-traveler-index="${i}">
+                <h5>Traveler ${i}</h5>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Name *</label>
+                        <input type="text" class="form-control traveler-name" 
+                               id="traveler_${i}_name" required placeholder="Enter full name">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Age *</label>
+                        <input type="number" class="form-control traveler-age" 
+                               id="traveler_${i}_age" min="1" max="120" required placeholder="Age">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Gender *</label>
+                        <select class="form-control traveler-gender" id="traveler_${i}_gender" required>
+                            <option value="">-- Select --</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+        
+        // Restore saved data
+        setTimeout(() => restoreTravelerData(), 50);
+    }
+
+    function saveTravelerData() {
+        savedTravelerData = {};
+        const sections = document.querySelectorAll('.traveler-section');
+        sections.forEach((section, index) => {
+            const travelerNum = index + 1;
+            const nameInput = document.getElementById(`traveler_${travelerNum}_name`);
+            const ageInput = document.getElementById(`traveler_${travelerNum}_age`);
+            const genderSelect = document.getElementById(`traveler_${travelerNum}_gender`);
+            
+            if (nameInput || ageInput || genderSelect) {
+                savedTravelerData[travelerNum] = {
+                    name: nameInput ? nameInput.value : '',
+                    age: ageInput ? ageInput.value : '',
+                    gender: genderSelect ? genderSelect.value : ''
+                };
+            }
+        });
+    }
+
+    function restoreTravelerData() {
+        Object.keys(savedTravelerData).forEach(travelerNum => {
+            const data = savedTravelerData[travelerNum];
+            const nameInput = document.getElementById(`traveler_${travelerNum}_name`);
+            const ageInput = document.getElementById(`traveler_${travelerNum}_age`);
+            const genderSelect = document.getElementById(`traveler_${travelerNum}_gender`);
+            
+            if (nameInput && data.name) nameInput.value = data.name;
+            if (ageInput && data.age) ageInput.value = data.age;
+            if (genderSelect && data.gender) genderSelect.value = data.gender;
+        });
+    }
+
+    function handleTravelerCountChange() {
+        const numberOfMembers = parseInt(document.getElementById('numberOfMembers').value) || 1;
+        
+        // Generate traveler fields
+        generateTravelerFields();
+        
+        // Reset seat selection if count decreased
+        if (Object.keys(selectedSeatsMap).length > numberOfMembers) {
+            Object.keys(selectedSeatsMap).forEach((key) => {
+                if (parseInt(key) > numberOfMembers) {
+                    const seat = selectedSeatsMap[key];
+                    const seatEl = document.querySelector(`.seat-btn[data-seat="${seat}"]`);
+                    if (seatEl && !seatEl.classList.contains('booked')) {
+                        seatEl.classList.remove('selected');
+                        seatEl.classList.add('available');
+                    }
+                    delete selectedSeatsMap[key];
+                }
+            });
+            currentTravelerIndex = Math.min(currentTravelerIndex, numberOfMembers + 1);
+        }
+        
+        // Update displays
+        updateTravelersDisplay();
+        updatePrice();
+        updateSummary();
+        renderSelectedSeats();
+    }
+
+    function updateTravelersDisplay() {
+        const numberOfMembers = parseInt(document.getElementById('numberOfMembers').value) || 1;
+        const travelersCountDisplay = document.getElementById('travelersCountDisplay');
+        const summaryTravelers = document.getElementById('summaryTravelers');
+        const travelersDisplay = document.getElementById('travelersDisplay');
+        
+        if (travelersCountDisplay) travelersCountDisplay.textContent = numberOfMembers;
+        if (summaryTravelers) summaryTravelers.textContent = numberOfMembers;
+        if (travelersDisplay) travelersDisplay.textContent = numberOfMembers;
+    }
+
+    // Handle class change - reset seat selection and update price
+    function handleClassChange() {
+        const selectedClass = document.getElementById('selectedClass').value;
+        
+        // Update class display
+        updateClassDisplay();
+        
+        // Clear all selected seats when class changes
+        Object.keys(selectedSeatsMap).forEach((key) => {
+            const seat = selectedSeatsMap[key];
+            const seatEl = document.querySelector(`.seat-btn[data-seat="${seat}"]`);
+            if (seatEl && !seatEl.classList.contains('booked')) {
+                seatEl.classList.remove('selected');
+                seatEl.classList.add('available');
+            }
+        });
+        
+        // Reset seat selection map
+        selectedSeatsMap = {};
+        currentTravelerIndex = 1;
+        renderSelectedSeats();
+        
+        // Update price with new class
+        updatePrice();
+        updateSummary();
+    }
+
+    // Update the displayed class name
+    function updateClassDisplay() {
+        const selectedClass = document.getElementById('selectedClass').value;
+        const classDisplay = document.getElementById('selectedClassDisplay');
+        const summaryClass = document.getElementById('summaryClass');
+        
+        let className = 'Economy Class';
+        if (selectedClass === 'Business') {
+            className = 'Business Class';
+        } else if (selectedClass === 'First') {
+            className = 'First Class';
+        }
+        
+        if (classDisplay) classDisplay.textContent = className;
+        if (summaryClass) summaryClass.textContent = className.replace(' Class', '');
+    }
+
+        function updatePrice() {
+            const selectedClass = document.getElementById('selectedClass').value;
+            const numberOfMembers = parseInt(document.getElementById('numberOfMembers').value) || 1;
+            
+            let basePrice = flightData.economyPrice;
+            if (selectedClass === 'Business' && flightData.businessPrice > 0) {
+                basePrice = flightData.businessPrice;
+            } else if (selectedClass === 'First' && flightData.firstClassPrice > 0) {
+                basePrice = flightData.firstClassPrice;
+            }
+            
+        // Calculate window seat charges
+        let windowSeatCount = 0;
+        Object.values(selectedSeatsMap).forEach(seat => {
+            if (isWindowSeat(seat)) {
+                windowSeatCount++;
+            }
+        });
+        const windowSeatCharge = windowSeatCount * 500;
+        
+        const totalPrice = (basePrice * numberOfMembers) + windowSeatCharge;
+            
+        // Update displays
+            document.getElementById('basePriceDisplay').innerHTML = 
+            flightData.currency + basePrice.toLocaleString('en-IN');
+        document.getElementById('summaryBasePrice').innerHTML = 
+                flightData.currency + basePrice.toLocaleString('en-IN');
+            document.getElementById('travelersDisplay').textContent = numberOfMembers;
+            document.getElementById('totalPriceDisplay').innerHTML = 
+                flightData.currency + totalPrice.toLocaleString('en-IN');
+        document.getElementById('summaryTotalPrice').innerHTML = 
+            flightData.currency + totalPrice.toLocaleString('en-IN');
+        
+        // Show/hide window seat charge
+        if (windowSeatCharge > 0) {
+            document.getElementById('windowSeatChargeRow').style.display = 'flex';
+            document.getElementById('windowSeatChargeRowMain').style.display = 'flex';
+            document.getElementById('windowSeatCharge').textContent = 
+                flightData.currency + windowSeatCharge.toLocaleString('en-IN');
+            document.getElementById('windowSeatChargeDisplay').textContent = 
+                flightData.currency + windowSeatCharge.toLocaleString('en-IN');
+            document.getElementById('windowSeatNotice').style.display = 'block';
+        } else {
+            document.getElementById('windowSeatChargeRow').style.display = 'none';
+            document.getElementById('windowSeatChargeRowMain').style.display = 'none';
+            document.getElementById('windowSeatNotice').style.display = 'none';
+        }
+    }
+
+    function updateSummary() {
+        updateTravelersDisplay();
+        updateClassDisplay();
+        updatePrice();
+            }
+
+    function isWindowSeat(seat) {
+        if (!seat) return false;
+        const seatNum = parseInt(seat.substring(1));
+        const posInRow = ((seatNum - 1) % 4) + 1;
+        return posInRow === 1 || posInRow === 4; // First and last in each row are window
+    }
+
+    // Populate seats with real-time availability
+    async function populateSeats() {
+        const seatsContainer = document.getElementById('seatArea');
+        if (!seatsContainer) return;
+        seatsContainer.innerHTML = '';
+        
+        // Load booked seats from API
+        let bookedSeats = [];
+        if (flightData.id) {
+            try {
+                const response = await fetch(`/api/seats/flight/${flightData.id}/available`);
+                if (response.ok) {
+                    const data = await response.json();
+                    bookedSeats = data.bookedSeats || [];
+                    }
+            } catch (error) {
+                console.error('Error loading seat availability:', error);
+                }
+        }
+        
+        const bookedSeatsSet = new Set(bookedSeats);
+        let seatNumber = 1;
+        
+        // Generate 18 rows with 4 seats per row (A, B | Aisle | C, D)
+        for (let row = 1; row <= 18 && seatNumber <= totalSeats; row++) {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'seat-row';
+
+            // Row number
+            const rowNum = document.createElement('div');
+            rowNum.className = 'row-number';
+            rowNum.textContent = row;
+            rowDiv.appendChild(rowNum);
+            
+            // Left group (A, B) - Window and Aisle
+            const leftGroup = document.createElement('div');
+            leftGroup.className = 'seat-group';
+            
+            for (let i = 0; i < 2 && seatNumber <= totalSeats; i++) {
+                const seatLabel = 'A' + seatNumber;
+                const seatType = i === 0 ? 'window' : 'aisle';
+                const seatBtn = createSeatButton(seatLabel, bookedSeatsSet, seatType);
+                leftGroup.appendChild(seatBtn);
+                seatNumber++;
+            }
+            rowDiv.appendChild(leftGroup);
+
+            // Aisle gap
+            const aisleGap = document.createElement('div');
+            aisleGap.className = 'aisle-gap';
+            aisleGap.textContent = 'Aisle';
+            rowDiv.appendChild(aisleGap);
+            
+            // Right group (C, D) - Aisle and Window
+            const rightGroup = document.createElement('div');
+            rightGroup.className = 'seat-group';
+            
+            for (let i = 0; i < 2 && seatNumber <= totalSeats; i++) {
+                const seatLabel = 'A' + seatNumber;
+                const seatType = i === 0 ? 'aisle' : 'window';
+                const seatBtn = createSeatButton(seatLabel, bookedSeatsSet, seatType);
+                rightGroup.appendChild(seatBtn);
+                seatNumber++;
+            }
+            rowDiv.appendChild(rightGroup);
+
+            seatsContainer.appendChild(rowDiv);
+        }
+
+        // Restore selected seats after refresh
+        Object.keys(selectedSeatsMap).forEach(travelerIndex => {
+            const seat = selectedSeatsMap[travelerIndex];
+            const seatEl = document.querySelector(`.seat-btn[data-seat="${seat}"]`);
+            if (seatEl && !seatEl.classList.contains('booked')) {
+                seatEl.classList.remove('available');
+                seatEl.classList.add('selected');
+            }
+        });
+
+        renderSelectedSeats();
+        updateSummary();
+                    }
+                    
+    function createSeatButton(label, bookedSeatsSet, seatType) {
+        const seatBtn = document.createElement('button');
+        seatBtn.type = 'button';
+        seatBtn.className = 'seat-btn';
+        seatBtn.textContent = label;
+        seatBtn.dataset.seat = label;
+        seatBtn.title = `Seat ${label} - ${seatType}`;
+        
+        // Add seat type class
+        if (seatType === 'window' || seatType === 'aisle') {
+            seatBtn.classList.add(seatType);
+        }
+        
+        // Check if seat is booked
+        if (bookedSeatsSet.has(label)) {
+            seatBtn.classList.add('booked');
+        } else {
+            seatBtn.classList.add('available');
+        }
+
+        // Add click event listener
+        seatBtn.addEventListener('click', async function() {
+            if (this.classList.contains('booked')) {
+                alert(`Seat ${label} is already booked and unavailable.`);
+                return;
+            }
+
+            // Real-time seat availability check
+            if (flightData.id) {
+                try {
+                    const response = await fetch(`/api/seats/flight/${flightData.id}/check`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ seats: [label] })
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        const availability = data.availability || {};
+                        if (availability[label] === false) {
+                            alert(`Seat ${label} is no longer available. The seat map will be refreshed.`);
+                            await populateSeats();
+                            return;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error checking seat availability:', error);
+                }
+            }
+
+            const numberOfMembers = parseInt(document.getElementById('numberOfMembers').value) || 1;
+
+            // Toggle seat selection
+            if (this.classList.contains('selected')) {
+                // Deselect
+                const travelerIndex = Object.keys(selectedSeatsMap).find(
+                    key => selectedSeatsMap[key] === label
+                );
+                if (travelerIndex) {
+                    delete selectedSeatsMap[travelerIndex];
+                }
+                this.classList.remove('selected');
+                this.classList.add('available');
+                    } else {
+                // Select for current traveler
+                if (currentTravelerIndex <= numberOfMembers) {
+                    // If current traveler already has a seat, deselect it first
+                    const prevSeat = selectedSeatsMap[currentTravelerIndex];
+                    if (prevSeat) {
+                        const prevSeatEl = document.querySelector(`.seat-btn[data-seat="${prevSeat}"]`);
+                        if (prevSeatEl && !prevSeatEl.classList.contains('booked')) {
+                            prevSeatEl.classList.remove('selected');
+                            prevSeatEl.classList.add('available');
+                    }
+                    }
+                    selectedSeatsMap[currentTravelerIndex] = label;
+                    this.classList.remove('available');
+                    this.classList.add('selected');
+                    currentTravelerIndex++;
+                } else {
+                    // Cycle back to first traveler
+                    currentTravelerIndex = 1;
+                    const prevSeat = selectedSeatsMap[currentTravelerIndex];
+                    if (prevSeat) {
+                        const prevSeatEl = document.querySelector(`.seat-btn[data-seat="${prevSeat}"]`);
+                        if (prevSeatEl && !prevSeatEl.classList.contains('booked')) {
+                            prevSeatEl.classList.remove('selected');
+                            prevSeatEl.classList.add('available');
+                        }
+                    }
+                    selectedSeatsMap[currentTravelerIndex] = label;
+                    this.classList.remove('available');
+                    this.classList.add('selected');
+                    currentTravelerIndex++;
+                }
+            }
+
+            renderSelectedSeats();
+            updatePrice();
+            updateSummary();
+        });
+
+        return seatBtn;
+    }
+
+    function renderSelectedSeats() {
+        const selectedSeatsList = document.getElementById('selectedSeatsList');
+        const selectedSeatInput = document.getElementById('selectedSeat');
+        if (!selectedSeatsMap || Object.keys(selectedSeatsMap).length === 0) {
+            if (selectedSeatsList) {
+                selectedSeatsList.innerHTML = '<span style="color: #999; font-size: 12px;">No seats selected</span>';
+            }
+            if (selectedSeatInput) selectedSeatInput.value = '';
+            return;
+        }
+
+        const arr = Object.values(selectedSeatsMap).sort((a, b) => {
+            const numA = parseInt(a.substring(1));
+            const numB = parseInt(b.substring(1));
+            return numA - numB;
+        });
+
+        // Display selected seats as badges
+        if (selectedSeatsList) {
+            selectedSeatsList.innerHTML = arr.map(seat => 
+                `<span class="selected-seat-badge">${seat}</span>`
+            ).join('');
+        }
+        
+        // Set first seat for backward compatibility
+        if (selectedSeatInput) {
+            selectedSeatInput.value = arr[0] || '';
+        }
+    }
+
+    // Validate and submit form
+    function validateAndSubmit() {
+        console.log('Validating form...');
+        
+        // Validate contact details
+        const customerName = document.getElementById('customerName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phoneNumber = document.getElementById('phoneNumber').value.trim();
+        const upiId = document.getElementById('upiId').value.trim();
+        const numberOfMembers = parseInt(document.getElementById('numberOfMembers').value) || 1;
+        
+        if (!customerName) {
+            alert('Please enter your full name');
+            return false;
+        }
+        if (!email || !email.includes('@')) {
+            alert('Please enter a valid email address');
+            return false;
+        }
+        if (!phoneNumber) {
+            alert('Please enter your phone number');
+            return false;
+        }
+        if (!upiId) {
+            alert('Please enter your UPI ID');
+            return false;
+        }
+        
+        // Validate traveler details
+        const travelers = [];
+        for (let i = 1; i <= numberOfMembers; i++) {
+            const nameInput = document.getElementById(`traveler_${i}_name`);
+            const ageInput = document.getElementById(`traveler_${i}_age`);
+            const genderSelect = document.getElementById(`traveler_${i}_gender`);
+            
+            if (!nameInput || !nameInput.value.trim()) {
+                alert(`Please enter name for Traveler ${i}`);
+                return false;
+            }
+            if (!ageInput || !ageInput.value) {
+                alert(`Please enter age for Traveler ${i}`);
+                return false;
+            }
+            if (!genderSelect || !genderSelect.value) {
+                alert(`Please select gender for Traveler ${i}`);
+                return false;
+            }
+            
+            const seat = selectedSeatsMap[i] || '';
+            travelers.push({
+                name: nameInput.value.trim(),
+                age: ageInput.value,
+                gender: genderSelect.value,
+                seat: seat
+            });
+        }
+        
+        // Check if all seats are selected
+        if (Object.keys(selectedSeatsMap).length < numberOfMembers) {
+            alert(`Please select seats for all ${numberOfMembers} traveler(s)`);
+            return false;
+        }
+        
+        // Validate payment - ensure total price is greater than 0
+        const selectedClass = document.getElementById('selectedClass').value;
+        let basePrice = flightData.economyPrice;
+        if (selectedClass === 'Business' && flightData.businessPrice > 0) {
+            basePrice = flightData.businessPrice;
+        } else if (selectedClass === 'First' && flightData.firstClassPrice > 0) {
+            basePrice = flightData.firstClassPrice;
+        }
+        
+        // Calculate window seat charges
+        let windowSeatCount = 0;
+        Object.values(selectedSeatsMap).forEach(seat => {
+            if (isWindowSeat(seat)) {
+                windowSeatCount++;
+            }
+        });
+        const windowSeatCharge = windowSeatCount * 500;
+        const totalPrice = (basePrice * numberOfMembers) + windowSeatCharge;
+        
+        if (totalPrice <= 0) {
+            alert('Payment is required. Total amount must be greater than ₹0.');
+            return false;
+        }
+        
+        // Validate UPI ID format (basic validation)
+        if (!upiId || upiId.trim().length === 0) {
+            alert('Please enter a valid UPI ID for payment');
+            return false;
+        }
+        
+        // Set traveler details JSON
+        document.getElementById('travelerDetailsJson').value = JSON.stringify(travelers);
+        
+        // Set selected seats JSON
+        document.getElementById('selectedSeatsJson').value = JSON.stringify(selectedSeatsMap);
+        
+        console.log('Form validation passed');
+        console.log('Travelers:', travelers);
+        console.log('Selected seats:', selectedSeatsMap);
+        console.log('Total price:', totalPrice);
+        
+        return true;
+    }
+
+    // Periodically refresh seat availability
+    if (flightData.id) {
+        setInterval(async () => {
+            await populateSeats();
+        }, 10000); // Refresh every 10 seconds
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+        console.log('Page loaded, initializing...');
+        generateTravelerFields();
+        updateClassDisplay();
+        updateTravelersDisplay();
+            updatePrice();
+        updateSummary();
+            populateSeats();
+        });
+    </script>
+
+</body>
+
+</html>

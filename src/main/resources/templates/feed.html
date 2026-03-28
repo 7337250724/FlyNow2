@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Fly Now - Feed</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Arizonia&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="css/animate.css">
+
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="css/jquery.timepicker.css">
+
+
+    <link rel="stylesheet" href="css/flaticon.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="/">Fly Now<span>Travel Agency</span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="oi oi-menu"></span> Menu
+            </button>
+
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="/packages" class="nav-link">Packages</a></li>
+                    <li class="nav-item"><a href="/hotels" class="nav-link">Hotels</a></li>
+                    <li class="nav-item"><a href="/feed" class="nav-link">Posts</a></li>
+                    <li class="nav-item"><a href="/reviews/view" class="nav-link">Reviews</a></li>
+                    <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- END nav -->
+
+    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('images/bg_1.jpg');">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-center">
+                <div class="col-md-9 ftco-animate pb-5 text-center">
+                    <p class="breadcrumbs"><span class="mr-2"><a href="/">Home <i
+                                    class="fa fa-chevron-right"></i></a></span> <span>Feed <i
+                                class="fa fa-chevron-right"></i></span></p>
+                    <h1 class="mb-0 bread">Travel Feed</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row d-flex justify-content-center mb-4">
+                <div class="col-md-8 text-center">
+                    <h2 class="mb-4">Travel Feed</h2>
+                    <p>Share your adventures and see what others are experiencing!</p>
+                    <a href="/create-post" class="btn btn-primary"><i class="fa fa-plus mr-2"></i>Create New Post</a>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-8">
+                    <div th:each="post : ${posts}" class="card mb-4 shadow-sm" style="border-radius: 12px; overflow: hidden;">
+                        <!-- Post Header -->
+                        <div class="card-header bg-white d-flex align-items-center" style="border-bottom: 1px solid #efefef;">
+                            <div class="mr-3">
+                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" 
+                                     style="width: 40px; height: 40px; font-weight: bold;">
+                                    <span th:text="${post.user != null and post.user.fullName != null ? #strings.substring(post.user.fullName, 0, 1).toUpperCase() : 'U'}">U</span>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <strong th:text="${post.user != null ? (post.user.fullName != null ? post.user.fullName : post.user.username) : 'Unknown User'}">User Name</strong>
+                                <br>
+                                <small class="text-muted" th:if="${post.location != null and !post.location.isEmpty()}" th:text="'📍 ' + ${post.location}">Location</small>
+                            </div>
+                            <small class="text-muted" th:text="${#temporals.format(post.createdAt, 'MMM dd, yyyy')}">Date</small>
+                        </div>
+                        
+                        <!-- Post Media (Image or Video) -->
+                        <div class="post-media" style="background: #000; position: relative;">
+                            <!-- Image Post -->
+                            <img th:if="${post.imageUrl != null and !post.imageUrl.isEmpty()}" 
+                                 th:src="${post.imageUrl}" 
+                                 class="card-img-top" 
+                                 style="width: 100%; height: auto; max-height: 600px; object-fit: contain;"
+                                 alt="Post Image">
+                            
+                            <!-- Video Post -->
+                            <div th:if="${post.videoUrl != null and !post.videoUrl.isEmpty()}" class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+                                <video th:if="${#strings.contains(post.videoUrl, '.mp4') or #strings.contains(post.videoUrl, '.webm') or #strings.contains(post.videoUrl, '.ogg')}" 
+                                       th:src="${post.videoUrl}" 
+                                       controls 
+                                       style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <iframe th:if="${#strings.contains(post.videoUrl, 'youtube.com') or #strings.contains(post.videoUrl, 'youtu.be')}" 
+                                        th:src="${#strings.replace(#strings.replace(post.videoUrl, 'watch?v=', 'embed/'), 'youtu.be/', 'youtube.com/embed/')}" 
+                                        frameborder="0" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowfullscreen
+                                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                                </iframe>
+                                <iframe th:if="${#strings.contains(post.videoUrl, 'vimeo.com')}" 
+                                        th:src="${'https://player.vimeo.com/video/' + #strings.substringAfterLast(post.videoUrl, '/')}" 
+                                        frameborder="0" 
+                                        allow="autoplay; fullscreen; picture-in-picture" 
+                                        allowfullscreen
+                                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                                </iframe>
+                            </div>
+                        </div>
+                        
+                        <!-- Post Content -->
+                        <div class="card-body">
+                            <div class="post-actions mb-2">
+                                <button class="btn btn-sm text-danger" style="border: none; background: none;">
+                                    <i class="fa fa-heart-o" style="font-size: 24px;"></i>
+                                </button>
+                                <button class="btn btn-sm text-dark ml-2" style="border: none; background: none;">
+                                    <i class="fa fa-comment-o" style="font-size: 24px;"></i>
+                                </button>
+                                <button class="btn btn-sm text-dark ml-2" style="border: none; background: none;">
+                                    <i class="fa fa-share-alt" style="font-size: 24px;"></i>
+                                </button>
+                            </div>
+                            <p class="mb-1">
+                                <strong th:text="${post.user != null ? (post.user.fullName != null ? post.user.fullName : post.user.username) : 'Unknown User'}">User</strong>
+                                <span th:text="${post.content}">Post content here...</span>
+                            </p>
+                            <p class="text-muted mb-1" th:if="${post.category != null and !post.category.isEmpty()}">
+                                <small>#<span th:text="${post.category}">category</span></small>
+                            </p>
+                            <p class="text-muted mb-0">
+                                <small th:text="${#temporals.format(post.createdAt, 'MMM dd, yyyy HH:mm')}">Date</small>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div th:if="${#lists.isEmpty(posts)}" class="card text-center p-5">
+                        <i class="fa fa-camera" style="font-size: 64px; color: #ccc; margin-bottom: 20px;"></i>
+                        <h4>No posts yet</h4>
+                        <p class="text-muted">Be the first to share your travel experience!</p>
+                        <a href="/create-post" class="btn btn-primary mt-3"><i class="fa fa-plus mr-2"></i>Create Your First Post</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="ftco-footer bg-bottom ftco-no-pt" style="background-image: url(images/bg_3.jpg);">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>
+                        Copyright &copy;
+                        <script>document.write(new Date().getFullYear());</script> All rights reserved | This template
+                        is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com"
+                            target="_blank">Colorlib</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.easing.1.3.js"></script>
+    <script src="js/jquery.waypoints.min.js"></script>
+    <script src="js/jquery.stellar.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/jquery.animateNumber.min.js"></script>
+    <script src="js/bootstrap-datepicker.js"></script>
+    <script src="js/scrollax.min.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+
+</html>

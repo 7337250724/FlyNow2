@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .email-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .email-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            padding: 30px;
+            text-align: center;
+        }
+        .email-header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .email-header p {
+            margin: 10px 0 0 0;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .email-body {
+            padding: 30px;
+        }
+        .greeting {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .confirmation-box {
+            background: #f8f9fa;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .confirmation-box h2 {
+            color: #28a745;
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }
+        .booking-ref {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            margin: 10px 0;
+        }
+        .section {
+            margin: 25px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .section-title i {
+            margin-right: 10px;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        .detail-label {
+            font-weight: 600;
+            color: #666;
+        }
+        .detail-value {
+            color: #333;
+            text-align: right;
+        }
+        .transport-item {
+            background: #ffffff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #e0e0e0;
+        }
+        .transport-item h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .transport-item p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .price-summary {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .price-row:last-child {
+            border-bottom: none;
+        }
+        .price-row.total {
+            font-size: 20px;
+            font-weight: 700;
+            color: #667eea;
+            margin-top: 10px;
+            padding-top: 15px;
+            border-top: 3px solid #667eea;
+        }
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .info-box p {
+            margin: 5px 0;
+            color: #1976D2;
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #667eea;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge-success {
+            background: #28a745;
+            color: #ffffff;
+        }
+        .badge-info {
+            background: #17a2b8;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="email-header">
+            <h1>🎉 Your Trip is Confirmed!</h1>
+            <p th:text="${appName}">FlyNow Travel Agency</p>
+        </div>
+
+        <!-- Body -->
+        <div class="email-body">
+            <div class="greeting">
+                <p>Dear <strong th:text="${booking.customerName}">Customer</strong>,</p>
+                <p>We are thrilled to inform you that <strong style="color: #28a745; font-size: 20px;">your trip has been confirmed!</strong> 🎊</p>
+                <p>Thank you for choosing <strong th:text="${appName}">FlyNow Travel Agency</strong>. We're excited to be part of your travel journey and look forward to making it an unforgettable experience.</p>
+            </div>
+
+            <!-- Confirmation Box -->
+            <div class="confirmation-box">
+                <h2>✅ Your Trip is Confirmed!</h2>
+                <p style="font-size: 18px; color: #28a745; font-weight: 700; margin: 15px 0;">
+                    🎊 Congratulations! Your booking has been successfully confirmed. 🎊
+                </p>
+                <p class="booking-ref">Booking Reference: <strong style="color: #667eea; font-size: 20px;" th:text="${booking.bookingReference}">PKG-XXXXXXXX</strong></p>
+                <p>Booking Date: <strong th:text="${bookingDate}">Date</strong></p>
+                <p>Payment Status: 
+                    <span class="badge badge-success" th:if="${booking.paymentStatus == 'PAID'}">PAID</span>
+                    <span class="badge badge-info" th:if="${booking.paymentStatus == 'PENDING'}">PENDING</span>
+                </p>
+                <p style="margin-top: 15px; padding-top: 15px; border-top: 2px solid #28a745;">
+                    <strong>📧 This email serves as your official booking confirmation.</strong> Please save this email and keep your booking reference number handy for your trip.
+                </p>
+            </div>
+
+            <!-- Package Details -->
+            <div class="section" th:if="${booking.travelPackage != null}">
+                <div class="section-title">
+                    <i>📦</i> Package Details
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Package Name:</span>
+                    <span class="detail-value" th:text="${packageName != null ? packageName : 'N/A'}">Package Name</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Destination:</span>
+                    <span class="detail-value" th:text="${packageLocation != null ? packageLocation : 'N/A'}">Location</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Duration:</span>
+                    <span class="detail-value" th:text="${durationDays != null ? (durationDays + ' Days') : 'N/A'}">Duration</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Package Type:</span>
+                    <span class="detail-value">
+                        <span class="badge badge-info" th:if="${booking.packageTypeSelected != null and booking.packageTypeSelected.name() == 'LUXURY'}">Luxury Package</span>
+                        <span class="badge badge-success" th:if="${booking.packageTypeSelected != null and booking.packageTypeSelected.name() == 'STANDARD'}">Standard Package</span>
+                        <span th:if="${booking.packageTypeSelected == null}">N/A</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Transport Details -->
+            <div class="section" th:if="${hasFlight or hasBus or hasTrain}">
+                <div class="section-title">
+                    <i>🚌</i> Transport Details
+                </div>
+                
+                <!-- Flight -->
+                <div class="transport-item" th:if="${hasFlight}">
+                    <h4>✈️ Flight</h4>
+                    <p><strong>Airline:</strong> <span th:text="${booking.selectedFlight.airline}">Airline</span></p>
+                    <p><strong>Flight Number:</strong> <span th:text="${booking.selectedFlight.flightNumber}">Number</span></p>
+                    <p><strong>Route:</strong> <span th:text="${booking.selectedFlight.origin + ' → ' + booking.selectedFlight.destination}">Route</span></p>
+                    <p><strong>Departure:</strong> <span th:text="${booking.selectedFlight.departureTime}">Time</span></p>
+                    <p><strong>Arrival:</strong> <span th:text="${booking.selectedFlight.arrivalTime}">Time</span></p>
+                    <p th:if="${booking.selectedSeat != null and !booking.selectedSeat.isEmpty()}">
+                        <strong>Seat:</strong> <span style="color: #667eea; font-weight: 700;" th:text="${booking.selectedSeat}">Seat</span>
+                    </p>
+                </div>
+
+                <!-- Bus -->
+                <div class="transport-item" th:if="${hasBus}">
+                    <h4>🚌 Bus</h4>
+                    <p><strong>Bus Name:</strong> <span th:text="${booking.selectedBus.busName}">Bus Name</span></p>
+                    <p><strong>Type:</strong> <span th:text="${booking.selectedBus.busType}">Type</span></p>
+                    <p><strong>Route:</strong> <span th:text="${booking.selectedBus.source + ' → ' + booking.selectedBus.destination}">Route</span></p>
+                    <p><strong>Departure:</strong> <span th:text="${booking.selectedBus.departureTime}">Time</span></p>
+                    <p><strong>Arrival:</strong> <span th:text="${booking.selectedBus.arrivalTime}">Time</span></p>
+                </div>
+
+                <!-- Train -->
+                <div class="transport-item" th:if="${hasTrain}">
+                    <h4>🚂 Train</h4>
+                    <p><strong>Train Name:</strong> <span th:text="${booking.selectedTrain.trainName}">Train Name</span></p>
+                    <p><strong>Train Number:</strong> <span th:text="${booking.selectedTrain.trainNumber}">Number</span></p>
+                    <p><strong>Route:</strong> <span th:text="${booking.selectedTrain.source + ' → ' + booking.selectedTrain.destination}">Route</span></p>
+                    <p><strong>Departure:</strong> <span th:text="${booking.selectedTrain.departureTime}">Time</span></p>
+                    <p><strong>Arrival:</strong> <span th:text="${booking.selectedTrain.arrivalTime}">Time</span></p>
+                    <p th:if="${booking.trainClass != null and !booking.trainClass.isEmpty()}">
+                        <strong>Class:</strong> <span style="color: #667eea; font-weight: 700;" th:text="${booking.trainClass}">Class</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Hotel Details -->
+            <div class="section" th:if="${hasHotel}">
+                <div class="section-title">
+                    <i>🏨</i> Hotel Details
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Hotel Name:</span>
+                    <span class="detail-value" th:text="${booking.selectedHotel.name}">Hotel Name</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Location:</span>
+                    <span class="detail-value" th:text="${booking.selectedHotel.location}">Location</span>
+                </div>
+                <div class="detail-row" th:if="${booking.selectedHotel.starRating != null}">
+                    <span class="detail-label">Rating:</span>
+                    <span class="detail-value">
+                        <span th:each="i : ${#numbers.sequence(1, booking.selectedHotel.starRating)}">★</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Traveler Information -->
+            <div class="section">
+                <div class="section-title">
+                    <i>👥</i> Traveler Information
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Number of Travelers:</span>
+                    <span class="detail-value" th:text="${booking.numberOfMembers}">Count</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Contact Email:</span>
+                    <span class="detail-value" th:text="${booking.email}">Email</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Contact Phone:</span>
+                    <span class="detail-value" th:text="${booking.phoneNumber}">Phone</span>
+                </div>
+                
+                <!-- Individual Traveler Details -->
+                <div th:if="${travelers != null and !travelers.isEmpty()}" style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+                    <h4 style="color: #667eea; margin-bottom: 15px;">📋 Traveler Details:</h4>
+                    <div th:each="traveler, iterStat : ${travelers}" 
+                         style="background: #ffffff; padding: 15px; margin: 10px 0; border-radius: 5px; border: 1px solid #e0e0e0;">
+                        <h5 style="color: #333; margin: 0 0 10px 0;">
+                            <span style="background: #667eea; color: white; padding: 3px 10px; border-radius: 15px; font-size: 12px; margin-right: 10px;" 
+                                  th:text="${iterStat.count}">1</span>
+                            Traveler <span th:text="${iterStat.count}">1</span>
+                        </h5>
+                        <div class="detail-row" style="border-bottom: 1px solid #f0f0f0;">
+                            <span class="detail-label">Name:</span>
+                            <span class="detail-value" style="font-weight: 600;" th:text="${traveler.name}">Name</span>
+                        </div>
+                        <div class="detail-row" style="border-bottom: 1px solid #f0f0f0;">
+                            <span class="detail-label">Age:</span>
+                            <span class="detail-value" th:text="${traveler.age}">Age</span>
+                        </div>
+                        <div class="detail-row" style="border-bottom: 1px solid #f0f0f0;">
+                            <span class="detail-label">Gender:</span>
+                            <span class="detail-value" th:text="${traveler.gender}">Gender</span>
+                        </div>
+                        <div class="detail-row" th:if="${traveler.containsKey('seat') and traveler['seat'] != null and !traveler['seat'].toString().isEmpty()}">
+                            <span class="detail-label">Flight Seat:</span>
+                            <span class="detail-value" style="color: #667eea; font-weight: 700;" th:text="${traveler['seat']}">Seat</span>
+                        </div>
+                        <div class="detail-row" th:if="${traveler.containsKey('busSeat') and traveler['busSeat'] != null and !traveler['busSeat'].toString().isEmpty()}">
+                            <span class="detail-label">Bus Seat:</span>
+                            <span class="detail-value" style="color: #667eea; font-weight: 700;" th:text="'Seat ' + ${traveler['busSeat']}">Seat</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Price Summary -->
+            <div class="price-summary">
+                <h3 style="margin-top: 0; color: #667eea;">💰 Price Summary</h3>
+                <div class="price-row total">
+                    <span>Total Amount Paid:</span>
+                    <span>
+                        <span th:text="${booking.priceCurrency != null ? booking.priceCurrency : '₹'}"></span>
+                        <span th:text="${#numbers.formatDecimal(booking.totalPrice != null ? booking.totalPrice : 0, 0, 'COMMA', 0, 'POINT')}"></span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Important Information -->
+            <div class="info-box">
+                <p><strong>📋 Important Information:</strong></p>
+                <p>• Please keep this booking reference number for your records</p>
+                <p>• Check-in details will be sent separately 24 hours before your travel date</p>
+                <p>• For any changes or cancellations, please contact us at least 48 hours in advance</p>
+                <p>• Please carry a valid ID proof and booking confirmation during travel</p>
+            </div>
+
+            <!-- Final Message -->
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 10px; margin: 30px 0; text-align: center;">
+                <h3 style="color: white; margin: 0 0 15px 0;">🎉 We're Excited to Have You!</h3>
+                <p style="color: white; font-size: 16px; margin: 10px 0;">
+                    Your trip is confirmed and we're looking forward to making your journey memorable. 
+                    Get ready for an amazing adventure! ✈️🌍
+                </p>
+                <p style="color: white; font-size: 16px; margin: 10px 0; font-weight: 600;">
+                    Safe travels and see you soon! 🎊
+                </p>
+            </div>
+
+            <!-- Call to Action -->
+            <div style="text-align: center; margin: 30px 0;">
+                <a th:href="@{'http://localhost:8081/book/summary?bookingId=' + ${booking.id}}" class="btn">View Booking Details</a>
+            </div>
+
+            <!-- Support Information -->
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                <p style="margin: 0; color: #666;"><strong>Need Help?</strong></p>
+                <p style="margin: 5px 0; color: #666;">📞 Call us: +91-9876543210</p>
+                <p style="margin: 5px 0; color: #666;">✉️ Email: support@flynow.com</p>
+                <p style="margin: 5px 0; color: #666;">🕒 Support Hours: 24/7</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>This is an automated confirmation email. Please do not reply to this email.</p>
+            <p>© <span th:text="${#dates.year(#dates.createNow())}">2024</span> <span th:text="${appName}">FlyNow Travel Agency</span>. All rights reserved.</p>
+            <p>
+                <a href="http://localhost:8081">Visit our website</a> | 
+                <a href="http://localhost:8081/packages">Browse Packages</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

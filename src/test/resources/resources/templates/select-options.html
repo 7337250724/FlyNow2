@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Fly Now - Select Options</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            background: #ffffff;
+            color: #333333;
+            min-height: 100vh;
+        }
+
+        .booking-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+        }
+
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: #ffffff;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #333333;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .header-title i {
+            color: #FF6600;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: 0;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: #888;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .step.active .step-circle {
+            background: #FF7A00;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(255, 122, 0, 0.3);
+        }
+
+        .step.completed .step-circle {
+            background: #FF7A00;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(255, 122, 0, 0.3);
+        }
+
+        .step-label {
+            font-size: 13px;
+            color: #666666;
+            font-weight: 600;
+        }
+
+        .step.active .step-label {
+            color: #FF7A00;
+            font-weight: 700;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+        }
+
+        .form-header h2 {
+            color: #FF7A00;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 28px;
+            letter-spacing: -0.5px;
+        }
+
+        .package-info-card {
+            background: #fff8f3;
+            color: #333;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            border: 2px solid #FF7A00;
+            box-shadow: 0 4px 16px rgba(255, 122, 0, 0.1);
+        }
+
+        .package-info-card h4 {
+            color: #FF7A00;
+            margin-bottom: 15px;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .selection-card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            border: 2px solid #f0f0f0;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .selection-card h5 {
+            color: #FF7A00;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .selection-card h5 i {
+            margin-right: 12px;
+            color: #FF7A00;
+            font-size: 22px;
+        }
+
+        .btn-primary {
+            background: #FF7A00;
+            border-color: #FF7A00;
+            padding: 14px 35px;
+            font-weight: 700;
+            color: #ffffff;
+            border-radius: 12px;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(255, 122, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #FFA500;
+            border-color: #FFA500;
+            color: #ffffff;
+            box-shadow: 0 6px 16px rgba(255, 122, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            border-color: #6c757d;
+            padding: 12px 30px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            border-color: #5a6268;
+            color: #ffffff;
+        }
+
+        .form-control {
+            background: #ffffff;
+            border: 2px solid #e8e8e8;
+            color: #333;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: #ffffff;
+            border-color: #FF7A00;
+            color: #333;
+            box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1);
+            outline: none;
+        }
+
+        label {
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        h3, h4 {
+            color: #FF6600;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .price-summary {
+            background: #fff8f3;
+            padding: 30px;
+            border-radius: 16px;
+            margin-top: 30px;
+            border: 2px solid #FF7A00;
+            box-shadow: 0 4px 16px rgba(255, 122, 0, 0.1);
+        }
+
+        .price-summary h5 {
+            color: #FF7A00;
+            font-weight: 700;
+            margin-bottom: 25px;
+            font-size: 22px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+            color: #333;
+        }
+
+        .price-row.total {
+            font-size: 20px;
+            font-weight: 700;
+            color: #FF7A00;
+            margin-top: 15px;
+            padding-top: 20px;
+            border-top: 3px solid #FF7A00;
+        }
+
+        .flight-card {
+            background: #ffffff;
+            border: 2px solid #e8e8e8;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #333333;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .flight-card:hover {
+            border-color: #FF7A00;
+            box-shadow: 0 8px 24px rgba(255, 122, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .flight-card.selected {
+            border-color: #FF7A00;
+            background: #fff8f3;
+            box-shadow: 0 8px 24px rgba(255, 122, 0, 0.25);
+        }
+
+        .flight-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .airline-name {
+            font-weight: 700;
+            color: #333333;
+            font-size: 18px;
+        }
+
+        .flight-route {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 20px 0;
+            color: #333333;
+        }
+
+        .route-city {
+            font-weight: 700;
+            font-size: 16px;
+            color: #333333;
+        }
+
+        .route-arrow {
+            color: #FF7A00;
+            font-size: 20px;
+        }
+
+        .flight-price-btn {
+            background: #FF7A00;
+            color: #ffffff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .alert {
+            background: #fff5f0;
+            border: 1px solid #FF6600;
+            color: #333;
+        }
+
+        .alert-info {
+            background: #fff5f0;
+            border-color: #FF6600;
+            color: #FF6600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="booking-container">
+        <!-- Header Bar -->
+        <div class="header-bar">
+            <div class="header-title">
+                <i class="fa fa-plane"></i>
+                <span>Welcome to Fly Now Airlines</span>
+            </div>
+        </div>
+
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+            <div class="step completed">
+                <div class="step-circle">1</div>
+                <div class="step-label">Contact Details</div>
+            </div>
+            <div class="step active">
+                <div class="step-circle">2</div>
+                <div class="step-label">Select Options</div>
+            </div>
+        </div>
+
+        <div class="form-header">
+            <h2><i class="fa fa-calendar-check-o mr-2"></i>Select Options</h2>
+            <div class="package-info-card">
+                <h4 th:text="${package.name}">Package Name</h4>
+                <p class="mb-2"><i class="fa fa-map-marker mr-2"></i><span th:text="${package.location}">Location</span></p>
+                <p class="mb-2"><i class="fa fa-clock-o mr-2"></i><span th:text="${package.durationDays} + ' Days'">Duration</span></p>
+            </div>
+        </div>
+
+        <form th:action="@{/book/process}" method="post" id="bookingForm">
+            <input type="hidden" name="travelPackage.id" th:value="${package.id}">
+            <input type="hidden" name="packageTypeSelected" value="STANDARD">
+            <input type="hidden" name="totalPrice" id="hiddenTotalPrice" th:value="${booking.totalPrice != null ? booking.totalPrice : package.getStandardPrice()}">
+            <input type="hidden" name="priceCurrency" th:value="${booking.priceCurrency != null ? booking.priceCurrency : (package.priceCurrency != null ? package.priceCurrency : '₹')}">
+            <input type="hidden" name="customerName" th:value="${booking.customerName}">
+            <input type="hidden" name="email" th:value="${booking.email}">
+            <input type="hidden" name="phoneNumber" th:value="${booking.phoneNumber}">
+            <input type="hidden" name="numberOfMembers" th:value="${booking.numberOfMembers != null ? booking.numberOfMembers : 1}">
+            <input type="hidden" name="travelerDetails" th:value="${booking.travelerDetails}">
+
+            <!-- Transport Selection (Bus/Train) - Only for Domestic -->
+            <div class="selection-card" th:if="${isDomesticPackage == true}">
+                <h5><i class="fa fa-train"></i>Transport Options</h5>
+                <p class="text-muted mb-3">You can select one or more transport options (Bus, Train) as optional add-ons. Additional charges will apply for each selected transport.</p>
+
+                <input type="hidden" name="selectedFlightId" id="selectedFlightId" value="">
+
+                <!-- Bus Selection -->
+                <div th:if="${buses != null and !buses.isEmpty()}" class="mb-4">
+                    <label class="font-weight-bold">
+                        <i class="fa fa-bus mr-2" style="color: #667eea;"></i>Bus (Optional):
+                    </label>
+                    <select class="form-control" name="selectedBusId" id="selectedBusId" onchange="updatePriceSummary()">
+                        <option value="">No Bus Selected</option>
+                        <option th:each="bus : ${buses}" 
+                                th:value="${bus.id}" 
+                                th:attr="data-price=${bus.ticketPrice}, data-currency=${bus.priceCurrency != null ? bus.priceCurrency : '₹'}"
+                                th:text="${bus.busName + ' (' + bus.source + ' → ' + bus.destination + ')' + ' - ' + (bus.priceCurrency != null ? bus.priceCurrency : '₹') + ' ' + #numbers.formatDecimal(bus.ticketPrice, 0, 'COMMA', 0, 'POINT')}">
+                            Bus
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Train Selection -->
+                <div th:if="${trains != null and !trains.isEmpty()}" class="mb-4">
+                    <label class="font-weight-bold">
+                        <i class="fa fa-train mr-2" style="color: #667eea;"></i>Train (Optional):
+                    </label>
+                    <select class="form-control" name="selectedTrainId" id="selectedTrainId" onchange="updateTrainClassOptions()">
+                        <option value="">No Train Selected</option>
+                        <option th:each="train : ${trains}" 
+                                th:value="${train.id}" 
+                                th:attr="data-ac-price=${train.acPrice != null ? train.acPrice : 0}, data-sleeper-price=${train.sleeperPrice != null ? train.sleeperPrice : 0}, data-currency=${train.priceCurrency != null ? train.priceCurrency : '₹'}"
+                                th:text="${train.trainName + ' - ' + train.trainNumber + ' (' + train.source + ' → ' + train.destination + ')'}">
+                            Train
+                        </option>
+                    </select>
+                    <div class="form-group mt-2" id="trainClassSelectionGroup" style="display: none;">
+                        <label>Select Class:</label>
+                        <select class="form-control" name="selectedTrainClass" id="selectedTrainClass" onchange="updatePriceSummary()">
+                            <option value="">Choose Class</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hidden field for flight (set to empty) -->
+            <input type="hidden" name="selectedFlightId" id="selectedFlightIdInt" value="">
+
+            <!-- Hotel Selection -->
+            <div class="selection-card" th:if="${suggestedHotels != null and !suggestedHotels.isEmpty()}">
+                <h5><i class="fa fa-hotel"></i>Hotel Selection</h5>
+                <div class="form-group">
+                    <label>Select Hotel</label>
+                    <select class="form-control" name="selectedHotelId" id="selectedHotelId" onchange="updatePriceSummary()">
+                        <option value="">No Hotel Selected</option>
+                        <option th:each="hotel : ${suggestedHotels}" 
+                                th:value="${hotel.id}" 
+                                th:attr="data-price=${hotel.pricePerNight}, data-currency=${hotel.priceCurrency != null ? hotel.priceCurrency : '₹'}, data-duration=${package.durationDays}"
+                                th:text="${hotel.name + ' - ' + (hotel.priceCurrency != null ? hotel.priceCurrency : '₹') + ' ' + #numbers.formatDecimal(hotel.pricePerNight, 0, 'COMMA', 0, 'POINT') + '/night'}">
+                            Hotel
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Payment Information -->
+            <div class="selection-card">
+                <h5><i class="fa fa-credit-card"></i>Payment Information</h5>
+                <div class="form-group">
+                    <label>UPI ID (e.g., user@upi) *</label>
+                    <input type="text" class="form-control" name="upiId" id="upiId" required
+                        placeholder="Enter your UPI ID to pay">
+                    <small class="form-text text-muted">Payment will be processed after you confirm your selections</small>
+                </div>
+            </div>
+
+            <!-- Price Summary -->
+            <div class="price-summary">
+                <h5><i class="fa fa-calculator mr-2"></i>Price Summary</h5>
+                <div class="price-row">
+                    <span>Package Price (per person):</span>
+                    <strong id="packagePriceDisplay">
+                        <span th:text="${booking.priceCurrency != null ? booking.priceCurrency : (package.priceCurrency != null ? package.priceCurrency : '₹')}"></span>
+                        <span th:text="${#numbers.formatDecimal(package.getStandardPrice() != null ? package.getStandardPrice() : package.price, 0, 'COMMA', 0, 'POINT')}"></span>
+                    </strong>
+                </div>
+                <div class="price-row" id="flightChargeRow" style="display: none;">
+                    <span>Flight Charge (per person):</span>
+                    <strong id="flightChargeDisplay">₹0</strong>
+                </div>
+                <div class="price-row" id="busChargeRow" style="display: none;">
+                    <span>Bus Charge (per person):</span>
+                    <strong id="busChargeDisplay">₹0</strong>
+                </div>
+                <div class="price-row" id="trainChargeRow" style="display: none;">
+                    <span>Train Charge (per person):</span>
+                    <strong id="trainChargeDisplay">₹0</strong>
+                </div>
+                <div class="price-row" id="hotelChargeRow" style="display: none;">
+                    <span>Hotel Charge:</span>
+                    <strong id="hotelChargeDisplay">₹0</strong>
+                </div>
+                <div class="price-row" style="border-top: 1px solid #e0e0e0; padding-top: 10px; margin-top: 10px;">
+                    <span><strong>Number of Travelers:</strong></span>
+                    <strong id="numTravelersInPrice" th:text="${booking.numberOfMembers != null ? booking.numberOfMembers : 1}">1</strong>
+                </div>
+                <div class="price-row total">
+                    <span><strong style="font-size: 18px;">Total Amount:</strong></span>
+                    <strong id="finalPriceDisplay" style="font-size: 28px; color: #FF7A00; font-weight: 700;">
+                        <span th:text="${booking.priceCurrency != null ? booking.priceCurrency : (package.priceCurrency != null ? package.priceCurrency : '₹')}"></span>
+                        <span th:text="${#numbers.formatDecimal(package.getStandardPrice() != null ? package.getStandardPrice() : package.price, 0, 'COMMA', 0, 'POINT')}"></span>
+                    </strong>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a th:href="@{'/book/' + ${package.id} + '/contact-details?packageType=STANDARD'}" class="btn btn-secondary">
+                    <i class="fa fa-arrow-left mr-2"></i>Back to Contact Details
+                </a>
+                <button type="submit" class="btn btn-primary" id="payBookButton">
+                    <i class="fa fa-check-circle mr-2"></i>Pay & Book Now
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script th:inline="javascript">
+        // Package data from server
+        const packageData = {
+            id: /*[[${package.id}]]*/ null,
+            standardPrice: /*[[${package.getStandardPrice() != null ? package.getStandardPrice() : (package.price != null ? package.price : 0)}]]*/ 0,
+            currency: /*[[${package.priceCurrency != null ? package.priceCurrency : '₹'}]]*/ '₹',
+            durationDays: /*[[${package.durationDays != null ? package.durationDays : 1}]]*/ 1,
+            isDomestic: /*[[${isDomesticPackage == true}]]*/ false
+        };
+        
+        const numMembers = /*[[${booking.numberOfMembers != null ? booking.numberOfMembers : 1}]]*/ 1;
+        
+        function selectFlightCard(cardElement) {
+            // Remove selected class from all flight cards
+            document.querySelectorAll('.flight-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked card
+            cardElement.classList.add('selected');
+            
+            // Get flight ID from card
+            const flightId = cardElement.getAttribute('data-flight-id');
+            
+            // Set hidden input value
+            const hiddenInput = document.getElementById('selectedFlightIdInt');
+            if (hiddenInput) {
+                hiddenInput.value = flightId;
+            }
+            
+            updatePriceSummary();
+        }
+        
+        function updateTrainClassOptions() {
+            const trainSelect = document.getElementById('selectedTrainId');
+            const classGroup = document.getElementById('trainClassSelectionGroup');
+            const classSelect = document.getElementById('selectedTrainClass');
+            
+            if (trainSelect && trainSelect.value) {
+                const selectedOption = trainSelect.options[trainSelect.selectedIndex];
+                const acPrice = selectedOption.getAttribute('data-ac-price');
+                const sleeperPrice = selectedOption.getAttribute('data-sleeper-price');
+                
+                if (classSelect) {
+                    classSelect.innerHTML = '<option value="">Choose Class</option>';
+                    if (acPrice && acPrice !== 'null' && acPrice !== '0') {
+                        const option = document.createElement('option');
+                        option.value = 'AC';
+                        option.setAttribute('data-price', acPrice);
+                        option.textContent = 'AC Class - ' + packageData.currency + parseFloat(acPrice).toLocaleString('en-IN');
+                        classSelect.appendChild(option);
+                    }
+                    if (sleeperPrice && sleeperPrice !== 'null' && sleeperPrice !== '0') {
+                        const option = document.createElement('option');
+                        option.value = 'SLEEPER';
+                        option.setAttribute('data-price', sleeperPrice);
+                        option.textContent = 'Sleeper Class - ' + packageData.currency + parseFloat(sleeperPrice).toLocaleString('en-IN');
+                        classSelect.appendChild(option);
+                    }
+                }
+                if (classGroup) classGroup.style.display = 'block';
+            } else {
+                if (classGroup) classGroup.style.display = 'none';
+                if (classSelect) classSelect.innerHTML = '<option value="">Choose Class</option>';
+            }
+            updatePriceSummary();
+        }
+        
+        function updatePriceSummary() {
+            // Calculate base price (per person) - always use standard price
+            let basePrice = packageData.standardPrice;
+            
+            // Total base price = base price * number of travelers
+            let total = basePrice * numMembers;
+            let flightCharge = 0;
+            let busCharge = 0;
+            let trainCharge = 0;
+            let hotelCharge = 0;
+            
+            // Flight charge
+            const flightSelect = document.getElementById('selectedFlightIdInt');
+            if (flightSelect && flightSelect.value) {
+                const selectedCard = document.querySelector(`.flight-card[data-flight-id="${flightSelect.value}"]`);
+                if (selectedCard) {
+                    const pricePerPerson = parseFloat(selectedCard.getAttribute('data-price') || 0);
+                    flightCharge = pricePerPerson * numMembers;
+                    total += flightCharge;
+                }
+            }
+            
+            // Bus charge
+            const busSelect = document.getElementById('selectedBusId');
+            if (busSelect && busSelect.value && packageData.isDomestic) {
+                const selectedOption = busSelect.options[busSelect.selectedIndex];
+                const pricePerPerson = parseFloat(selectedOption.getAttribute('data-price') || 0);
+                busCharge = pricePerPerson * numMembers;
+                total += busCharge;
+            }
+            
+            // Train charge
+            const trainSelect = document.getElementById('selectedTrainId');
+            if (trainSelect && trainSelect.value && packageData.isDomestic) {
+                const classSelect = document.getElementById('selectedTrainClass');
+                if (classSelect && classSelect.value) {
+                    const selectedOption = classSelect.options[classSelect.selectedIndex];
+                    const pricePerPerson = parseFloat(selectedOption.getAttribute('data-price') || 0);
+                    trainCharge = pricePerPerson * numMembers;
+                    total += trainCharge;
+                }
+            }
+            
+            // Hotel charge
+            const hotelSelect = document.getElementById('selectedHotelId');
+            if (hotelSelect && hotelSelect.value) {
+                const selectedOption = hotelSelect.options[hotelSelect.selectedIndex];
+                const hotelPricePerNight = parseFloat(selectedOption.getAttribute('data-price') || 0);
+                hotelCharge = hotelPricePerNight * packageData.durationDays;
+                total += hotelCharge;
+            }
+            
+            // Update display
+            document.getElementById('packagePriceDisplay').innerHTML = 
+                packageData.currency + basePrice.toLocaleString('en-IN');
+            
+            // Show/hide charge rows
+            if (flightCharge > 0) {
+                document.getElementById('flightChargeRow').style.display = 'flex';
+                const selectedCard = document.querySelector('.flight-card.selected');
+                const currency = selectedCard ? selectedCard.getAttribute('data-currency') : packageData.currency;
+                document.getElementById('flightChargeDisplay').textContent = 
+                    (currency || packageData.currency) + flightCharge.toLocaleString('en-IN');
+            } else {
+                document.getElementById('flightChargeRow').style.display = 'none';
+            }
+            
+            if (busCharge > 0) {
+                document.getElementById('busChargeRow').style.display = 'flex';
+                document.getElementById('busChargeDisplay').textContent = 
+                    packageData.currency + busCharge.toLocaleString('en-IN');
+            } else {
+                document.getElementById('busChargeRow').style.display = 'none';
+            }
+            
+            if (trainCharge > 0) {
+                document.getElementById('trainChargeRow').style.display = 'flex';
+                document.getElementById('trainChargeDisplay').textContent = 
+                    packageData.currency + trainCharge.toLocaleString('en-IN');
+            } else {
+                document.getElementById('trainChargeRow').style.display = 'none';
+            }
+            
+            if (hotelCharge > 0) {
+                document.getElementById('hotelChargeRow').style.display = 'flex';
+                document.getElementById('hotelChargeDisplay').textContent = 
+                    packageData.currency + hotelCharge.toLocaleString('en-IN');
+            } else {
+                document.getElementById('hotelChargeRow').style.display = 'none';
+            }
+            
+            // Update number of travelers
+            document.getElementById('numTravelersInPrice').textContent = numMembers;
+            
+            // Update total
+            document.getElementById('finalPriceDisplay').innerHTML = 
+                packageData.currency + total.toLocaleString('en-IN');
+            document.getElementById('hiddenTotalPrice').value = total;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePriceSummary();
+        });
+    </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Fly Now - Flight Booking</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background-color: #fff;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #1a1a1a !important;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff !important;
+        }
+
+        .navbar-brand span {
+            color: #f15d30;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            margin: 0 0.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            color: #f15d30 !important;
+        }
+
+        /* Hero Section */
+        .hero-wrap {
+            min-height: 400px;
+            position: relative;
+            background-image: url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1600');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .hero-wrap .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-wrap .container {
+            position: relative;
+            z-index: 2;
+            padding-bottom: 80px;
+        }
+
+        .breadcrumbs {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .breadcrumbs a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+        }
+
+        .hero-wrap h1 {
+            color: #fff;
+            font-size: 48px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        /* Flight Search Container */
+        .flight-search-wrapper {
+            margin-top: -80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .flight-search-container {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            padding: 0;
+            overflow: hidden;
+        }
+
+        /* Trip Type Tabs */
+        .trip-type-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #eee;
+        }
+
+        .trip-type-tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 16px;
+            color: #666;
+            border: none;
+            background: transparent;
+            position: relative;
+        }
+
+        .trip-type-tab.active {
+            color: #f15d30;
+            background: #fff;
+        }
+
+        .trip-type-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #f15d30;
+        }
+
+        .trip-type-tab:hover:not(.active) {
+            background: rgba(241, 93, 48, 0.05);
+            color: #f15d30;
+        }
+
+        /* Search Form */
+        .flight-search-form {
+            padding: 40px;
+        }
+
+        .form-row-custom {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group-custom {
+            flex: 1;
+            position: relative;
+        }
+
+        .form-group-custom label {
+            display: block;
+            font-size: 12px;
+            color: #666;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .form-group-custom .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-group-custom .input-wrapper .icon {
+            position: absolute;
+            left: 15px;
+            color: #f15d30;
+            font-size: 18px;
+            z-index: 2;
+        }
+
+        .form-group-custom input,
+        .form-group-custom select {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        .form-group-custom input:focus,
+        .form-group-custom select:focus {
+            outline: none;
+            border-color: #f15d30;
+            box-shadow: 0 0 0 3px rgba(241, 93, 48, 0.1);
+        }
+
+        .swap-button-wrapper {
+            position: relative;
+        }
+
+        .swap-button {
+            position: absolute;
+            top: 50%;
+            right: -20px;
+            transform: translateY(-50%);
+            background: #f15d30;
+            color: #fff;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(241, 93, 48, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .swap-button:hover {
+            background: #d94c25;
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 6px 20px rgba(241, 93, 48, 0.6);
+        }
+
+        .passenger-class-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .passenger-class-row .form-group-custom {
+            flex: 1;
+        }
+
+        .search-button-wrapper {
+            margin-top: 30px;
+        }
+
+        .btn-search {
+            width: 100%;
+            padding: 18px;
+            background: #f15d30;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-search:hover {
+            background: #d94c25;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(241, 93, 48, 0.4);
+        }
+
+        /* Section */
+        .ftco-section {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .heading-section {
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .heading-section .subheading {
+            font-size: 14px;
+            color: #f15d30;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .heading-section h2 {
+            font-size: 40px;
+            font-weight: 700;
+            color: #000;
+        }
+
+        /* Feature Cards */
+        .feature-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card .icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(241, 93, 48, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 35px;
+            color: #f15d30;
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .ftco-footer {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .ftco-footer p {
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0;
+        }
+
+        .ftco-footer a {
+            color: #f15d30;
+            text-decoration: none;
+        }
+
+        .ftco-footer a:hover {
+            color: #ff7a4d;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-wrap h1 {
+                font-size: 32px;
+            }
+
+            .heading-section h2 {
+                font-size: 28px;
+            }
+
+            .flight-search-form {
+                padding: 25px;
+            }
+
+            .form-row-custom {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .swap-button {
+                right: 10px;
+                top: auto;
+                bottom: -20px;
+                transform: none;
+            }
+
+            .trip-type-tabs {
+                flex-direction: column;
+            }
+
+            .trip-type-tab {
+                border-radius: 0;
+            }
+
+            .trip-type-tab.active::after {
+                display: none;
+            }
+
+            .ftco-section {
+                padding: 50px 0;
+            }
+        }
+
+        .airline-logo {
+            min-width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .airline-logo-placeholder {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f15d30 0%, #d94c25 100%);
+            border-radius: 8px;
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(241, 93, 48, 0.3);
+        }
+
+        .flight-airline {
+            display: flex;
+            align-items: center;
+        }
+
+        .flight-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .flight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Fly Now<span>Travel Agency</span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="/dashboard" class="nav-link">Dashboard</a></li>
+                    <li class="nav-item active"><a href="/book/flight" class="nav-link">Flights</a></li>
+                    <li class="nav-item"><a href="/book/hotel" class="nav-link">Hotels</a></li>
+                    <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-wrap">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="breadcrumbs">
+                        <span class="mr-2"><a href="/">Home <i class="fa fa-chevron-right"></i></a></span>
+                        <span>Flight Booking <i class="fa fa-chevron-right"></i></span>
+                    </p>
+                    <h1>Book Your Flight</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Flight Search Section -->
+    <section class="ftco-section ftco-no-pb ftco-no-pt">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="flight-search-wrapper">
+                        <div class="flight-search-container">
+                            <div class="trip-type-tabs">
+                                <div class="trip-type-tab active" onclick="setTripType('one-way', this)">One Way</div>
+                                <div class="trip-type-tab" onclick="setTripType('round-trip', this)">Round Trip</div>
+                                <div class="trip-type-tab" onclick="setTripType('multi-city', this)">Multi City</div>
+                            </div>
+                            <form th:action="@{/book/flight}" method="get" id="flightForm" class="flight-search-form" onsubmit="return handleFlightSearch(event)">
+                                <div class="form-row-custom">
+                                    <div class="form-group-custom swap-button-wrapper">
+                                        <label for="fromCity">From</label>
+                                        <div class="input-wrapper">
+                                            <span class="icon"><i class="fa fa-map-marker"></i></span>
+                                            <input type="text" class="form-control" name="source" id="fromCity"
+                                                placeholder="Enter city or airport" th:value="${source}">
+                                        </div>
+                                        <button type="button" class="swap-button" onclick="swapCities()" title="Swap cities">
+                                            <i class="fa fa-exchange"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-group-custom">
+                                        <label for="toCity">To</label>
+                                        <div class="input-wrapper">
+                                            <span class="icon"><i class="fa fa-map-marker"></i></span>
+                                            <input type="text" class="form-control" name="destination" id="toCity"
+                                                placeholder="Enter city or airport" th:value="${destination}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row-custom">
+                                    <div class="form-group-custom">
+                                        <label for="departureDate">Departure Date</label>
+                                        <div class="input-wrapper">
+                                            <span class="icon"><i class="fa fa-calendar"></i></span>
+                                            <input type="text" class="form-control departure_date" name="departureDate" id="departureDate"
+                                                placeholder="Select date">
+                                        </div>
+                                    </div>
+                                    <div class="form-group-custom" id="returnDateGroup" style="display: none;">
+                                        <label for="returnDate">Return Date</label>
+                                        <div class="input-wrapper">
+                                            <span class="icon"><i class="fa fa-calendar"></i></span>
+                                            <input type="text" class="form-control return_date" name="returnDate" id="returnDate"
+                                                placeholder="Select date">
+                                        </div>
+                                    </div>
+                                    <div class="form-group-custom">
+                                        <label for="travellers">Travellers</label>
+                                        <div class="input-wrapper">
+                                            <span class="icon"><i class="fa fa-users"></i></span>
+                                            <select name="travellers" id="travellers" class="form-control">
+                                                <option value="1">1 Adult</option>
+                                                <option value="2">2 Adults</option>
+                                                <option value="3">3 Adults</option>
+                                                <option value="4">4 Adults</option>
+                                                <option value="5">5 Adults</option>
+                                                <option value="6">6 Adults</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-custom">
+                                        <label for="class">Class</label>
+                                        <div class="input-wrapper">
+                                            <span class="icon"><i class="fa fa-plane"></i></span>
+                                            <select name="class" id="class" class="form-control">
+                                                <option value="economy">Economy</option>
+                                                <option value="premium-economy">Premium Economy</option>
+                                                <option value="business">Business</option>
+                                                <option value="first">First</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="search-button-wrapper">
+                                    <button type="submit" class="btn-search">
+                                        <i class="fa fa-search"></i> Search Flights
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Available Flights Section -->
+    <section class="ftco-section" th:if="${flights != null and !flights.isEmpty()}">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 heading-section text-center mb-5">
+                    <span class="subheading">Available Flights</span>
+                    <h2>Select Your Flight</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="flight-list">
+                        <div th:each="flight : ${flights}" class="flight-card mb-4">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-3">
+                                            <div class="flight-airline d-flex align-items-center">
+                                                <div class="airline-logo mr-3">
+                                                    <div class="airline-logo-placeholder" th:attr="data-airline=${flight.airline}">
+                                                        <i class="fa fa-plane fa-2x" style="color: #f15d30;"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 th:text="${flight.airline}" style="margin-bottom: 5px; font-size: 18px; font-weight: 600;">Airline</h4>
+                                                    <p class="text-muted mb-0" style="font-size: 14px;" th:text="${flight.flightNumber}">Flight Number</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="flight-route">
+                                                <div class="route-time">
+                                                    <strong th:text="${flight.departureTime}">10:30 AM</strong>
+                                                    <span class="text-muted" th:text="${flight.origin}">Origin</span>
+                                                </div>
+                                                <div class="route-arrow text-center my-2">
+                                                    <i class="fa fa-arrow-right text-primary"></i>
+                                                </div>
+                                                <div class="route-time">
+                                                    <strong th:text="${flight.arrivalTime}">2:45 PM</strong>
+                                                    <span class="text-muted" th:text="${flight.destination}">Destination</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="flight-prices">
+                                                <div class="price-item mb-2">
+                                                    <span class="text-muted">Economy: </span>
+                                                    <strong th:text="${flight.priceCurrency != null ? flight.priceCurrency : '₹'} + ${#numbers.formatDecimal(flight.price, 0, 'COMMA', 0, 'POINT')}">₹5,000</strong>
+                                                </div>
+                                                <div class="price-item mb-2" th:if="${flight.businessPrice != null}">
+                                                    <span class="text-muted">Business: </span>
+                                                    <strong th:text="${flight.priceCurrency != null ? flight.priceCurrency : '₹'} + ${#numbers.formatDecimal(flight.businessPrice, 0, 'COMMA', 0, 'POINT')}">₹10,000</strong>
+                                                </div>
+                                                <div class="price-item" th:if="${flight.firstClassPrice != null}">
+                                                    <span class="text-muted">First: </span>
+                                                    <strong th:text="${flight.priceCurrency != null ? flight.priceCurrency : '₹'} + ${#numbers.formatDecimal(flight.firstClassPrice, 0, 'COMMA', 0, 'POINT')}">₹15,000</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3 pt-3" style="border-top: 1px solid #e0e0e0;">
+                                        <div class="col-md-12 text-center">
+                                            <a th:href="@{'/flight/' + ${flight.id} + '/book'}" class="btn btn-primary btn-lg" style="background: #f15d30; border-color: #f15d30; padding: 12px 40px; font-weight: 600; min-width: 200px;">
+                                                <i class="fa fa-book mr-2"></i>Book Now
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- No Flights Message -->
+    <section class="ftco-section" th:if="${flights == null or flights.isEmpty()}">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="alert alert-info">
+                        <i class="fa fa-info-circle fa-3x mb-3"></i>
+                        <h3>No Flights Available</h3>
+                        <p>There are no flights matching your search criteria. Please try different search parameters.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 heading-section text-center">
+                    <span class="subheading">Why Choose Us</span>
+                    <h2>Why Book With Us?</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="icon">
+                            <i class="fa fa-shield"></i>
+                        </div>
+                        <h3>Best Price Guarantee</h3>
+                        <p>Get the best deals on flights with our price match guarantee</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="icon">
+                            <i class="fa fa-clock-o"></i>
+                        </div>
+                        <h3>24/7 Support</h3>
+                        <p>Round-the-clock customer support for all your travel needs</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="icon">
+                            <i class="fa fa-credit-card"></i>
+                        </div>
+                        <h3>Easy Cancellation</h3>
+                        <p>Flexible cancellation and refund policies for your peace of mind</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="ftco-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | Fly Now Travel Agency</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/bootstrap-datepicker.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.departure_date').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                startDate: new Date()
+            });
+
+            $('.return_date').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                startDate: new Date()
+            });
+        });
+
+        function setTripType(type, element) {
+            // Update active tab
+            document.querySelectorAll('.trip-type-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            element.classList.add('active');
+
+            // Show/hide return date
+            const returnDateGroup = document.getElementById('returnDateGroup');
+            const returnDateInput = returnDateGroup.querySelector('input');
+            
+            if (type === 'round-trip') {
+                returnDateGroup.style.display = 'block';
+                returnDateInput.required = true;
+            } else {
+                returnDateGroup.style.display = 'none';
+                returnDateInput.required = false;
+                returnDateInput.value = '';
+            }
+        }
+
+        function swapCities() {
+            const fromCity = document.getElementById('fromCity').value;
+            const toCity = document.getElementById('toCity').value;
+            document.getElementById('fromCity').value = toCity;
+            document.getElementById('toCity').value = fromCity;
+        }
+
+        function handleFlightSearch(event) {
+            event.preventDefault();
+            const source = document.getElementById('fromCity').value.trim();
+            const destination = document.getElementById('toCity').value.trim();
+            
+            // Build URL with parameters
+            let url = '/book/flight';
+            const params = [];
+            
+            if (source) {
+                params.push('source=' + encodeURIComponent(source));
+            }
+            if (destination) {
+                params.push('destination=' + encodeURIComponent(destination));
+            }
+            
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+            
+            // Navigate to the search URL
+            window.location.href = url;
+            return false;
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Fly Now - Booking Summary</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8f9fa;
+        }
+
+        .summary-container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .summary-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-header h1 {
+            color: #fff;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .summary-header .booking-ref {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .selection-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #f15d30;
+        }
+
+        .selection-card h3 {
+            color: #f15d30;
+            font-weight: 700;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+        }
+
+        .selection-card h3 i {
+            margin-right: 10px;
+        }
+
+        .selection-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #e9ecef;
+        }
+
+        .selection-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .selection-item h5 {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .selection-item h5 i {
+            margin-right: 10px;
+            color: #f15d30;
+        }
+
+        .selection-item p {
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .selection-item .no-selection {
+            color: #999;
+            font-style: italic;
+        }
+
+        .details-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .details-card h3 {
+            color: #f15d30;
+            font-weight: 700;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f15d30;
+            padding-bottom: 10px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .detail-value {
+            color: #333;
+            text-align: right;
+        }
+
+        .price-summary-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid #dee2e6;
+        }
+
+        .price-summary-card h3 {
+            color: #f15d30;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .price-row:last-child {
+            border-bottom: none;
+        }
+
+        .price-row.total {
+            font-size: 20px;
+            font-weight: 700;
+            color: #f15d30;
+            margin-top: 15px;
+            padding-top: 20px;
+            border-top: 3px solid #f15d30;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn-primary {
+            background: #f15d30;
+            border-color: #f15d30;
+            padding: 12px 30px;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: #d94c25;
+            border-color: #d94c25;
+        }
+
+        .btn-outline-primary {
+            border-color: #f15d30;
+            color: #f15d30;
+            padding: 12px 30px;
+            font-weight: 600;
+        }
+
+        .btn-outline-primary:hover {
+            background: #f15d30;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="summary-container">
+        <!-- Header -->
+        <div class="summary-header">
+            <h1><i class="fa fa-check-circle mr-2"></i>Booking Summary</h1>
+            <div class="booking-ref">
+                <strong>Booking Reference:</strong> <span th:text="${booking.bookingReference}">PKG-XXXXXXXX</span>
+            </div>
+        </div>
+
+        <!-- Selected Transport, Seat, Hotel Card -->
+        <div class="selection-card">
+            <h3><i class="fa fa-list-check"></i>Your Selections</h3>
+            
+            <!-- Flight Selection -->
+            <div class="selection-item" th:if="${booking.selectedFlight != null}">
+                <h5><i class="fa fa-plane"></i>Flight</h5>
+                <p><strong>Airline:</strong> <span th:text="${booking.selectedFlight.airline}">Airline</span></p>
+                <p><strong>Flight Number:</strong> <span th:text="${booking.selectedFlight.flightNumber}">Number</span></p>
+                <p><strong>Route:</strong> <span th:text="${booking.selectedFlight.origin + ' → ' + booking.selectedFlight.destination}">Route</span></p>
+                <p><strong>Departure:</strong> <span th:text="${booking.selectedFlight.departureTime}">Time</span></p>
+                <p><strong>Arrival:</strong> <span th:text="${booking.selectedFlight.arrivalTime}">Time</span></p>
+                <p th:if="${booking.selectedSeat != null and !booking.selectedSeat.isEmpty()}">
+                    <strong>Selected Seat:</strong> <span th:text="${booking.selectedSeat}" style="color: #f15d30; font-weight: 700;">Seat</span>
+                </p>
+            </div>
+            <div class="selection-item" th:if="${booking.selectedFlight == null}">
+                <h5><i class="fa fa-plane"></i>Flight</h5>
+                <p class="no-selection">No flight selected</p>
+            </div>
+
+            <!-- Bus Selection -->
+            <div class="selection-item" th:if="${booking.selectedBus != null}">
+                <h5><i class="fa fa-bus"></i>Bus</h5>
+                <p><strong>Bus Name:</strong> <span th:text="${booking.selectedBus.busName}">Bus Name</span></p>
+                <p><strong>Type:</strong> <span th:text="${booking.selectedBus.busType}">Type</span></p>
+                <p><strong>Route:</strong> <span th:text="${booking.selectedBus.source + ' → ' + booking.selectedBus.destination}">Route</span></p>
+                <p><strong>Departure:</strong> <span th:text="${booking.selectedBus.departureTime}">Time</span></p>
+                <p><strong>Arrival:</strong> <span th:text="${booking.selectedBus.arrivalTime}">Time</span></p>
+            </div>
+            <div class="selection-item" th:if="${booking.selectedBus == null and booking.travelPackage != null and booking.travelPackage.packageType == 'DOMESTIC'}">
+                <h5><i class="fa fa-bus"></i>Bus</h5>
+                <p class="no-selection">No bus selected</p>
+            </div>
+
+            <!-- Train Selection -->
+            <div class="selection-item" th:if="${booking.selectedTrain != null}">
+                <h5><i class="fa fa-train"></i>Train</h5>
+                <p><strong>Train Name:</strong> <span th:text="${booking.selectedTrain.trainName}">Train Name</span></p>
+                <p><strong>Train Number:</strong> <span th:text="${booking.selectedTrain.trainNumber}">Number</span></p>
+                <p><strong>Route:</strong> <span th:text="${booking.selectedTrain.source + ' → ' + booking.selectedTrain.destination}">Route</span></p>
+                <p><strong>Departure:</strong> <span th:text="${booking.selectedTrain.departureTime}">Time</span></p>
+                <p><strong>Arrival:</strong> <span th:text="${booking.selectedTrain.arrivalTime}">Time</span></p>
+                <p th:if="${booking.trainClass != null and !booking.trainClass.isEmpty()}">
+                    <strong>Class:</strong> <span th:text="${booking.trainClass}" style="color: #f15d30; font-weight: 700;">Class</span>
+                </p>
+            </div>
+            <div class="selection-item" th:if="${booking.selectedTrain == null and booking.travelPackage != null and booking.travelPackage.packageType == 'DOMESTIC'}">
+                <h5><i class="fa fa-train"></i>Train</h5>
+                <p class="no-selection">No train selected</p>
+            </div>
+
+            <!-- Hotel Selection -->
+            <div class="selection-item" th:if="${booking.selectedHotel != null}">
+                <h5><i class="fa fa-hotel"></i>Hotel</h5>
+                <p><strong>Hotel Name:</strong> <span th:text="${booking.selectedHotel.name}">Hotel Name</span></p>
+                <p><strong>Location:</strong> <span th:text="${booking.selectedHotel.location}">Location</span></p>
+                <p th:if="${booking.selectedHotel.starRating != null}">
+                    <strong>Rating:</strong> 
+                    <span th:each="i : ${#numbers.sequence(1, booking.selectedHotel.starRating)}">★</span>
+                </p>
+                <p th:if="${booking.selectedHotel.roomType != null}">
+                    <strong>Room Type:</strong> <span th:text="${booking.selectedHotel.roomType}">Room Type</span>
+                </p>
+            </div>
+            <div class="selection-item" th:if="${booking.selectedHotel == null}">
+                <h5><i class="fa fa-hotel"></i>Hotel</h5>
+                <p class="no-selection">No hotel selected</p>
+            </div>
+        </div>
+
+        <!-- Booking Details -->
+        <div class="details-card">
+            <h3><i class="fa fa-info-circle mr-2"></i>Booking Details</h3>
+            
+            <div class="detail-row">
+                <span class="detail-label">Package Name:</span>
+                <span class="detail-value" th:text="${booking.travelPackage != null ? booking.travelPackage.name : 'N/A'}">Package Name</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Location:</span>
+                <span class="detail-value" th:text="${booking.travelPackage != null ? booking.travelPackage.location : 'N/A'}">Location</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Duration:</span>
+                <span class="detail-value" th:text="${booking.travelPackage != null ? (booking.travelPackage.durationDays != null ? booking.travelPackage.durationDays + ' Days' : 'N/A') : 'N/A'}">Duration</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Package Type:</span>
+                <span class="detail-value">
+                    <span th:if="${booking.packageTypeSelected != null and booking.packageTypeSelected.name() == 'STANDARD'}" 
+                          class="badge badge-warning">Standard Package</span>
+                    <span th:if="${booking.packageTypeSelected != null and booking.packageTypeSelected.name() == 'LUXURY'}" 
+                          class="badge badge-info">Luxury Package</span>
+                    <span th:if="${booking.packageTypeSelected == null}">N/A</span>
+                </span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Customer Name:</span>
+                <span class="detail-value" th:text="${booking.customerName}">Name</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Email:</span>
+                <span class="detail-value" th:text="${booking.email}">Email</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Phone Number:</span>
+                <span class="detail-value" th:text="${booking.phoneNumber}">Phone</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Number of Travelers:</span>
+                <span class="detail-value" th:text="${booking.numberOfMembers}">Count</span>
+            </div>
+            <div class="detail-row" th:if="${booking.travelerDetails != null and !booking.travelerDetails.isEmpty()}">
+                <span class="detail-label">Traveler Details:</span>
+                <span class="detail-value">
+                    <div th:each="traveler : ${#strings.arraySplit(booking.travelerDetails, ',')}" 
+                         th:text="${traveler.trim()}">Traveler</div>
+                </span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Payment Status:</span>
+                <span class="detail-value">
+                    <span th:if="${booking.paymentStatus == 'PAID'}" class="badge badge-success">PAID</span>
+                    <span th:if="${booking.paymentStatus == 'PENDING'}" class="badge badge-warning">PENDING</span>
+                    <span th:if="${booking.paymentStatus == 'CANCELLED'}" class="badge badge-danger">CANCELLED</span>
+                </span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">UPI ID:</span>
+                <span class="detail-value" th:text="${booking.upiId}">UPI ID</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Booking Date:</span>
+                <span class="detail-value" th:text="${#temporals.format(booking.bookingDate, 'MMM dd, yyyy HH:mm')}">Date</span>
+            </div>
+        </div>
+
+        <!-- Price Summary -->
+        <div class="price-summary-card">
+            <h3><i class="fa fa-calculator mr-2"></i>Price Summary</h3>
+            <div class="price-row">
+                <span>Package Price:</span>
+                <strong>
+                    <span th:text="${booking.priceCurrency != null ? booking.priceCurrency : '₹'}"></span>
+                    <span th:text="${#numbers.formatDecimal(booking.travelPackage != null ? (booking.packageTypeSelected != null and booking.packageTypeSelected.name() == 'STANDARD' ? (booking.travelPackage.getStandardPrice() != null ? booking.travelPackage.getStandardPrice() : booking.travelPackage.price) : (booking.travelPackage.getLuxuryPrice() != null ? booking.travelPackage.getLuxuryPrice() : booking.travelPackage.price)) : 0, 0, 'COMMA', 0, 'POINT')}"></span>
+                </strong>
+            </div>
+            <div class="price-row" th:if="${booking.selectedFlight != null and booking.packageTypeSelected != null and booking.packageTypeSelected.name() == 'STANDARD'}">
+                <span>Flight Charge:</span>
+                <strong>
+                    <span th:text="${booking.selectedFlight.priceCurrency != null ? booking.selectedFlight.priceCurrency : (booking.priceCurrency != null ? booking.priceCurrency : '₹')}"></span>
+                    <span th:text="${#numbers.formatDecimal(booking.selectedFlight.price != null ? booking.selectedFlight.price : 0, 0, 'COMMA', 0, 'POINT')}"></span>
+                </strong>
+            </div>
+            <div class="price-row" th:if="${booking.selectedBus != null and booking.packageTypeSelected != null and booking.packageTypeSelected.name() == 'STANDARD'}">
+                <span>Bus Charge:</span>
+                <strong>
+                    <span th:text="${booking.selectedBus.priceCurrency != null ? booking.selectedBus.priceCurrency : (booking.priceCurrency != null ? booking.priceCurrency : '₹')}"></span>
+                    <span th:text="${#numbers.formatDecimal(booking.selectedBus.ticketPrice != null ? booking.selectedBus.ticketPrice : 0, 0, 'COMMA', 0, 'POINT')}"></span>
+                </strong>
+            </div>
+            <div class="price-row" th:if="${booking.selectedTrain != null and booking.packageTypeSelected != null and booking.packageTypeSelected.name() == 'STANDARD'}">
+                <span>Train Charge:</span>
+                <strong>
+                    <span th:text="${booking.selectedTrain.priceCurrency != null ? booking.selectedTrain.priceCurrency : (booking.priceCurrency != null ? booking.priceCurrency : '₹')}"></span>
+                    <span th:text="${#numbers.formatDecimal((booking.trainClass != null and booking.trainClass == 'AC' and booking.selectedTrain.acPrice != null) ? booking.selectedTrain.acPrice : ((booking.trainClass != null and booking.trainClass == 'SLEEPER' and booking.selectedTrain.sleeperPrice != null) ? booking.selectedTrain.sleeperPrice : 0), 0, 'COMMA', 0, 'POINT')}"></span>
+                </strong>
+            </div>
+            <div class="price-row" th:if="${booking.selectedHotel != null and booking.packageTypeSelected != null and booking.packageTypeSelected.name() == 'STANDARD'}">
+                <span>Hotel Charge:</span>
+                <strong>
+                    <span th:text="${booking.selectedHotel.priceCurrency != null ? booking.selectedHotel.priceCurrency : (booking.priceCurrency != null ? booking.priceCurrency : '₹')}"></span>
+                    <span th:text="${#numbers.formatDecimal((booking.selectedHotel.pricePerNight != null and booking.travelPackage != null and booking.travelPackage.durationDays != null) ? (booking.selectedHotel.pricePerNight * booking.travelPackage.durationDays) : 0, 0, 'COMMA', 0, 'POINT')}"></span>
+                </strong>
+            </div>
+            <div class="price-row" th:if="${booking.windowSeatCharge != null and booking.windowSeatCharge > 0}">
+                <span>Window Seat Charge:</span>
+                <strong>
+                    <span th:text="${booking.priceCurrency != null ? booking.priceCurrency : '₹'}"></span>
+                    <span th:text="${#numbers.formatDecimal(booking.windowSeatCharge, 0, 'COMMA', 0, 'POINT')}"></span>
+                </strong>
+            </div>
+            <div class="price-row total">
+                <span>Total Amount:</span>
+                <strong>
+                    <span th:text="${booking.priceCurrency != null ? booking.priceCurrency : '₹'}"></span>
+                    <span th:text="${#numbers.formatDecimal(booking.totalPrice != null ? booking.totalPrice : 0, 0, 'COMMA', 0, 'POINT')}"></span>
+                </strong>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a th:href="@{'/book/download-pdf/' + ${booking.id}}" class="btn btn-outline-primary">
+                <i class="fa fa-download mr-2"></i>Download PDF
+            </a>
+            <a href="/packages" class="btn btn-primary">
+                <i class="fa fa-home mr-2"></i>Back to Packages
+            </a>
+        </div>
+    </div>
+
+</body>
+
+</html>
+

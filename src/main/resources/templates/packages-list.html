@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="'Fly Now - ' + ${packageType} + ' Packages'">Fly Now - Packages</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Arizonia&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/css/magnific-popup.css">
+    <link rel="stylesheet" href="/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="/css/jquery.timepicker.css">
+    <link rel="stylesheet" href="/css/flaticon.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        .package-type-toggle {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .package-type-toggle .btn {
+            padding: 12px 40px;
+            margin: 0 10px;
+            font-weight: 600;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            border: 2px solid #f15d30;
+        }
+
+        .package-type-toggle .btn-outline-primary {
+            color: #f15d30;
+            background: white;
+        }
+
+        .package-type-toggle .btn-outline-primary:hover,
+        .package-type-toggle .btn-outline-primary.active {
+            background: #f15d30;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="/">Fly Now<span>Travel Agency</span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="oi oi-menu"></span> Menu
+            </button>
+
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+                    <li class="nav-item active"><a href="/packages" class="nav-link">Packages</a></li>
+                    <li class="nav-item"><a href="/reviews/view" class="nav-link">Reviews</a></li>
+                    <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
+                    <li class="nav-item"><a href="/register" class="nav-link">Register</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- END nav -->
+
+    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/images/bg_1.jpg');">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-center">
+                <div class="col-md-9 ftco-animate pb-5 text-center">
+                    <p class="breadcrumbs"><span class="mr-2"><a href="/">Home <i
+                                    class="fa fa-chevron-right"></i></a></span> <span>Packages <i
+                                class="fa fa-chevron-right"></i></span></p>
+                    <h1 class="mb-0 bread" th:text="${packageType} + ' Packages'">Travel Packages</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ftco-section ftco-no-pb ftco-no-pt">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="ftco-search d-flex justify-content-center">
+                        <div class="row">
+                            <div class="col-md-12 nav-link-wrap">
+                                <div class="nav nav-pills text-center" id="v-pills-tab" role="tablist"
+                                    aria-orientation="vertical">
+                                    <a class="nav-link active mr-md-1" id="v-pills-1-tab" data-toggle="pill"
+                                        href="#v-pills-1" role="tab" aria-controls="v-pills-1"
+                                        aria-selected="true">Search Packages</a>
+                                </div>
+                            </div>
+                            <div class="col-md-12 tab-wrap">
+                                <div class="tab-content" id="v-pills-tabContent">
+                                    <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel"
+                                        aria-labelledby="v-pills-nextgen-tab">
+                                        <form action="#" class="search-property-1">
+                                            <div class="row no-gutters">
+                                                <div class="col-md d-flex">
+                                                    <div class="form-group p-4 border-0">
+                                                        <label for="#">Destination</label>
+                                                        <div class="form-field">
+                                                            <div class="icon"><span class="fa fa-search"></span></div>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Search place">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md d-flex">
+                                                    <div class="form-group p-4">
+                                                        <label for="#">Check-in date</label>
+                                                        <div class="form-field">
+                                                            <div class="icon"><span class="fa fa-calendar"></span></div>
+                                                            <input type="text" class="form-control checkin_date"
+                                                                placeholder="Check In Date">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md d-flex">
+                                                    <div class="form-group p-4">
+                                                        <label for="#">Check-out date</label>
+                                                        <div class="form-field">
+                                                            <div class="icon"><span class="fa fa-calendar"></span></div>
+                                                            <input type="text" class="form-control checkout_date"
+                                                                placeholder="Check Out Date">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md d-flex">
+                                                    <div class="form-group p-4">
+                                                        <label for="#">Price Limit</label>
+                                                        <div class="form-field">
+                                                            <div class="select-wrap">
+                                                                <div class="icon"><span
+                                                                        class="fa fa-chevron-down"></span></div>
+                                                                <select name="" id="" class="form-control">
+                                                                    <option value="">$100</option>
+                                                                    <option value="">$10,000</option>
+                                                                    <option value="">$50,000</option>
+                                                                    <option value="">$100,000</option>
+                                                                    <option value="">$200,000</option>
+                                                                    <option value="">$300,000</option>
+                                                                    <option value="">$400,000</option>
+                                                                    <option value="">$500,000</option>
+                                                                    <option value="">$600,000</option>
+                                                                    <option value="">$700,000</option>
+                                                                    <option value="">$800,000</option>
+                                                                    <option value="">$900,000</option>
+                                                                    <option value="">$1,000,000</option>
+                                                                    <option value="">$2,000,000</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md d-flex">
+                                                    <div class="form-group d-flex w-100 border-0">
+                                                        <div class="form-field w-100 align-items-center d-flex">
+                                                            <input type="submit" value="Search"
+                                                                class="align-self-stretch form-control btn btn-primary">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ftco-section" style="position: relative; z-index: 10;">
+        <div class="container">
+            <!-- Package Type Toggle -->
+            <div class="package-type-toggle">
+                <a href="/packages" th:classappend="${packageType == 'All' ? 'active' : ''}"
+                    class="btn btn-outline-primary">
+                    <i class="fa fa-list"></i> All Packages
+                </a>
+                <a href="/packages/national" th:classappend="${packageType == 'Domestic' ? 'active' : ''}"
+                    class="btn btn-outline-primary">
+                    <i class="fa fa-flag"></i> National Packages
+                </a>
+                <a href="/packages/international" th:classappend="${packageType == 'International' ? 'active' : ''}"
+                    class="btn btn-outline-primary">
+                    <i class="fa fa-globe"></i> International Packages
+                </a>
+            </div>
+
+            <div class="row justify-content-center pb-4">
+                <div class="col-md-12 heading-section text-center ftco-animate">
+                    <span class="subheading">Destination</span>
+                    <h2 class="mb-4">Select Your Destination</h2>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 ftco-animate" th:each="pkg : ${packages}" th:if="${pkg != null}">
+                    <div class="project-wrap">
+                        <a th:href="@{'/package/' + ${pkg.id}}" class="img"
+                            th:style="'background-image: url(' + ${pkg.heroImageUrl != null ? pkg.heroImageUrl : (pkg.galleryImages != null and !pkg.galleryImages.isEmpty() ? pkg.galleryImages[0].imageUrl : 'https://via.placeholder.com/400x300')} + ');'">
+                            <span class="price"
+                                th:text="${pkg.priceCurrency != null ? pkg.priceCurrency : '₹'} + ${#numbers.formatDecimal(pkg.price, 0, 'COMMA', 0, 'POINT')}">Price</span>
+                        </a>
+                        <div class="text p-4">
+                            <span class="days" th:text="${pkg.durationDays} + ' Days Tour'">5 Days Tour</span>
+                            <h3><a th:href="@{'/package/' + ${pkg.id}}" th:text="${pkg.name}">Package Name</a></h3>
+                            <p class="location"><span class="fa fa-map-marker"></span> <span
+                                    th:text="${pkg.location}">Location</span></p>
+                            <ul>
+                                <li><span class="flaticon-shower"></span> 2</li>
+                                <li><span class="flaticon-king-size"></span> 3</li>
+                                <li><span class="flaticon-mountains"></span> Near Mountain</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- No Results Message -->
+            <div class="row" th:if="${packages.empty}">
+                <div class="col-12 text-center py-5">
+                    <h3>No packages found matching your criteria.</h3>
+                    <p>Try adjusting your filters or <a href="/packages">view all packages</a>.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="ftco-footer bg-bottom ftco-no-pt" style="background-image: url('/images/bg_3.jpg');">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-md pt-5">
+                    <div class="ftco-footer-widget pt-md-5 mb-4">
+                        <h2 class="ftco-heading-2">About</h2>
+                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
+                            there live the blind texts.</p>
+                        <ul class="ftco-footer-social list-unstyled float-md-left float-lft">
+                            <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
+                            <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
+                            <li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md pt-5 border-left">
+                    <div class="ftco-footer-widget pt-md-5 mb-4 ml-md-5">
+                        <h2 class="ftco-heading-2">Information</h2>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="py-2 d-block">Online Enquiry</a></li>
+                            <li><a href="#" class="py-2 d-block">General Enquiries</a></li>
+                            <li><a href="#" class="py-2 d-block">Booking Conditions</a></li>
+                            <li><a href="#" class="py-2 d-block">Privacy and Policy</a></li>
+                            <li><a href="#" class="py-2 d-block">Refund Policy</a></li>
+                            <li><a href="#" class="py-2 d-block">Call Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md pt-5 border-left">
+                    <div class="ftco-footer-widget pt-md-5 mb-4">
+                        <h2 class="ftco-heading-2">Experience</h2>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="py-2 d-block">Adventure</a></li>
+                            <li><a href="#" class="py-2 d-block">Hotel and Restaurant</a></li>
+                            <li><a href="#" class="py-2 d-block">Beach</a></li>
+                            <li><a href="#" class="py-2 d-block">Nature</a></li>
+                            <li><a href="#" class="py-2 d-block">Camping</a></li>
+                            <li><a href="#" class="py-2 d-block">Party</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md pt-5 border-left">
+                    <div class="ftco-footer-widget pt-md-5 mb-4">
+                        <h2 class="ftco-heading-2">Have a Questions?</h2>
+                        <div class="block-23 mb-3">
+                            <ul>
+                                <li><span class="icon fa fa-map-marker"></span><span class="text">203 Fake St. Mountain
+                                        View, San Francisco, California, USA</span></li>
+                                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929
+                                            210</span></a></li>
+                                <li><a href="#"><span class="icon fa fa-paper-plane"></span><span
+                                            class="text">info@yourdomain.com</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>
+                        Copyright &copy;
+                        <script>document.write(new Date().getFullYear());</script> All rights reserved | This template
+                        is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com"
+                            target="_blank">Colorlib</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                stroke="#F96D00" />
+        </svg></div>
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.easing.1.3.js"></script>
+    <script src="/js/jquery.waypoints.min.js"></script>
+    <script src="/js/jquery.stellar.min.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/jquery.magnific-popup.min.js"></script>
+    <script src="/js/jquery.animateNumber.min.js"></script>
+    <script src="/js/bootstrap-datepicker.js"></script>
+    <script src="/js/scrollax.min.js"></script>
+    <script src="/js/main.js"></script>
+
+</body>
+
+</html>

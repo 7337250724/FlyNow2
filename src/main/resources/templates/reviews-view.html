@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Fly Now - Traveler Reviews</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8f9fa;
+        }
+
+        .reviews-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .reviews-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .reviews-header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .filter-section {
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .review-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .review-header {
+            padding: 20px 25px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 2px solid #f15d30;
+        }
+
+        .review-header h4 {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .review-header .package-name {
+            color: #f15d30;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .review-body {
+            padding: 25px;
+        }
+
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .reviewer-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 20px;
+            margin-right: 15px;
+        }
+
+        .reviewer-details h5 {
+            margin: 0;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .reviewer-details p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .rating-display {
+            color: #ffc107;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .review-text {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        .review-media {
+            margin-top: 20px;
+        }
+
+        .review-photos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .review-photo {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .review-photo:hover {
+            transform: scale(1.05);
+        }
+
+        .review-videos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .review-video {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .review-footer {
+            padding: 15px 25px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .review-location {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .review-location i {
+            color: #f15d30;
+            margin-right: 5px;
+        }
+
+        .review-date {
+            color: #999;
+            font-size: 13px;
+        }
+
+        .no-reviews {
+            text-align: center;
+            padding: 60px 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .no-reviews i {
+            font-size: 64px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background: #f15d30;
+            border-color: #f15d30;
+        }
+
+        .btn-primary:hover {
+            background: #d94c25;
+            border-color: #d94c25;
+        }
+
+        .btn-outline-primary {
+            border-color: #f15d30;
+            color: #f15d30;
+        }
+
+        .btn-outline-primary:hover {
+            background: #f15d30;
+            border-color: #f15d30;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Fly Now<span style="color: #f15d30;"> Travel Agency</span></a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/packages">Packages</a>
+                <a class="nav-link" href="/hotels">Hotels</a>
+                <a class="nav-link active" href="/reviews/view">Reviews</a>
+                <a class="nav-link" href="/reviews">Share Experience</a>
+                <a class="nav-link" href="/login">Login</a>
+                <a class="nav-link" href="/register">Register</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="reviews-header">
+        <div class="container">
+            <h1><i class="fa fa-star mr-2"></i>Traveler Reviews & Experiences</h1>
+            <p>Read real experiences and advice from travelers who explored the world with us</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <form method="get" action="/reviews/view" class="row">
+                <div class="col-md-5">
+                    <label>Filter by Package</label>
+                    <select class="form-control" name="packageId" onchange="this.form.submit()">
+                        <option value="">All Packages</option>
+                        <option th:each="pkg : ${packages}" 
+                                th:value="${pkg.id}" 
+                                th:selected="${selectedPackageId != null and selectedPackageId == pkg.id}"
+                                th:text="${pkg.name + ' - ' + pkg.location}">Package Name</option>
+                    </select>
+                </div>
+                <div class="col-md-5">
+                    <label>Filter by Location</label>
+                    <input type="text" class="form-control" name="location" 
+                           th:value="${selectedLocation}" 
+                           placeholder="Enter location (e.g., Kashmir, Paris)">
+                </div>
+                <div class="col-md-2">
+                    <label>&nbsp;</label>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fa fa-search"></i> Filter
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Reviews List -->
+        <div th:if="${reviews != null and !reviews.isEmpty()}">
+            <div class="review-card" th:each="review : ${reviews}">
+                <div class="review-header">
+                    <h4 th:text="${review.travelPackage != null ? review.travelPackage.name : 'Package'}">Package Name</h4>
+                    <span class="package-name" th:text="${review.locationVisited}">Location</span>
+                </div>
+                <div class="review-body">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar" th:text="${review.user != null ? review.user.getUsername().substring(0, 1).toUpperCase() : 'T'}">T</div>
+                        <div class="reviewer-details">
+                            <h5 th:text="${review.user != null ? review.user.getUsername() : 'Traveler'}">Traveler Name</h5>
+                            <p th:if="${review.visitDate != null}">
+                                <span th:text="${#dates.format(review.visitDate, 'MMMM yyyy')}">Visit Date</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="rating-display">
+                        <span th:each="i : ${#numbers.sequence(1, review.rating)}">★</span>
+                        <span th:each="i : ${#numbers.sequence(review.rating + 1, 5)}" style="color: #ddd;">★</span>
+                        <span style="color: #666; font-size: 14px; margin-left: 10px;" th:text="${review.rating} + '/5'">5/5</span>
+                    </div>
+                    <div class="review-text" th:text="${review.reviewText}">
+                        Review text here...
+                    </div>
+                    
+                    <!-- Photos -->
+                    <div class="review-media" th:if="${review.photoUrls != null and !review.photoUrls.isEmpty()}">
+                        <h6 class="mb-3"><i class="fa fa-camera mr-2"></i>Photos</h6>
+                        <div class="review-photos" th:attr="data-photos=${review.photoUrls}">
+                            <!-- Photos will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Videos -->
+                    <div class="review-media" th:if="${review.videoUrls != null and !review.videoUrls.isEmpty()}">
+                        <h6 class="mb-3"><i class="fa fa-video-camera mr-2"></i>Videos</h6>
+                        <div class="review-videos" th:attr="data-videos=${review.videoUrls}">
+                            <!-- Videos will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                <div class="review-footer">
+                    <div class="review-location">
+                        <i class="fa fa-map-marker"></i>
+                        <span th:text="${review.locationVisited}">Location</span>
+                    </div>
+                    <div class="review-date" th:if="${review.createdAt != null}">
+                        <i class="fa fa-calendar mr-1"></i>
+                        <span th:text="${#dates.format(review.createdAt, 'dd MMMM yyyy')}">Date</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Reviews Message -->
+        <div class="no-reviews" th:if="${reviews == null or reviews.isEmpty()}">
+            <i class="fa fa-comment-o"></i>
+            <h3>No Reviews Yet</h3>
+            <p class="text-muted">Be the first to share your travel experience!</p>
+            <a href="/reviews" class="btn btn-primary mt-3">
+                <i class="fa fa-pencil mr-2"></i>Share Your Experience
+            </a>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content" style="background: transparent; border: none;">
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="position: absolute; right: 10px; top: 10px; z-index: 1000; font-size: 30px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <img id="modalImage" src="" style="width: 100%; border-radius: 10px;">
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function openImageModal(imageSrc) {
+            document.getElementById('modalImage').src = imageSrc;
+            $('#imageModal').modal('show');
+        }
+
+        // Populate photos and videos from comma-separated strings
+        $(document).ready(function() {
+            $('.review-photos').each(function() {
+                const photosStr = $(this).attr('data-photos');
+                if (photosStr) {
+                    const photos = photosStr.split(',').map(p => p.trim()).filter(p => p);
+                    photos.forEach(function(photo) {
+                        const img = $('<img>')
+                            .attr('src', photo)
+                            .addClass('review-photo')
+                            .attr('alt', 'Review Photo')
+                            .attr('onclick', 'openImageModal(\'' + photo + '\')');
+                        $(this).append(img);
+                    }.bind(this));
+                }
+            });
+
+            $('.review-videos').each(function() {
+                const videosStr = $(this).attr('data-videos');
+                if (videosStr) {
+                    const videos = videosStr.split(',').map(v => v.trim()).filter(v => v);
+                    videos.forEach(function(video) {
+                        const vid = $('<video>')
+                            .attr('src', video)
+                            .addClass('review-video')
+                            .attr('controls', true);
+                        vid.append($('<source>').attr('src', video));
+                        vid.append('Your browser does not support the video tag.');
+                        $(this).append(vid);
+                    }.bind(this));
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
+

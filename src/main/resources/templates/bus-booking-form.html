@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Fly Now - Select Seats</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+
+    <style>
+        :root {
+            --primary-color: #ffc107;
+            --secondary-color: #212529;
+            --accent-color: #e0a800;
+            --bg-color: #f4f6f9;
+            --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-color);
+            color: #444;
+        }
+
+        .navbar {
+            background: var(--secondary-color) !important;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 15px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h2 {
+            font-weight: 700;
+            color: var(--secondary-color);
+            font-size: 28px;
+        }
+
+        .page-header p {
+            color: #777;
+        }
+
+        /* --- Seat Map Section --- */
+        .bus-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            height: 100%;
+        }
+
+        .bus-chassis {
+            border: 3px solid #e9ecef;
+            border-radius: 40px;
+            /* Increased for rounded bus look */
+            padding: 40px 20px 20px;
+            /* Top padding for driver area */
+            background: #fff;
+            /* Bus floor color */
+            position: relative;
+            max-width: 320px;
+            margin: 0 auto;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.02);
+        }
+
+        /* Driver Area */
+        .driver-area {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            color: #adb5bd;
+            font-size: 24px;
+        }
+
+        .steering-wheel {
+            transform: rotate(-15deg);
+        }
+
+        .seat-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .legend-marker {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            margin-right: 8px;
+        }
+
+        /* Seat Styling */
+        .seats-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .seat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .seat-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        .aisle {
+            width: 40px;
+            text-align: center;
+            font-size: 10px;
+            color: #dee2e6;
+            letter-spacing: 2px;
+            align-self: center;
+        }
+
+        .seat {
+            width: 45px;
+            height: 45px;
+            border: 1px solid #dfe3e8;
+            border-radius: 8px 8px 12px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6c757d;
+            background: #fff;
+            position: relative;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+        }
+
+        .seat::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            width: 80%;
+            height: 3px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 2px;
+        }
+
+        .seat:hover:not(.booked) {
+            transform: translateY(-3px);
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 8px rgba(255, 193, 7, 0.2);
+            color: var(--secondary-color);
+        }
+
+        .seat.selected {
+            background-color: var(--primary-color);
+            border-color: var(--accent-color);
+            color: #000;
+            box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4);
+        }
+
+        .seat.booked {
+            background-color: #edf2f7;
+            color: #cbd5e0;
+            border-color: transparent;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .seat.booked::after {
+            display: none;
+        }
+
+        /* --- Form Section --- */
+        .details-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f2f5;
+            color: var(--secondary-color);
+        }
+
+        .form-control {
+            border: 2px solid #f0f2f5;
+            border-radius: 8px;
+            padding: 12px 15px;
+            height: auto;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: none;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- Summary Ticket --- */
+        .ticket-summary {
+            background: linear-gradient(145deg, #212529, #343a40);
+            color: #fff;
+            border-radius: 16px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ticket-summary::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .summary-total {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total-amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .btn-confirm {
+            background: var(--primary-color);
+            border: none;
+            padding: 15px;
+            font-weight: 600;
+            font-size: 16px;
+            border-radius: 10px;
+            width: 100%;
+            margin-top: 20px;
+            color: var(--secondary-color);
+            transition: transform 0.2s;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+        }
+
+        .btn-confirm:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+            color: #000;
+        }
+
+        /* Dynamic Passenger Fields */
+        .passenger-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #e9ecef;
+        }
+
+        .passenger-item h6 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 991px) {
+            .bus-container {
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Fly Now<span style="color: #ffc107;"> Travel Agency</span></a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/packages">Packages</a>
+                <a class="nav-link" href="/book/bus">Back to Buses</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="page-header">
+            <h2>Select Your Seats</h2>
+            <p>Enter the number of travelers to begin seat selection.</p>
+        </div>
+
+        <form action="/bus/book/process" method="POST" id="bookingForm">
+            <input type="hidden" name="busId" th:value="${bus.id}">
+            <input type="hidden" name="selectedSeat" id="selectedSeatInput" required>
+            <!-- JSON String for all traveler details -->
+            <input type="hidden" name="travelerDetails" id="travelerDetailsInput">
+
+            <div class="row">
+                <!-- Left Column: Seat Map -->
+                <div class="col-lg-5 mb-4">
+                    <div class="bus-container">
+                        <!-- Step 1: Traveler Count -->
+                        <div class="form-group mb-4">
+                            <label><i class="fa fa-users mr-2"></i>How many travelers?</label>
+                            <input type="number" id="travelerCount" class="form-control" name="numberOfMembers" min="1"
+                                max="6" value="1" placeholder="Enter number of travelers" style="font-weight: 600;">
+                            <small class="text-muted">Max 6 seats per booking</small>
+                        </div>
+
+                        <div class="seat-legend">
+                            <div class="legend-item">
+                                <div class="legend-marker" style="border: 1px solid #dfe3e8; background: #fff;"></div>
+                                <span>Available</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-marker" style="background: var(--primary-color);"></div>
+                                <span>Selected</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-marker" style="background: #edf2f7; border: 1px solid #e2e8f0;">
+                                </div>
+                                <span>Booked</span>
+                            </div>
+                        </div>
+
+                        <div class="bus-chassis">
+                            <div class="driver-area">
+                                <i class="fa fa-life-ring steering-wheel" title="Driver"></i>
+                            </div>
+                            <div class="seats-grid" id="seatsContainer">
+                                <!-- JS will inject seats here -->
+                            </div>
+                        </div>
+
+                        <div id="seatSelectionError" class="alert alert-danger mt-3 text-center small"
+                            style="display:none; border-radius: 8px;">
+                            <i class="fa fa-exclamation-circle mr-1"></i> <span id="errorText">Please select
+                                seats.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Form & Summary -->
+                <div class="col-lg-7">
+                    <!-- Traveler Details - Generated Dynamically -->
+                    <div class="details-card">
+                        <h4 class="section-title"><i class="fa fa-user-plus mr-2"></i>Traveler Details</h4>
+                        <div id="passengerFieldsContainer">
+                            <!-- JS generates fields here -->
+                        </div>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="details-card">
+                        <h4 class="section-title"><i class="fa fa-address-card-o mr-2"></i>Contact Information</h4>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>Primary Contact Name</label>
+                                <input type="text" class="form-control" name="customerName" required
+                                    placeholder="Ex. John Doe">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Mobile Number</label>
+                                <input type="tel" class="form-control" name="phoneNumber" required
+                                    placeholder="Ex. +91 9876543210">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" class="form-control" name="email" required
+                                placeholder="Ex. john.doe@example.com">
+                        </div>
+                    </div>
+
+                    <!-- Payment Info -->
+                    <div class="details-card">
+                        <h4 class="section-title"><i class="fa fa-credit-card mr-2"></i>Payment Method</h4>
+                        <div class="form-group">
+                            <label>UPI ID</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-white border-right-0"><i
+                                            class="fa fa-mobile"></i></span>
+                                </div>
+                                <input type="text" class="form-control border-left-0" name="upiId" required
+                                    placeholder="Ex. username@bank">
+                            </div>
+                            <small class="text-muted">Currently we only accept UPI payments.</small>
+                        </div>
+                    </div>
+
+                    <!-- Summary -->
+                    <div class="ticket-summary">
+                        <div class="summary-row">
+                            <span>Bus Operator</span>
+                            <span class="font-weight-bold" th:text="${bus.busName}">Bus Name</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Departure</span>
+                            <span th:text="${bus.departureTime}">10:00 AM</span>
+                        </div>
+                        <hr style="border-color: rgba(255,255,255,0.1);">
+
+                        <div class="summary-row">
+                            <span>Travelers</span>
+                            <span class="font-weight-bold" id="displayPassengerCount">1</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Selected Seat(s)</span>
+                            <span class="font-weight-bold" id="displaySelectedSeats">-</span>
+                        </div>
+
+                        <div class="summary-total">
+                            <div>
+                                <small class="d-block text-white-50">Total Amount</small>
+                                <span class="total-amount" id="displayTotalPrice"
+                                    th:text="'0 ' + ${bus.priceCurrency != null ? bus.priceCurrency : '₹'}">0 ₹</span>
+                            </div>
+                            <button type="submit" class="btn btn-warning px-4 py-2 font-weight-bold"
+                                style="border-radius: 50px;">
+                                Pay Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            const ticketPrice = /*[[${bus.ticketPrice}]]*/ 500;
+            const currency = /*[[${bus.priceCurrency != null ? bus.priceCurrency : '₹'}]]*/ '₹';
+
+            // --- Init Logic ---
+            let targetTravelers = 1;
+
+            // Generate Initial Form for 1 traveler
+            generatePassengerFields(1);
+
+            // --- Seat Map Generation ---
+            // 40 Seats: 10 Rows x 4 Cols
+            const rows = 10;
+            const seatsContainer = $('#seatsContainer');
+            const colsLeft = ['A', 'B'];
+            const colsRight = ['C', 'D'];
+            const bookedSeats = ['2A', '2B', '5C', '8D', '9A'];
+
+            for (let r = 1; r <= rows; r++) {
+                let rowHtml = '<div class="seat-row">';
+
+                // Left Group
+                rowHtml += '<div class="seat-group">';
+                colsLeft.forEach(col => {
+                    let seatNum = r + col;
+                    let isBooked = bookedSeats.includes(seatNum) ? 'booked' : '';
+                    rowHtml += `<div class="seat ${isBooked}" data-seat="${seatNum}">${seatNum}</div>`;
+                });
+                rowHtml += '</div>';
+
+                // Aisle Number
+                rowHtml += `<div class="aisle">${r}</div>`;
+
+                // Right Group
+                rowHtml += '<div class="seat-group">';
+                colsRight.forEach(col => {
+                    let seatNum = r + col;
+                    let isBooked = bookedSeats.includes(seatNum) ? 'booked' : '';
+                    rowHtml += `<div class="seat ${isBooked}" data-seat="${seatNum}">${seatNum}</div>`;
+                });
+                rowHtml += '</div>';
+
+                rowHtml += '</div>';
+                seatsContainer.append(rowHtml);
+            }
+
+            // --- Event Handlers ---
+
+            // 1. Change Traveler Count
+            $('#travelerCount').on('change input', function () {
+                let val = parseInt($(this).val());
+                if (val < 1) val = 1;
+                if (val > 6) val = 6;
+                targetTravelers = val;
+
+                // Reset seats if count changes to avoid confusion
+                $('.seat.selected').removeClass('selected');
+                updateBookingDetails();
+
+                // Regenerate passenger input fields
+                generatePassengerFields(targetTravelers);
+
+                $('#displayPassengerCount').text(targetTravelers);
+            });
+
+            // 2. Click Seat
+            $(document).on('click', '.seat', function () {
+                if ($(this).hasClass('booked')) return;
+
+                const alreadySelected = $('.seat.selected').length;
+
+                // Deselect if already selected
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    // Select logic
+                    if (alreadySelected < targetTravelers) {
+                        $(this).addClass('selected');
+                        // Pulse effect
+                        $(this).css('transform', 'scale(1.1)');
+                        setTimeout(() => $(this).css('transform', ''), 200);
+                    } else {
+                        // Max reached
+                        $('#seatSelectionError').show();
+                        $('#errorText').text(`You can only select ${targetTravelers} seat(s).`);
+                        setTimeout(() => $('#seatSelectionError').fadeOut(), 3000);
+                        return;
+                    }
+                }
+                updateBookingDetails();
+            });
+
+            function updateBookingDetails() {
+                const selectedSeats = [];
+                $('.seat.selected').each(function () {
+                    selectedSeats.push($(this).data('seat'));
+                });
+
+                // Update Inputs
+                $('#selectedSeatInput').val(selectedSeats.join(','));
+
+                // Update Visuals
+                $('#displaySelectedSeats').text(selectedSeats.length > 0 ? selectedSeats.join(', ') : '-');
+
+                const total = (selectedSeats.length * ticketPrice).toFixed(0);
+                $('#displayTotalPrice').text(total + ' ' + currency);
+            }
+
+            // Function to generate passenger inputs
+            function generatePassengerFields(count) {
+                const container = $('#passengerFieldsContainer');
+                container.empty();
+
+                for (let i = 1; i <= count; i++) {
+                    const html = `
+                        <div class="passenger-item">
+                            <h6><i class="fa fa-user mr-1"></i> Traveler ${i}</h6>
+                            <div class="row">
+                                <div class="col-md-6 form-group mb-1">
+                                    <input type="text" class="form-control" name="pName_${i}" required placeholder="Name" onchange="collectTravelerData()">
+                                </div>
+                                <div class="col-md-3 form-group mb-1">
+                                    <input type="number" class="form-control" name="pAge_${i}" required placeholder="Age" min="1" max="120" onchange="collectTravelerData()">
+                                </div>
+                                <div class="col-md-3 form-group mb-1">
+                                    <select class="form-control" name="pGender_${i}" onchange="collectTravelerData()">
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.append(html);
+                }
+            }
+
+            // --- Form Submit Validation ---
+            $('#bookingForm').on('submit', function (e) {
+                const selectedSeats = $('.seat.selected').length;
+
+                // 1. Check if seat count matches traveler count
+                if (selectedSeats !== targetTravelers) {
+                    e.preventDefault();
+                    $('#seatSelectionError').show();
+                    $('#errorText').text(`Please select exactly ${targetTravelers} seat(s).`);
+                    $('.bus-chassis').animate({ left: "-10px" }, 50).animate({ left: "10px" }, 50).animate({ left: "0px" }, 50);
+                    return;
+                }
+
+                // 2. Collate traveler data into JSON
+                collectTravelerData();
+            });
+
+            window.collectTravelerData = function () {
+                const travelers = [];
+                for (let i = 1; i <= targetTravelers; i++) {
+                    const name = $(`input[name="pName_${i}"]`).val();
+                    const age = $(`input[name="pAge_${i}"]`).val();
+                    const gender = $(`select[name="pGender_${i}"]`).val();
+
+                    if (name) {
+                        travelers.push({
+                            travelerNum: i,
+                            name: name,
+                            age: age,
+                            gender: gender
+                        });
+                    }
+                }
+                $('#travelerDetailsInput').val(JSON.stringify(travelers));
+            };
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,289 @@
+package com.example.demo.config;
+
+import com.example.demo.model.*;
+import com.example.demo.repository.TravelPackageRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+@Component
+public class PackageDataInitializer implements CommandLineRunner {
+
+    @Autowired
+    private TravelPackageRepository packageRepository;
+
+    @Override
+    @Transactional
+    public void run(String... args) throws Exception {
+        // Check if packages already exist
+        if (packageRepository.count() > 0) {
+            System.out.println("Packages already exist. Skipping initialization.");
+            return;
+        }
+
+        System.out.println("Initializing default packages...");
+
+        // --- DOMESTIC PACKAGES ---
+
+        // 1. Rajasthan Royal
+        createPackage(
+                "Rajasthan Royal",
+                "Rajasthan, India",
+                "DOMESTIC",
+                "https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=2070&auto=format&fit=crop", // Hero
+                                                                                                                 // Image
+                7,
+                25000.0,
+                "₹",
+                "Experience the royal heritage of Rajasthan.",
+                "Journey through the Land of Kings, visiting majestic forts, opulent palaces, and vibrant markets. Experience the rich culture and history of Jaipur, Jodhpur, and Udaipur.",
+                "FAMILY,COUPLE,CULTURE",
+                "WINTER,SPRING",
+                null, // Visa
+                Arrays.asList(
+                        createDay(1, "Arrival in Jaipur",
+                                "Welcome to the Pink City. Transfer to hotel and evening leisure.",
+                                "https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(2, "Jaipur Sightseeing", "Visit Amber Fort, Hawa Mahal, and City Palace.",
+                                "https://images.unsplash.com/photo-1524230507669-5ff97982bb5e?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(3, "Jaipur to Jodhpur", "Drive to the Blue City. Visit Mehrangarh Fort.",
+                                "https://images.unsplash.com/photo-1534234828569-16d299386d8d?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(4, "Jodhpur Exploration", "Explore Umaid Bhawan Palace and Jaswant Thada.",
+                                "https://images.unsplash.com/photo-1590050752117-238cb0fb5689?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(5, "Jodhpur to Udaipur", "Travel to the City of Lakes via Ranakpur Jain Temple.",
+                                "https://images.unsplash.com/photo-1615836245337-f5b9b2303f10?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(6, "Udaipur City Tour", "Boat ride on Lake Pichola and visit City Palace.",
+                                "https://images.unsplash.com/photo-1587595431973-160d0d94add1?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(7, "Departure", "Transfer to airport for onward journey.",
+                                "https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=2000&auto=format&fit=crop")),
+                Arrays.asList(
+                        createFeature("fa-hotel", "Luxury Hotels"),
+                        createFeature("fa-car", "Private Transfers"),
+                        createFeature("fa-utensils", "Breakfast & Dinner"),
+                        createFeature("fa-camera", "Sightseeing")),
+                Arrays.asList(
+                        "https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=2070&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=2000&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1524230507669-5ff97982bb5e?q=80&w=2000&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1534234828569-16d299386d8d?q=80&w=2000&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1590050752117-238cb0fb5689?q=80&w=2000&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1615836245337-f5b9b2303f10?q=80&w=2000&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1587595431973-160d0d94add1?q=80&w=2000&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1598890777032-bde835478171?q=80&w=2000&auto=format&fit=crop"));
+
+        // 2. Kerala Backwaters
+        createPackage(
+                "Kerala Bliss",
+                "Kerala, India",
+                "DOMESTIC",
+                "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=2000&auto=format&fit=crop",
+                5,
+                18000.0,
+                "₹",
+                "Relax in God's Own Country.",
+                "Enjoy the serene backwaters, lush tea plantations of Munnar, and the beaches of Alleppey.",
+                "COUPLE,NATURE,RELAXATION",
+                "WINTER,MONSOON",
+                null,
+                Arrays.asList(
+                        createDay(1, "Arrival in Kochi", "Transfer to Munnar.",
+                                "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(2, "Munnar Sightseeing", "Visit tea gardens and Mattupetty Dam.",
+                                "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(3, "Thekkady", "Visit Periyar Wildlife Sanctuary.",
+                                "https://images.unsplash.com/photo-1583252994493-2c6769747142?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(4, "Alleppey Houseboat", "Overnight stay in a traditional houseboat.",
+                                "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(5, "Departure", "Transfer to Kochi airport.",
+                                "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?q=80&w=2000&auto=format&fit=crop")),
+                Arrays.asList(createFeature("fa-ship", "Houseboat Stay"), createFeature("fa-leaf", "Tea Gardens")),
+                Arrays.asList(
+                        "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=2000&auto=format&fit=crop"));
+
+        // --- INTERNATIONAL PACKAGES ---
+
+        // 3. Paris Romance
+        createPackage(
+                "Paris Romance",
+                "Paris, France",
+                "INTERNATIONAL",
+                "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2000&auto=format&fit=crop",
+                6,
+                1500.0,
+                "$",
+                "The City of Light awaits.",
+                "Experience the romance of Paris with visits to the Eiffel Tower, Louvre Museum, and a Seine River cruise.",
+                "COUPLE,HONEYMOON,CITY",
+                "SPRING,SUMMER,AUTUMN",
+                "Schengen Visa Required",
+                Arrays.asList(
+                        createDay(1, "Arrival in Paris", "Private transfer to hotel.",
+                                "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(2, "Eiffel Tower & Cruise", "Skip-the-line Eiffel Tower access and river cruise.",
+                                "https://images.unsplash.com/photo-1431274172761-fca41d930114?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(3, "Louvre Museum", "Guided tour of the Louvre.",
+                                "https://images.unsplash.com/photo-1499856871940-a09627c6dcf6?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(4, "Versailles Day Trip", "Visit the Palace of Versailles.",
+                                "https://images.unsplash.com/photo-1566321635850-27227092e071?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(5, "Montmartre & Shopping", "Explore Montmartre and Champs-Élysées.",
+                                "https://images.unsplash.com/photo-1503917988258-f87a78e3c99d?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(6, "Departure", "Transfer to CDG Airport.",
+                                "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2000&auto=format&fit=crop")),
+                Arrays.asList(createFeature("fa-wine-glass", "Romantic Dinner"),
+                        createFeature("fa-landmark", "Museum Pass")),
+                Arrays.asList(
+                        "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2000&auto=format&fit=crop"));
+
+        // 4. Dubai Extravaganza
+        createPackage(
+                "Dubai Extravaganza",
+                "Dubai, UAE",
+                "INTERNATIONAL",
+                "https://images.unsplash.com/photo-1512453979798-5ea904ac6605?q=80&w=2000&auto=format&fit=crop",
+                5,
+                1200.0,
+                "$",
+                "Luxury and adventure in the desert.",
+                "Visit the Burj Khalifa, enjoy a desert safari, and shop at the Dubai Mall.",
+                "FAMILY,LUXURY,SHOPPING",
+                "WINTER",
+                "UAE Visa Required",
+                Arrays.asList(
+                        createDay(1, "Arrival", "Transfer to hotel.",
+                                "https://images.unsplash.com/photo-1512453979798-5ea904ac6605?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(2, "City Tour & Burj Khalifa", "Modern Dubai tour and At The Top.",
+                                "https://images.unsplash.com/photo-1546412414-e1885259563a?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(3, "Desert Safari", "Dune bashing and BBQ dinner.",
+                                "https://images.unsplash.com/photo-1451337516015-6b6e9a44a8a3?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(4, "Abu Dhabi Day Trip", "Visit Sheikh Zayed Mosque.",
+                                "https://images.unsplash.com/photo-1512453979798-5ea904ac6605?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(5, "Departure", "Transfer to airport.",
+                                "https://images.unsplash.com/photo-1512453979798-5ea904ac6605?q=80&w=2000&auto=format&fit=crop")),
+                Arrays.asList(createFeature("fa-building", "Burj Khalifa"), createFeature("fa-sun", "Desert Safari")),
+                Arrays.asList(
+                        "https://images.unsplash.com/photo-1512453979798-5ea904ac6605?q=80&w=2000&auto=format&fit=crop"));
+
+        // 5. Swiss Alps
+        createPackage(
+                "Swiss Alps Adventure",
+                "Zurich, Switzerland",
+                "INTERNATIONAL",
+                "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?q=80&w=2000&auto=format&fit=crop",
+                7,
+                2500.0,
+                "$",
+                "Breathtaking mountains and lakes.",
+                "Explore Zurich, Lucerne, and Interlaken. Ride the scenic trains and enjoy the alpine beauty.",
+                "NATURE,COUPLE,ADVENTURE",
+                "SUMMER,WINTER",
+                "Schengen Visa Required",
+                Arrays.asList(
+                        createDay(1, "Arrival in Zurich", "Train to Lucerne.",
+                                "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(2, "Mt. Pilatus", "Excursion to Mt. Pilatus.",
+                                "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(3, "Interlaken", "Train to Interlaken.",
+                                "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(4, "Jungfraujoch", "Top of Europe excursion.",
+                                "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(5, "Glacier Express", "Scenic train ride.",
+                                "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(6, "Zurich", "City tour.",
+                                "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?q=80&w=2000&auto=format&fit=crop"),
+                        createDay(7, "Departure", "Train to airport.",
+                                "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?q=80&w=2000&auto=format&fit=crop")),
+                Arrays.asList(createFeature("fa-train", "Swiss Travel Pass"),
+                        createFeature("fa-mountain", "Mountain Excursions")),
+                Arrays.asList(
+                        "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?q=80&w=2000&auto=format&fit=crop"));
+
+        // Add more packages as needed...
+
+        System.out.println("Default packages initialized successfully.");
+    }
+
+    private void createPackage(String name, String location, String type, String heroImage, int days, double price,
+            String currency, String shortDesc, String aboutDesc, String travelTypes, String seasons, String visa,
+            List<PackageItineraryDay> itinerary, List<PackageFeature> features, List<String> galleryUrls) {
+        TravelPackage pkg = new TravelPackage();
+        pkg.setName(name);
+        pkg.setLocation(location);
+        pkg.setPackageType(type);
+        pkg.setHeroImageUrl(heroImage);
+        pkg.setDurationDays(days);
+        pkg.setPrice(price);
+        pkg.setStandardPrice(price);
+        pkg.setLuxuryPrice(price * 1.5);
+        pkg.setPriceCurrency(currency);
+        pkg.setShortDescription(shortDesc);
+        pkg.setAboutDescription(aboutDesc);
+        pkg.setTravelTypes(travelTypes);
+        pkg.setSeasons(seasons);
+        pkg.setVisaRequirement(visa);
+
+        // Set flags based on travel types
+        if (travelTypes.contains("FAMILY"))
+            pkg.setIsFamilyFriendly(true);
+        if (travelTypes.contains("COUPLE") || travelTypes.contains("HONEYMOON"))
+            pkg.setIsCoupleFriendly(true);
+        if (travelTypes.contains("ADVENTURE"))
+            pkg.setIsAdventure(true);
+        if (travelTypes.contains("SPIRITUAL"))
+            pkg.setIsSpiritual(true);
+        if (travelTypes.contains("CORPORATE"))
+            pkg.setIsCorporate(true);
+
+        // Save package first to get ID
+        TravelPackage savedPkg = packageRepository.save(pkg);
+
+        // Add relationships
+        if (itinerary != null) {
+            for (PackageItineraryDay day : itinerary) {
+                day.setTravelPackage(savedPkg);
+            }
+            savedPkg.setItineraryDays(new ArrayList<>(itinerary));
+        }
+
+        if (features != null) {
+            for (PackageFeature feature : features) {
+                feature.setTravelPackage(savedPkg);
+            }
+            savedPkg.setFeatures(new ArrayList<>(features));
+        }
+
+        if (galleryUrls != null) {
+            List<PackageImage> images = new ArrayList<>();
+            for (int i = 0; i < galleryUrls.size(); i++) {
+                PackageImage img = new PackageImage();
+                img.setTravelPackage(savedPkg);
+                img.setImageUrl(galleryUrls.get(i));
+                img.setDisplayOrder(i);
+                images.add(img);
+            }
+            savedPkg.setGalleryImages(images);
+        }
+
+        packageRepository.save(savedPkg);
+    }
+
+    private PackageItineraryDay createDay(int dayNum, String title, String desc, String imgUrl) {
+        PackageItineraryDay day = new PackageItineraryDay();
+        day.setDayNumber(dayNum);
+        day.setTitle(title);
+        day.setDescription(desc);
+        day.setImageUrl(imgUrl);
+        return day;
+    }
+
+    private PackageFeature createFeature(String icon, String text) {
+        PackageFeature feature = new PackageFeature();
+        feature.setIcon(icon);
+        feature.setText(text);
+        return feature;
+    }
+}

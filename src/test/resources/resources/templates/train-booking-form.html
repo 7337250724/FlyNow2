@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Fly Now - Book Train</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8f9fa;
+        }
+
+        .booking-container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #17a2b8;
+        }
+
+        .form-header h2 {
+            color: #17a2b8;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .train-info-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .train-info-card h4 {
+            color: #000;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: #17a2b8;
+            border-color: #17a2b8;
+        }
+
+        .btn-primary:hover {
+            background: #138496;
+            border-color: #138496;
+        }
+
+        .price-summary {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        .price-summary h5 {
+            color: #17a2b8;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            border-radius: 5px;
+            padding: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Fly Now<span style="color: #17a2b8;"> Travel Agency</span></a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/packages">Packages</a>
+                <a class="nav-link" href="/book/train">Back to Trains</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="booking-container">
+        <div class="form-header">
+            <h2><i class="fa fa-train mr-2"></i>Book Train Ticket</h2>
+            <p>Fill in your details to complete the booking</p>
+        </div>
+
+        <div class="train-info-card" th:if="${train}">
+            <h4 th:text="${train.trainName} + ' (' + ${train.trainNumber} + ')'">Train Name</h4>
+            <p><strong>Route:</strong> <span th:text="${train.source} + ' → ' + ${train.destination}">Source → Destination</span></p>
+            <p><strong>Departure:</strong> <span th:text="${train.departureTime}">Time</span></p>
+            <p><strong>Arrival:</strong> <span th:text="${train.arrivalTime}">Time</span></p>
+            <p><strong>Selected Class:</strong> <span th:text="${selectedClass}">Class</span></p>
+            <p><strong>Price per ticket:</strong> 
+                <span th:text="${selectedClass == 'AC' ? train.acPrice : train.sleeperPrice} + ' ' + ${train.priceCurrency != null ? train.priceCurrency : '₹'}">Price</span>
+            </p>
+        </div>
+
+        <form action="/train/book/process" method="POST">
+            <input type="hidden" name="trainId" th:value="${train.id}">
+            <input type="hidden" name="selectedClass" th:value="${selectedClass}">
+
+            <h5 class="mt-4 mb-3">Passenger Details</h5>
+            
+            <div class="form-group">
+                <label>Full Name *</label>
+                <input type="text" class="form-control" name="customerName" required placeholder="Enter your full name">
+            </div>
+
+            <div class="form-group">
+                <label>Email Address *</label>
+                <input type="email" class="form-control" name="email" required placeholder="Enter your email">
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number *</label>
+                <input type="tel" class="form-control" name="phoneNumber" required placeholder="Enter your phone number">
+            </div>
+
+            <div class="form-group">
+                <label>Number of Passengers *</label>
+                <input type="number" class="form-control" name="numberOfMembers" min="1" max="10" value="1" required>
+            </div>
+
+            <h5 class="mt-4 mb-3">Payment Details</h5>
+
+            <div class="form-group">
+                <label>UPI ID *</label>
+                <input type="text" class="form-control" name="upiId" required placeholder="Enter your UPI ID (e.g., yourname@paytm)">
+            </div>
+
+            <div class="price-summary">
+                <h5>Price Summary</h5>
+                <p>
+                    <span>Ticket Price (<span th:text="${selectedClass}">Class</span>):</span>
+                    <strong th:text="${selectedClass == 'AC' ? train.acPrice : train.sleeperPrice} + ' ' + ${train.priceCurrency != null ? train.priceCurrency : '₹'}">Price</strong>
+                </p>
+                <p>
+                    <span>Number of Passengers:</span>
+                    <strong id="passengerCount">1</strong>
+                </p>
+                <p class="total-price">
+                    <span>Total Amount:</span>
+                    <span id="totalPrice" th:text="${selectedClass == 'AC' ? train.acPrice : train.sleeperPrice} + ' ' + ${train.priceCurrency != null ? train.priceCurrency : '₹'}">Total</span>
+                </p>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg btn-block mt-4">
+                <i class="fa fa-credit-card mr-2"></i>Confirm & Pay
+            </button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            const selectedClass = /*[[${selectedClass}]]*/ 'Sleeper';
+            const sleeperPrice = /*[[${train.sleeperPrice}]]*/ 0;
+            const acPrice = /*[[${train.acPrice}]]*/ 0;
+            const basePrice = selectedClass === 'AC' ? acPrice : sleeperPrice;
+            const currency = /*[[${train.priceCurrency != null ? train.priceCurrency : '₹'}]]*/ '₹';
+            
+            $('input[name="numberOfMembers"]').on('change', function() {
+                const count = parseInt($(this).val());
+                const total = basePrice * count;
+                $('#passengerCount').text(count);
+                $('#totalPrice').text(total.toFixed(2) + ' ' + currency);
+            });
+        });
+    </script>
+</body>
+
+</html>
+

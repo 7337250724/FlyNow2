@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Fly Now - Booking Confirmed</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8f9fa;
+        }
+
+        .success-container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .icon-box {
+            width: 100px;
+            height: 100px;
+            background: #28a745;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            margin: 0 auto 30px;
+        }
+
+        .success-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .success-header h1 {
+            color: #28a745;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .booking-details-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .booking-details-card h4 {
+            color: #f15d30;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f15d30;
+            padding-bottom: 10px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .detail-value {
+            color: #000;
+        }
+
+        .package-type-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .package-type-badge.standard {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .package-type-badge.luxury {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .btn-primary {
+            background: #f15d30;
+            border-color: #f15d30;
+        }
+
+        .btn-primary:hover {
+            background: #d94c25;
+            border-color: #d94c25;
+        }
+
+        .btn-success {
+            background: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            border-color: #1e7e34;
+        }
+
+        .inclusions-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .inclusions-list li {
+            padding: 5px 0;
+        }
+
+        .inclusions-list li i {
+            margin-right: 8px;
+            color: #28a745;
+        }
+
+        .inclusions-list li .not-included {
+            color: #dc3545;
+        }
+
+        .inclusions-list li .not-included i {
+            color: #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="success-container">
+        <div class="success-header">
+            <div class="icon-box">
+                <i class="fa fa-check"></i>
+            </div>
+            <h1>Booking Confirmed!</h1>
+            <p class="text-muted">Your booking has been successfully processed.</p>
+        </div>
+
+        <div class="booking-details-card">
+            <h4><i class="fa fa-info-circle mr-2"></i>Booking Information</h4>
+            <div class="detail-row">
+                <span class="detail-label">Booking Reference:</span>
+                <span class="detail-value" th:text="${booking.bookingReference}">PKG-XXXXXXXX</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Package Name:</span>
+                <span class="detail-value" th:text="${booking.travelPackage.name}">Package Name</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Location:</span>
+                <span class="detail-value" th:text="${booking.travelPackage.location}">Location</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Duration:</span>
+                <span class="detail-value" th:text="${booking.travelPackage.durationDays} + ' Days'">Duration</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Package Type:</span>
+                <span class="detail-value">
+                    <span class="package-type-badge" 
+                          th:classappend="${booking.packageTypeSelected == T(com.example.demo.enums.PackageType).STANDARD ? 'standard' : 'luxury'}">
+                        <span th:text="${booking.packageTypeSelected == T(com.example.demo.enums.PackageType).STANDARD ? 'Standard Package' : 'Luxury Package'}">Package Type</span>
+                    </span>
+                </span>
+            </div>
+            <div class="detail-row" th:if="${booking.selectedHotel != null}">
+                <span class="detail-label">Selected Hotel:</span>
+                <span class="detail-value" th:text="${booking.selectedHotel.name}">Hotel Name</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Total Amount:</span>
+                <span class="detail-value" style="color: #f15d30; font-weight: 700; font-size: 18px;">
+                    <span th:text="${booking.priceCurrency != null ? booking.priceCurrency : '₹'}"></span>
+                    <span th:text="${#numbers.formatDecimal(booking.totalPrice, 0, 'COMMA', 0, 'POINT')}"></span>
+                </span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Booking Date:</span>
+                <span class="detail-value" th:text="${#temporals.format(booking.bookingDate, 'dd MMMM yyyy, hh:mm a')}">Date</span>
+            </div>
+        </div>
+
+        <div class="booking-details-card">
+            <h4><i class="fa fa-list-check mr-2"></i>Package Inclusions</h4>
+            <ul class="inclusions-list">
+                <li th:classappend="${booking.flightsIncluded != null and booking.flightsIncluded ? '' : 'not-included'}">
+                    <i class="fa" th:classappend="${booking.flightsIncluded != null and booking.flightsIncluded ? 'fa-check' : 'fa-times'}"></i>
+                    Flights
+                </li>
+                <li th:classappend="${booking.hotelsIncluded != null and booking.hotelsIncluded ? '' : 'not-included'}">
+                    <i class="fa" th:classappend="${booking.hotelsIncluded != null and booking.hotelsIncluded ? 'fa-check' : 'fa-times'}"></i>
+                    Hotels
+                </li>
+                <li th:classappend="${booking.mealsIncluded != null and booking.mealsIncluded ? '' : 'not-included'}">
+                    <i class="fa" th:classappend="${booking.mealsIncluded != null and booking.mealsIncluded ? 'fa-check' : 'fa-times'}"></i>
+                    Meals
+                </li>
+                <li th:classappend="${booking.sightseeingIncluded != null and booking.sightseeingIncluded ? '' : 'not-included'}">
+                    <i class="fa" th:classappend="${booking.sightseeingIncluded != null and booking.sightseeingIncluded ? 'fa-check' : 'fa-times'}"></i>
+                    Sightseeing
+                </li>
+                <li th:classappend="${booking.transportIncluded != null and booking.transportIncluded ? '' : 'not-included'}">
+                    <i class="fa" th:classappend="${booking.transportIncluded != null and booking.transportIncluded ? 'fa-check' : 'fa-times'}"></i>
+                    Transport
+                </li>
+            </ul>
+        </div>
+
+        <div class="booking-details-card">
+            <h4><i class="fa fa-user mr-2"></i>Customer Information</h4>
+            <div class="detail-row">
+                <span class="detail-label">Name:</span>
+                <span class="detail-value" th:text="${booking.customerName}">Customer Name</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Email:</span>
+                <span class="detail-value" th:text="${booking.email}">Email</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Phone:</span>
+                <span class="detail-value" th:text="${booking.phoneNumber}">Phone</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Number of Travelers:</span>
+                <span class="detail-value" th:text="${booking.numberOfMembers}">Number</span>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a th:href="@{'/book/download-pdf/' + ${booking.id}}" class="btn btn-success btn-lg mr-3">
+                <i class="fa fa-download mr-2"></i>Download Booking PDF
+            </a>
+            <a href="/packages" class="btn btn-primary btn-lg">
+                <i class="fa fa-arrow-left mr-2"></i>Back to Packages
+            </a>
+        </div>
+    </div>
+
+</body>
+
+</html>

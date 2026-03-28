@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Fly Now - Book Hotel</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8f9fa;
+        }
+
+        .booking-container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header h2 {
+            color: #f15d30;
+            font-weight: 700;
+        }
+
+        .btn-primary {
+            background: #f15d30;
+            border-color: #f15d30;
+        }
+
+        .btn-primary:hover {
+            background: #d94c25;
+            border-color: #d94c25;
+        }
+
+        .price-summary {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .price-summary h5 {
+            color: #f15d30;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="booking-container">
+        <div class="form-header">
+            <h2>Book Your Hotel</h2>
+            <p>Hotel: <strong th:text="${hotelName}">Hotel Name</strong></p>
+            <p>Location: <strong th:text="${hotelLocation}">Location</strong></p>
+            <p>Price per night: <strong th:text="${priceCurrency} + ${#numbers.formatDecimal(pricePerNight, 0, 'COMMA', 0, 'POINT')}">Price</strong></p>
+        </div>
+
+        <form th:action="@{/book-hotel/process}" th:object="${booking}" method="post" id="bookingForm">
+            <input type="hidden" name="hotelId" th:value="${hotel.id}">
+            <input type="hidden" th:field="*{priceCurrency}">
+
+            <h4 class="mb-3">Contact Details</h4>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Full Name *</label>
+                    <input type="text" class="form-control" th:field="*{customerName}" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Email *</label>
+                    <input type="email" class="form-control" th:field="*{email}" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Phone Number *</label>
+                    <input type="tel" class="form-control" th:field="*{phoneNumber}" required>
+                </div>
+            </div>
+
+            <h4 class="mb-3 mt-4">Booking Details</h4>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Check-in Date *</label>
+                    <input type="date" class="form-control" th:field="*{checkInDate}" id="checkInDate" required onchange="calculateTotal()">
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Check-out Date *</label>
+                    <input type="date" class="form-control" th:field="*{checkOutDate}" id="checkOutDate" required onchange="calculateTotal()">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Number of Guests *</label>
+                    <input type="number" class="form-control" th:field="*{numberOfGuests}" id="numberOfGuests" min="1" max="20" required onchange="calculateTotal()">
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Number of Rooms *</label>
+                    <input type="number" class="form-control" th:field="*{numberOfRooms}" id="numberOfRooms" min="1" max="10" required onchange="calculateTotal()">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Special Requests</label>
+                <textarea class="form-control" th:field="*{specialRequests}" rows="3" placeholder="Any special requests or preferences..."></textarea>
+            </div>
+
+            <div class="price-summary">
+                <h5>Price Summary</h5>
+                <p id="nightsInfo">Nights: <span id="nights">0</span></p>
+                <p>Price per night: <strong th:text="${priceCurrency} + ${#numbers.formatDecimal(pricePerNight, 0, 'COMMA', 0, 'POINT')}">Price</strong></p>
+                <p>Number of rooms: <span id="roomsCount">1</span></p>
+                <hr>
+                <h4>Total Price: <span id="totalPrice" th:text="${priceCurrency} + '0'">₹0</span></h4>
+            </div>
+
+            <input type="hidden" id="totalPriceInput" name="totalPrice">
+
+            <button type="submit" class="btn btn-primary btn-lg btn-block mt-4" onclick="setTotalPrice()">Book Now</button>
+        </form>
+    </div>
+
+    <script>
+        const pricePerNight = parseFloat([[${pricePerNight}]]);
+        const priceCurrency = '[[${priceCurrency}]]';
+
+        function calculateTotal() {
+            const checkIn = new Date(document.getElementById('checkInDate').value);
+            const checkOut = new Date(document.getElementById('checkOutDate').value);
+            const numberOfRooms = parseInt(document.getElementById('numberOfRooms').value) || 1;
+
+            if (checkIn && checkOut && checkOut > checkIn) {
+                const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+                document.getElementById('nights').textContent = nights;
+                document.getElementById('roomsCount').textContent = numberOfRooms;
+
+                const total = pricePerNight * nights * numberOfRooms;
+                document.getElementById('totalPrice').textContent = priceCurrency + total.toLocaleString('en-IN', { maximumFractionDigits: 0 });
+                document.getElementById('totalPriceInput').value = total;
+            } else {
+                document.getElementById('nights').textContent = '0';
+                document.getElementById('totalPrice').textContent = priceCurrency + '0';
+                document.getElementById('totalPriceInput').value = '0';
+            }
+        }
+
+        function setTotalPrice() {
+            const total = document.getElementById('totalPriceInput').value;
+            if (!total || total === '0') {
+                alert('Please select valid check-in and check-out dates');
+                event.preventDefault();
+                return false;
+            }
+        }
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('checkInDate').setAttribute('min', today);
+        document.getElementById('checkOutDate').setAttribute('min', today);
+    </script>
+</body>
+
+</html>
+

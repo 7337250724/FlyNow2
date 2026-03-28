@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Fly Now - Share Your Experience</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8f9fa;
+        }
+
+        .reviews-container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            color: #fff;
+        }
+
+        .page-header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .review-form-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .review-form-card h3 {
+            color: #f15d30;
+            font-weight: 600;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f15d30;
+            padding-bottom: 10px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-control-file {
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+        }
+
+        .form-control:focus, .form-control-file:focus {
+            border-color: #f15d30;
+            box-shadow: 0 0 0 0.2rem rgba(241, 93, 48, 0.25);
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .rating-stars input[type="radio"] {
+            display: none;
+        }
+
+        .rating-stars label {
+            font-size: 30px;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .rating-stars input[type="radio"]:checked ~ label,
+        .rating-stars label:hover,
+        .rating-stars label:hover ~ label {
+            color: #ffc107;
+        }
+
+        .file-upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            background: #f8f9fa;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .file-upload-area:hover {
+            border-color: #f15d30;
+            background: #fff5f2;
+        }
+
+        .file-upload-area i {
+            font-size: 48px;
+            color: #f15d30;
+            margin-bottom: 15px;
+        }
+
+        .file-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .file-preview-item {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .file-preview-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .file-preview-item .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-primary {
+            background: #f15d30;
+            border-color: #f15d30;
+            padding: 12px 40px;
+            font-weight: 600;
+            border-radius: 5px;
+        }
+
+        .btn-primary:hover {
+            background: #d94c25;
+            border-color: #d94c25;
+        }
+
+        .my-reviews-section {
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        .review-item {
+            border-bottom: 1px solid #e9ecef;
+            padding: 20px 0;
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .review-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .review-item-header h5 {
+            margin: 0;
+            color: #333;
+        }
+
+        .review-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .review-status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .review-status.approved {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .alert {
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Fly Now<span style="color: #f15d30;"> Travel Agency</span></a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/packages">Packages</a>
+                <a class="nav-link" href="/hotels">Hotels</a>
+                <a class="nav-link active" href="/reviews">Share Experience</a>
+                <a class="nav-link" href="/reviews/view">View Reviews</a>
+                <a class="nav-link" href="/logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="reviews-container">
+        <div class="page-header">
+            <h1><i class="fa fa-star mr-2"></i>Share Your Travel Experience</h1>
+            <p>Help other travelers by sharing your photos, videos, and experiences from your journey with us!</p>
+            <p style="font-size: 16px; margin-top: 10px;"><i class="fa fa-lightbulb-o mr-2"></i>Give advice and tips to help new travelers plan their perfect trip</p>
+            <a href="/reviews/view" class="btn btn-light btn-lg mt-3" style="color: #667eea;">
+                <i class="fa fa-eye mr-2"></i>View All Traveler Reviews
+            </a>
+        </div>
+
+        <!-- Login Success Popup -->
+        <div id="loginSuccessModal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; border: none;">
+                        <h5 class="modal-title"><i class="fa fa-check-circle mr-2"></i>Login Successful!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center" style="padding: 30px;">
+                        <i class="fa fa-check-circle" style="font-size: 60px; color: #28a745; margin-bottom: 20px;"></i>
+                        <h4>Welcome back!</h4>
+                        <p>You have successfully logged in. Now you can share your travel experience with other travelers.</p>
+                    </div>
+                    <div class="modal-footer" style="border: none; justify-content: center;">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Get Started</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong> Your review has been submitted successfully! It is now visible to all users.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> <span th:text="${error}"></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="review-form-card">
+            <h3><i class="fa fa-edit mr-2"></i>Write Your Review</h3>
+            <form th:action="@{/reviews/submit}" method="post" enctype="multipart/form-data" id="reviewForm">
+                <div class="form-group">
+                    <label>Package You Traveled With *</label>
+                    <select class="form-control" name="packageId" required>
+                        <option value="">Select a package</option>
+                        <option th:each="pkg : ${packages}" th:value="${pkg.id}" th:text="${pkg.name + ' - ' + pkg.location}">Package Name</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Location Visited *</label>
+                    <input type="text" class="form-control" name="locationVisited" placeholder="e.g., Kashmir, Paris, Goa" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Visit Date</label>
+                        <input type="date" class="form-control" name="visitDate">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Rating *</label>
+                        <div class="rating-stars">
+                            <input type="radio" id="star5" name="rating" value="5" checked>
+                            <label for="star5">★</label>
+                            <input type="radio" id="star4" name="rating" value="4">
+                            <label for="star4">★</label>
+                            <input type="radio" id="star3" name="rating" value="3">
+                            <label for="star3">★</label>
+                            <input type="radio" id="star2" name="rating" value="2">
+                            <label for="star2">★</label>
+                            <input type="radio" id="star1" name="rating" value="1">
+                            <label for="star1">★</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Your Experience & Advice *</label>
+                    <textarea class="form-control" name="reviewText" rows="8" 
+                        placeholder="Share your experience, tips, and advice for other travelers. What did you love about the trip? What should others know? Any helpful recommendations?" required></textarea>
+                    <small class="form-text text-muted">
+                        <i class="fa fa-info-circle mr-1"></i>
+                        Tell others about your journey with our package - what you loved, what to expect, places to visit, things to avoid, and any helpful tips for future travelers!
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Photos</label>
+                    <div class="file-upload-area" onclick="document.getElementById('photos').click()">
+                        <i class="fa fa-camera"></i>
+                        <p>Click to upload photos or drag and drop</p>
+                        <small class="text-muted">You can upload multiple photos</small>
+                    </div>
+                    <input type="file" id="photos" name="photos" multiple accept="image/*" style="display: none;" onchange="previewFiles(this, 'photoPreview')">
+                    <div id="photoPreview" class="file-preview"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Videos</label>
+                    <div class="file-upload-area" onclick="document.getElementById('videos').click()">
+                        <i class="fa fa-video-camera"></i>
+                        <p>Click to upload videos or drag and drop</p>
+                        <small class="text-muted">You can upload multiple videos</small>
+                    </div>
+                    <input type="file" id="videos" name="videos" multiple accept="video/*" style="display: none;" onchange="previewFiles(this, 'videoPreview')">
+                    <div id="videoPreview" class="file-preview"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fa fa-paper-plane mr-2"></i>Submit Review
+                </button>
+            </form>
+        </div>
+
+        <div class="my-reviews-section" th:if="${userReviews != null and !userReviews.isEmpty()}">
+            <h3><i class="fa fa-list mr-2"></i>My Reviews</h3>
+            <div th:each="review : ${userReviews}" class="review-item">
+                    <div class="review-item-header">
+                        <h5 th:text="${review.travelPackage != null ? review.travelPackage.name : 'Package'}">Package Name</h5>
+                        <span class="review-status approved" th:text="'Published'">Status</span>
+                    </div>
+                <p class="text-muted mb-2" th:text="${review.locationVisited}">Location</p>
+                <p th:text="${review.reviewText}">Review text</p>
+                <div class="mt-2">
+                    <span class="text-warning" th:each="i : ${#numbers.sequence(1, review.rating)}">★</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:inline="javascript">
+        // Show login success popup if redirected from login
+        $(document).ready(function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('loginSuccess') === 'true') {
+                $('#loginSuccessModal').modal('show');
+                // Remove the parameter from URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        });
+
+        function previewFiles(input, previewId) {
+            const preview = document.getElementById(previewId);
+            preview.innerHTML = '';
+            
+            if (input.files && input.files.length > 0) {
+                Array.from(input.files).forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const div = document.createElement('div');
+                        div.className = 'file-preview-item';
+                        
+                        if (file.type.startsWith('image/')) {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            div.appendChild(img);
+                        } else if (file.type.startsWith('video/')) {
+                            const video = document.createElement('video');
+                            video.src = e.target.result;
+                            video.controls = true;
+                            div.appendChild(video);
+                        }
+                        
+                        const removeBtn = document.createElement('button');
+                        removeBtn.className = 'remove-btn';
+                        removeBtn.innerHTML = '×';
+                        removeBtn.onclick = function() {
+                            div.remove();
+                            // Remove file from input
+                            const dt = new DataTransfer();
+                            Array.from(input.files).forEach((f, i) => {
+                                if (i !== index) dt.items.add(f);
+                            });
+                            input.files = dt.files;
+                        };
+                        div.appendChild(removeBtn);
+                        preview.appendChild(div);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>
+

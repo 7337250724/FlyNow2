@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="'Fly Now - ' + ${hotelType} + ' Hotels'">Fly Now - Hotels</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background-color: #fff;
+        }
+
+        .navbar {
+            background: #1a1a1a !important;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff !important;
+        }
+
+        .navbar-brand span {
+            color: #f15d30;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            margin: 0 0.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            color: #f15d30 !important;
+        }
+
+        .hero-wrap {
+            min-height: 400px;
+            position: relative;
+            background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1600');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .hero-wrap .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-wrap .container {
+            position: relative;
+            z-index: 2;
+            padding-bottom: 80px;
+        }
+
+        .breadcrumbs {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .breadcrumbs a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+        }
+
+        .hero-wrap h1 {
+            color: #fff;
+            font-size: 48px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .hotel-type-toggle {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hotel-type-toggle .btn {
+            padding: 12px 40px;
+            margin: 0 10px;
+            font-weight: 600;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            border: 2px solid #f15d30;
+        }
+
+        .hotel-type-toggle .btn-outline-primary {
+            color: #f15d30;
+            background: white;
+        }
+
+        .hotel-type-toggle .btn-outline-primary:hover,
+        .hotel-type-toggle .btn-outline-primary.active {
+            background: #f15d30;
+            color: white;
+        }
+
+        .ftco-section {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .heading-section {
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .heading-section .subheading {
+            font-size: 14px;
+            color: #f15d30;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .heading-section h2 {
+            font-size: 40px;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .project-wrap {
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .project-wrap:hover {
+            transform: translateY(-10px);
+        }
+
+        .project-wrap .img {
+            display: block;
+            width: 100%;
+            height: 300px;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px 8px 0 0;
+            overflow: hidden;
+            transition: transform 0.5s ease;
+        }
+
+        .project-wrap:hover .img {
+            transform: scale(1.05);
+        }
+
+        .project-wrap .img .price {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #f15d30;
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(241, 93, 48, 0.4);
+            z-index: 2;
+        }
+
+        .project-wrap .img .rating {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 15px;
+            color: #f15d30;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 25px;
+            z-index: 2;
+        }
+
+        .project-wrap .text {
+            background: #fff;
+            padding: 30px 25px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-top: -30px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .project-wrap .text .type {
+            font-size: 12px;
+            color: #f15d30;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: inline-block;
+            background: rgba(241, 93, 48, 0.1);
+            padding: 5px 15px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+        .project-wrap .text h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .project-wrap .text h3 a {
+            color: #000;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .project-wrap .text h3 a:hover {
+            color: #f15d30;
+        }
+
+        .project-wrap .text .location {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .project-wrap .text .location .fa {
+            color: #f15d30;
+            margin-right: 8px;
+        }
+
+        .ftco-footer {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .ftco-footer p {
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .hero-wrap h1 {
+                font-size: 32px;
+            }
+
+            .heading-section h2 {
+                font-size: 28px;
+            }
+
+            .project-wrap .img {
+                height: 220px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="/">Fly Now<span>Travel Agency</span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="oi oi-menu"></span> Menu
+            </button>
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
+                    <li class="nav-item"><a href="/packages?type=national" class="nav-link">Packages</a></li>
+                    <li class="nav-item active"><a href="/hotels" class="nav-link">Hotels</a></li>
+                    <li class="nav-item"><a href="/reviews/view" class="nav-link">Reviews</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-wrap">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="breadcrumbs">
+                        <span class="mr-2"><a href="/">Home <i class="fa fa-chevron-right"></i></a></span>
+                        <span th:text="${hotelType} + ' Hotels'">Hotels <i class="fa fa-chevron-right"></i></span>
+                    </p>
+                    <h1 th:text="${hotelType} + ' Hotels'">Hotels</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hotels Section -->
+    <section class="ftco-section">
+        <div class="container">
+            <!-- Hotel Type Toggle -->
+            <div class="hotel-type-toggle">
+                <a href="/hotels" th:classappend="${hotelType == 'All' ? 'active' : ''}"
+                    class="btn btn-outline-primary">
+                    <i class="fa fa-list"></i> All Hotels
+                </a>
+                <a href="/hotels?type=domestic" th:classappend="${hotelType == 'National' ? 'active' : ''}"
+                    class="btn btn-outline-primary">
+                    <i class="fa fa-flag"></i> National Hotels
+                </a>
+                <a href="/hotels?type=international"
+                    th:classappend="${hotelType == 'International' ? 'active' : ''}" class="btn btn-outline-primary">
+                    <i class="fa fa-globe"></i> International Hotels
+                </a>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-8 heading-section text-center">
+                    <span class="subheading">Find Your Perfect Stay</span>
+                    <h2 th:text="${hotelType} + ' Hotels'">Hotels</h2>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4" th:each="hotel : ${hotels}">
+                    <div class="project-wrap">
+                        <a th:href="@{'/hotel/' + ${hotel.id}}" class="img"
+                            th:style="'background-image: url(' + ${hotel.heroImageUrl != null ? hotel.heroImageUrl : (hotel.galleryImages != null and !hotel.galleryImages.isEmpty() ? hotel.galleryImages[0].imageUrl : '')} + ');'">
+                            <span class="price" th:text="${hotel.priceCurrency != null ? hotel.priceCurrency : '₹'} + ${#numbers.formatDecimal(hotel.pricePerNight, 0, 'COMMA', 0, 'POINT')} + '/night'">Price</span>
+                            <span class="rating" th:if="${hotel.rating != null}">
+                                <i class="fa fa-star"></i> <span th:text="${#numbers.formatDecimal(hotel.rating, 1, 1)}">4.5</span>
+                            </span>
+                        </a>
+                        <div class="text p-4">
+                            <span class="type" th:text="${hotel.hotelType == 'DOMESTIC' ? 'National' : 'International'}">Type</span>
+                            <h3><a th:href="@{'/hotel/' + ${hotel.id}}" th:text="${hotel.name}">Hotel Name</a></h3>
+                            <p class="location">
+                                <span class="fa fa-map-marker"></span>
+                                <span th:text="${hotel.location} + (${hotel.city != null ? ', ' + hotel.city : ''}) + (${hotel.country != null ? ', ' + hotel.country : ''})">Location</span>
+                            </p>
+                            <div class="d-flex align-items-center mt-4">
+                                <a th:href="@{'/hotel/' + ${hotel.id}}" class="btn btn-primary py-2 px-3">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="ftco-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>Copyright &copy; 2024 All rights reserved | Fly Now Travel Agency</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+
