@@ -15,7 +15,7 @@
     <groupId>com.example</groupId>
     <artifactId>FlyNow</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>FlyNow</name>
     <description>Travel Social Media Platform - FlyNow</description>
     
@@ -31,20 +31,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <!-- Exclude embedded Tomcat for external deployment -->
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         
         <!-- Provided scope for Tomcat (provided by external Tomcat) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
         </dependency>
         
         <!-- Spring Boot Data JPA -->
